@@ -534,87 +534,23 @@ async function loadSheets(){
     btn.classList.add('loading');
     icon.classList.add('spin');
 
-    const urls=[
-      `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID}`,
-      `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`
-    ];
+    DATA=buildPayload(FALLBACK_RAW,FALLBACK_MONTHS);
 
-    let parsed=null;
-
-    for(const url of urls){
-
-      try{
-
-        const res=await fetch(url,{cache:'no-cache'});
-
-        if(!res.ok) continue;
-
-        const text=await res.text();
-
-        parsed=parseCSV(text);
-
-        if(parsed) break;
-
-      }catch(err){
-        console.log('Fetch gagal:',err);
-      }
-    }
-
-    // jika gagal fetch → fallback
-    if(parsed){
-
-      DATA=parsed;
-
-      document.getElementById('statusMsg').textContent='Terhubung ke Google Sheets';
-
-    }else{
-
-      DATA=buildPayload(FALLBACK_RAW,FALLBACK_MONTHS);
-
-      document.getElementById('statusMsg').textContent='Data berhasil dimuat';
-    }
-
+    document.getElementById('statusMsg').textContent='Data berhasil dimuat';
     document.getElementById('statusMsg').className='status-ok';
+    document.getElementById('lastUpdate').textContent=fmtDt(new Date());
 
-    document.getElementById('lastUpdate').textContent=
-      fmtDt(new Date());
-
-    // rebuild forecast sinkron
     rebuildForecastData();
-
-    // render semua
     renderAll();
 
   }catch(error){
 
     console.error('LOAD ERROR:',error);
 
-    // fallback terakhir
-    try{
-
-      DATA=buildPayload(FALLBACK_RAW,FALLBACK_MONTHS);
-
-      rebuildForecastData();
-
-      renderAll();
-
-      document.getElementById('statusMsg').textContent=
-        'Data berhasil dimuat';
-
-      document.getElementById('statusMsg').className='status-ok';
-
-    }catch(e){
-      console.error('Render fallback gagal:',e);
-    }
-
   }finally{
 
-    // PAKSA overlay hilang
     const overlay=document.getElementById('loadingOverlay');
-
-    if(overlay){
-      overlay.style.display='none';
-    }
+    if(overlay) overlay.style.display='none';
 
     btn.classList.remove('loading');
     icon.classList.remove('spin');

@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PMI Kota Malang — Dashboard Donor Darah</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F7F4EF;--surface:#FFFDF9;--surface2:#F2EDE4;--surface3:#EAE3D6;
+  --border:rgba(80,50,20,0.1);--border2:rgba(80,50,20,0.16);
+  --text:#1C1009;--muted:#7A6A55;--muted2:#A89880;
+  --red:#C0392B;--red2:#E84040;--red-light:#FDECEA;--red-pale:#FFF5F4;
+  --blue:#1F5FA6;--blue2:#457FCA;--blue-light:#EAF0FB;
+  --green:#1A7A4A;--green2:#27AE60;--green-light:#E6F5ED;
+  --amber:#C47D11;--amber-light:#FDF3E0;
+  --purple:#7B3FA0;--purple-light:#F3EAFA;
+  --teal:#0E7490;--teal-light:#E0F2F7;
+  --radius:14px;--radius-sm:9px;--radius-xs:6px;
+  --shadow:0 2px 12px rgba(80,40,10,0.07);
+  --shadow-lg:0 6px 28px rgba(80,40,10,0.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+a{color:var(--red);text-decoration:none}
+.wrap{max-width:1100px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+
+/* HEADER */
+.site-header{margin-bottom:2rem}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:.75rem}
+.header-text h1{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,3.5vw,2.4rem);line-height:1.15;margin-bottom:.35rem}
+.header-text h1 span{color:var(--red)}
+.header-text p{font-size:13px;color:var(--muted);max-width:500px;line-height:1.65}
+.header-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;padding:4px 11px;border-radius:99px}
+.badge-live{background:var(--green-light);color:var(--green)}
+.badge-live .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.6s ease infinite}
+.badge-source{background:var(--surface2);color:var(--muted)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+.btn-refresh{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;background:var(--surface);border:1px solid var(--border);color:var(--muted);transition:all .15s;font-family:inherit}
+.btn-refresh:hover{background:var(--surface2);color:var(--text)}
+.btn-refresh.loading{opacity:.55;pointer-events:none}
+.spin{display:inline-block;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* UPDATE BAR */
+.update-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:.55rem 1rem;margin-bottom:1.75rem;font-size:12px;color:var(--muted);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.status-ok{color:var(--green);font-weight:600}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:9px;margin-bottom:2rem}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.15rem;transition:box-shadow .15s;display:flex;flex-direction:column;gap:4px}
+.kpi:hover{box-shadow:var(--shadow)}
+.kpi-icon{font-size:1.4rem;margin-bottom:.2rem}
+.kpi-lbl-top{font-size:10.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted2)}
+.kpi-val{font-family:'DM Serif Display',serif;font-size:1.85rem;line-height:1;margin-bottom:2px}
+.kpi-lbl{font-size:11px;color:var(--muted);font-weight:500}
+
+/* SECTION */
+.section{margin-bottom:2rem}
+.section-hd{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:.85rem}
+.section-title{font-family:'DM Serif Display',serif;font-size:1.1rem}
+.section-sub{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* TABS */
+.tabs{display:flex;gap:3px;background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:3px}
+.tab{padding:5px 13px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;color:var(--muted);border:none;background:transparent;font-family:inherit;transition:all .15s}
+.tab.active{background:var(--red);color:#fff}
+
+/* TREN DONOR TABS (pill style like screenshot) */
+.tren-tabs-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.tren-tab{padding:5px 14px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;color:var(--muted);border:1.5px solid var(--border2);background:var(--surface);font-family:inherit;transition:all .15s}
+.tren-tab:hover{border-color:var(--text);color:var(--text)}
+.tren-tab.active{background:var(--red);color:#fff;border-color:var(--red)}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.35rem;box-shadow:var(--shadow)}
+
+/* GRID */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+@media(max-width:640px){.grid-2,.grid-3{grid-template-columns:1fr}}
+
+/* LEGEND */
+.legend{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:.9rem}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);cursor:pointer;user-select:none;transition:opacity .15s}
+.legend-item:hover{color:var(--text)}
+.legend-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0}
+.chart-wrap{position:relative;width:100%}
+
+/* MA FILTER */
+.fc-filter-row{display:flex;align-items:center;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.fc-filter-label{font-size:12px;color:var(--muted);font-weight:500}
+.fc-filter-tabs{display:flex;gap:3px;background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:3px}
+.fc-tab{padding:4px 12px;border-radius:99px;font-size:11.5px;font-weight:600;cursor:pointer;color:var(--muted);border:none;background:transparent;font-family:inherit;transition:all .15s}
+.fc-tab.active{background:var(--red);color:#fff}
+.fc-zone-badge{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--blue);background:var(--blue-light);border-radius:99px;padding:3px 9px;font-weight:600}
+.fc-zone-badge .stripe{width:12px;height:7px;background:repeating-linear-gradient(135deg,rgba(69,127,202,.4) 0,rgba(69,127,202,.4) 2px,transparent 2px,transparent 5px);border-radius:2px;display:inline-block}
+
+/* INDICATOR CARDS */
+.indicator-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.ind-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem 1.1rem;transition:box-shadow .15s}
+.ind-card:hover{box-shadow:var(--shadow)}
+.ind-header{display:flex;align-items:center;gap:7px;margin-bottom:.5rem}
+.ind-swatch{width:9px;height:9px;border-radius:3px;flex-shrink:0}
+.ind-cat{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.ind-val{font-family:'DM Serif Display',serif;font-size:1.6rem;line-height:1.05;margin-bottom:1px}
+.ind-unit{font-size:11px;color:var(--muted);margin-bottom:.65rem}
+.ind-months{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-bottom:.65rem}
+.ind-month-cell{background:var(--blue-light);border-radius:5px;padding:4px 5px;text-align:center}
+.ind-month-v{font-size:11.5px;font-weight:700;color:var(--blue)}
+.ind-month-k{font-size:9px;color:var(--muted);margin-top:1px}
+.ind-insight{font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:.6rem;padding:.45rem .6rem;background:var(--bg);border-radius:5px;border-left:2px solid var(--border2)}
+.ind-acc{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.ind-acc-cell{background:var(--bg);border-radius:5px;padding:4px 3px;text-align:center}
+.ind-acc-v{font-size:11px;font-weight:600}
+.ind-acc-k{font-size:9.5px;color:var(--muted);margin-top:1px}
+
+/* EVAL SECTION */
+.eval-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;box-shadow:var(--shadow)}
+.eval-top{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1rem}
+.eval-title{font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.2rem}
+.eval-cite{font-size:11px;color:var(--muted);font-style:italic}
+.eval-cite strong{font-style:normal;color:var(--text)}
+.mape-scale{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:1rem}
+.mape-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px}
+.eval-filter-bar{display:flex;align-items:center;gap:8px;margin-bottom:1rem;flex-wrap:wrap;padding:.6rem .8rem;background:var(--surface2);border-radius:var(--radius-sm)}
+.eval-filter-label{font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.eval-period-tabs{display:flex;gap:3px;background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:3px}
+.ep-tab{padding:4px 12px;border-radius:99px;font-size:11.5px;font-weight:600;cursor:pointer;color:var(--muted);border:none;background:transparent;font-family:inherit;transition:all .15s}
+.ep-tab.active{background:var(--blue2);color:#fff}
+.eval-note{font-size:11.5px;color:var(--muted);font-style:italic}
+.eval-table-wrap{overflow-x:auto;margin-top:.75rem}
+.eval-table{width:100%;border-collapse:collapse;font-size:12px}
+.eval-table th{text-align:left;padding:7px 10px;font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;border-bottom:1.5px solid var(--border);white-space:nowrap}
+.eval-table td{padding:7px 10px;border-bottom:1px solid var(--border);white-space:nowrap}
+.eval-table tr:last-child td{border-bottom:none}
+.eval-table tr:hover td{background:var(--surface2)}
+.eval-table .num{text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
+.mape-good{color:var(--green);font-weight:700}
+.mape-ok{color:var(--amber);font-weight:700}
+.mape-fair{color:#B8860B;font-weight:700}
+.mape-bad{color:var(--red);font-weight:700}
+.eval-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin-top:1rem}
+.eval-box{background:var(--bg);border-radius:var(--radius-sm);padding:.85rem 1rem}
+.eval-box-title{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.45rem}
+.eval-box p{font-size:12px;line-height:1.65;margin-top:3px}
+.eval-highlight{font-family:'DM Serif Display',serif;font-size:1.35rem;line-height:1.1;display:block;margin-bottom:2px}
+.r2-suppl{font-size:11px;color:var(--muted);line-height:1.6;padding:.5rem .65rem;background:var(--blue-light);border-radius:5px;border-left:2px solid var(--blue2);margin-top:.75rem}
+
+/* TREND METRICS */
+.trend-metrics{display:flex;gap:7px;flex-wrap:wrap;margin-top:.85rem}
+.tmetric{background:var(--bg);border-radius:7px;padding:5px 11px;font-size:12px}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto}
+table.data-tbl{width:100%;border-collapse:collapse;font-size:12px}
+table.data-tbl th{text-align:left;padding:7px 9px;font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;border-bottom:1.5px solid var(--border);white-space:nowrap}
+table.data-tbl td{padding:7px 9px;border-bottom:1px solid var(--border);white-space:nowrap}
+table.data-tbl tr:last-child td{border-bottom:none}
+table.data-tbl tr:hover td{background:var(--surface2)}
+.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
+.total-col{font-weight:700;color:var(--red)}
+.fc-col{background:var(--blue-light)!important;color:var(--blue)!important;font-weight:700}
+
+/* DIVIDER */
+.section-divider{border:none;border-top:1.5px solid var(--border);margin:2.25rem 0}
+
+/* FOOTER */
+footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);font-size:12px;color:var(--muted);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+/* LOADING */
+#loadingOverlay{position:fixed;inset:0;background:rgba(247,244,239,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;gap:12px}
+#loadingOverlay p{font-size:13px;color:var(--muted)}
+.loader{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite}
+
+/* Labu info */
+.unit-note{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);background:var(--surface2);border-radius:99px;padding:2px 8px;margin-left:6px}
+</style>
+</head>
+<body>
+
+<div id="loadingOverlay"><div class="loader"></div><p>Memuat data...</p></div>
+
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="site-header">
+    <div class="header-top">
+      <div class="header-text">
+        <h1>Sistem Analisis dan Prediksi Donor Darah <br><span>PMI Kota Malang</span></h1>
+        <p>Pemantauan tren donor darah dan estimasi kebutuhan darah PMI Kota Malang menggunakan metode Moving Average.</p>
+      </div>
+    </div>
+    <div class="header-meta">
+      <span class="badge badge-live"><span class="dot"></span>Live · Google Sheets</span>
+      <span class="badge badge-source">PMI Kota Malang</span>
+      <button class="btn-refresh" id="refreshBtn" onclick="loadSheets()">
+        <span id="refreshIcon">&#8635;</span> Perbarui Data
+      </button>
+    </div>
+  </div>
+
+  <div class="update-bar">
+    <span>Terakhir diperbarui: <strong id="lastUpdate">—</strong> &nbsp;|&nbsp; <span id="statusMsg" class="status-ok">Menghubungkan...</span></span>
+    <span>Sumber: <a href="https://docs.google.com/spreadsheets/d/1E3Fmd8Acw15Yt7dlHBWRgeqta27Mk1thbe2bsKCAKbc/edit" target="_blank">Spreadsheet PMI Kota Malang ↗</a></span>
+  </div>
+
+  <!-- KPI CARDS -->
+  <div class="kpi-grid" id="kpiGrid"></div>
+
+  <!-- ② KOMPOSISI DONOR -->
+  <div class="section">
+    <div class="section-hd"><div class="section-title">Komposisi Donor</div></div>
+    <div class="grid-2">
+      <div class="card">
+        <p style="font-size:13px;font-weight:600;margin-bottom:3px">Golongan Darah</p>
+        <p style="font-size:11.5px;color:var(--muted);margin-bottom:.75rem">Distribusi total donor per golongan darah</p>
+        <div class="chart-wrap" style="height:200px"><canvas id="goldarPie"></canvas></div>
+      </div>
+      <div class="card">
+        <p style="font-size:13px;font-weight:600;margin-bottom:3px">Kelompok Usia</p>
+        <p style="font-size:11.5px;color:var(--muted);margin-bottom:.75rem">Distribusi total donor per kelompok usia</p>
+        <div class="chart-wrap" style="height:200px"><canvas id="usiaPie"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ③ ESTIMASI / FORECAST MA -->
+  <div class="section">
+    <div class="section-hd">
+      <div>
+        <div class="section-title" id="forecastSectionTitle">Estimasi 3 Bulan ke Depan (MA-3)</div>
+        <div class="section-sub">Forecast berbasis Moving Average — Rumus: F<sub>t+1</sub> = (X<sub>t</sub> + X<sub>t−1</sub> + … + X<sub>t−n+1</sub>) / n</div>
+      </div>
+    </div>
+    <div class="fc-filter-row">
+      <span class="fc-filter-label">Jendela MA:</span>
+      <div class="fc-filter-tabs" id="maWindowTabs">
+        <button class="fc-tab active" onclick="switchMA(3,this)">MA-3</button>
+        <button class="fc-tab" onclick="switchMA(6,this)">MA-6</button>
+        <button class="fc-tab" onclick="switchMA(9,this)">MA-9</button>
+      </div>
+      <span id="maWindowDesc" style="font-size:11.5px;color:var(--muted)">Rata-rata 3 bulan terakhir</span>
+      <span class="fc-zone-badge"><span class="stripe"></span> Area biru = zona forecast</span>
+    </div>
+    <div class="card" style="margin-bottom:1rem">
+      <p style="font-size:13px;font-weight:600;margin-bottom:.3rem">Total Donor: Aktual vs Forecast</p>
+      <div class="legend" id="totalDonorLegend">
+        <span class="legend-item"><span class="legend-dot" style="background:#C0392B"></span>Aktual</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#457FCA"></span>Prediksi MA (in-sample)</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#1A7A4A;border-radius:50%"></span>Estimasi ke Depan</span>
+      </div>
+      <div class="chart-wrap" style="height:280px"><canvas id="totalDonorChart"></canvas></div>
+      <div class="trend-metrics" id="totalDonorMetrics"></div>
+    </div>
+    <div class="indicator-grid" id="forecastGrid"></div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ① RINGKASAN TREN BULANAN (Tren dulu sebelum komposisi) -->
+  <div class="section">
+    <div class="section-hd">
+      <div>
+        <div class="section-title">Tren Donor Darah</div>
+        <div class="section-sub">Pergerakan jumlah donor per bulan beserta estimasi ke depan</div>
+      </div>
+      <div class="tren-tabs-row" id="trenTabsRow">
+        <button class="tren-tab active" onclick="setTrenMode('donor_gender',this)">Jenis Kelamin</button>
+        <button class="tren-tab" onclick="setTrenMode('donor_goldar',this)">Golongan Darah</button>
+        <button class="tren-tab" onclick="setTrenMode('donor_usia',this)">Kelompok Usia</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="legend" id="trenLegend"></div>
+      <div class="chart-wrap" style="height:270px"><canvas id="trenDonorChart"></canvas></div>
+    </div>
+  </div>
+
+
+  <!-- ④ PERMINTAAN DARAH -->
+  <div class="section">
+    <div class="section-hd">
+      <div>
+        <div class="section-title">Permintaan Darah</div>
+        <div class="section-sub">Satuan: kantong darah (1 kantong ≈ 350–450 ml darah yang diambil dari 1 donor)</div>
+      </div>
+      <div class="tabs" id="reqTabs">
+        <button class="tab active" onclick="switchReq('rs',this)">Per Bagian RS</button>
+        <button class="tab" onclick="switchReq('jenis',this)">Per Jenis</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="legend" id="reqLegend"></div>
+      <div class="chart-wrap" style="height:270px"><canvas id="reqChart"></canvas></div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ⑤ EVALUASI AKURASI -->
+  <div class="section">
+    <div class="section-hd"><div class="section-title">Evaluasi Akurasi Prediksi</div></div>
+    <div class="eval-card">
+      <div class="eval-top">
+        <div>
+          <div class="eval-title">Metrik Akurasi Model Moving Average</div>
+          <div class="eval-cite">Kategori MAPE mengacu pada <strong>Lewis (1982)</strong>. Metrik MAPE, MAE, dan RMSE direkomendasikan oleh <strong>Hyndman &amp; Athanasopoulos, FPP (2021)</strong>.</div>
+        </div>
+        <div class="mape-scale">
+          <span class="mape-badge" style="background:var(--green-light);color:var(--green)">MAPE &lt;10% Sangat Akurat</span>
+          <span class="mape-badge" style="background:var(--amber-light);color:var(--amber)">10–20% Baik</span>
+          <span class="mape-badge" style="background:#FFF8E1;color:#B8860B">20–50% Cukup</span>
+          <span class="mape-badge" style="background:var(--red-light);color:var(--red)">&gt;50% Tidak Akurat</span>
+        </div>
+      </div>
+
+      <div class="eval-filter-bar">
+        <span class="eval-filter-label">Periode Evaluasi:</span>
+        <div class="eval-period-tabs" id="evalPeriodTabs"></div>
+        <span class="eval-note" id="evalPeriodNote"></span>
+      </div>
+
+      <div class="eval-table-wrap">
+        <table class="eval-table" id="evalTable">
+          <thead><tr>
+            <th>Indikator</th>
+            <th class="num">MAPE (%)</th>
+            <th class="num">MAE</th>
+            <th class="num">RMSE</th>
+            <th>Kategori (Lewis, 1982)</th>
+          </tr></thead>
+          <tbody id="evalTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- R² as supplementary note, not main metric -->
+      <div class="r2-suppl" id="r2SupplBox">
+        </strong> Nilai R² digunakan sebagai indikator tambahan untuk melihat kemampuan model dalam menjelaskan variasi data, namun <em>bukan metrik utama</em> evaluasi forecasting Moving Average. R² lebih umum pada regresi linier. Nilai R² negatif menandakan model lebih buruk dari sekadar menebak rata-rata data aktual (SS<sub>res</sub> &gt; SS<sub>tot</sub>).
+      </div>
+
+      <div class="eval-summary" id="evalSummary"></div>
+    </div>
+  </div>
+
+  <!-- ⑥ DATA LENGKAP -->
+  <div class="section">
+    <div class="section-hd">
+      <div class="section-title">Data Lengkap</div>
+      <div class="tabs" id="tblTabs">
+        <button class="tab active" onclick="switchTable('donor_gender',this)">Donor Gender</button>
+        <button class="tab" onclick="switchTable('donor_goldar',this)">Golongan Darah</button>
+        <button class="tab" onclick="switchTable('donor_usia',this)">Usia</button>
+        <button class="tab" onclick="switchTable('permintaan_rs',this)">Permintaan RS</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap" id="tblContainer"></div>
+    </div>
+  </div>
+
+  <footer>
+    <span>Sumber: <a href="https://satudata.malangkota.go.id" target="_blank">Satu Data Kota Malang</a> · PMI Kota Malang</span>
+    <span><a href="https://docs.google.com/spreadsheets/d/1E3Fmd8Acw15Yt7dlHBWRgeqta27Mk1thbe2bsKCAKbc/edit" target="_blank">Buka Spreadsheet ↗</a></span>
+    <span id="footerMethod">Metode: Moving Average (MA-3) · Evaluasi: MAPE, MAE, RMSE (Lewis, 1982)</span>
+  </footer>
+</div>
+
+<script>
+
+// FORCE HIDE LOADING
+setTimeout(()=>{
+  const overlay=document.getElementById('loadingOverlay');
+  if(overlay){
+    overlay.style.display='none';
+  }
+},5000);
+
+
+// ── CONFIG ──────────────────────────────────────────────────────────────
+const SHEET_ID = "1E3Fmd8Acw15Yt7dlHBWRgeqta27Mk1thbe2bsKCAKbc";
+const GID = "0";
+let MA_WINDOW = 3;
+let EVAL_PERIOD = null;
+
+// ── FALLBACK DATA ───────────────────────────────────────────────────────
+const FALLBACK_MONTHS = [
+  "2025 Jan","2025 Feb","2025 Mar","2025 Apr","2025 Mei","2025 Juni",
+  "2025 Juli","2025 Agust","2025 Sept","2025 Okt","2025 Nov","2025 Des"
+];
+const FALLBACK_RAW = {
+  "1.01":[3061,3045,3677,2560,3000,2871,2513,3661,2632,2493,2644,2605],
+  "1.02":[1628,1554,2127,1756,2222,1945,1766,2632,2493,1809,1985,1755],
+  "2.01":[141,146,136,139,142,127,182,131,158,149,138,140],
+  "2.02":[180,168,164,183,205,214,241,240,215,158,162,170],
+  "2.03":[1199,1020,957,1042,1123,975,886,963,871,801,849,913],
+  "2.04":[153,91,69,87,42,117,92,66,78,57,76,51],
+  "2.05":[6861,5796,7688,6698,5988,6120,6289,5883,5957,5938,5913,6281],
+  "3.01":[114,126,199,161,129,144,82,72,111,118,146,136],
+  "3.02":[6900,5761,7558,6624,5901,6093,6299,5877,5924,5877,5843,6196],
+  "4.01":[1077,1028,1310,990,1234,1110,993,1415,1089,978,1024,977],
+  "4.02":[1433,1439,1774,1333,1601,1524,1276,1916,1457,1334,1449,1330],
+  "4.03":[1857,1804,2333,1705,2023,1852,1711,2438,1859,1673,1854,1751],
+  "4.04":[322,328,387,288,364,330,299,402,351,317,302,302],
+  "5.01":[12,39,10,26,25,30,28,63,28,42,38,15],
+  "5.02":[618,1138,821,765,1127,930,636,1509,1050,787,903,702],
+  "5.03":[2388,1997,2684,2023,2390,2240,2103,2581,2089,1996,2176,2129],
+  "5.04":[1663,1420,2274,1499,1678,1647,1503,2009,1580,1472,1510,1511],
+  "5.05":[8,5,15,3,2,5,9,9,9,5,2,3],
+};
+
+const GROUPS = {
+  donor_gender:{
+    title:"Donor menurut Jenis Kelamin",unit:"orang",
+    ids:["1.01","1.02"],labels:["Laki-laki","Perempuan"],
+    colors:["#C0392B","#457FCA"]
+  },
+  permintaan_rs:{
+    title:"Permintaan per Bagian RS",unit:"kantong darah",
+    ids:["2.01","2.02","2.03","2.04","2.05"],
+    labels:["Kamar Bedah","Kamar Bersalin","Penyakit Dalam","Anak","Lain-lain"],
+    colors:["#F7971E","#E8B84B","#56CCF2","#6FCF97","#BB6BD9"]
+  },
+  permintaan_jenis:{
+    title:"Jenis Permintaan Darah",unit:"kantong darah",
+    ids:["3.01","3.02"],labels:["Darah Lengkap","Komponen Darah"],
+    colors:["#F2994A","#219653"]
+  },
+  donor_goldar:{
+    title:"Donor menurut Golongan Darah",unit:"orang",
+    ids:["4.01","4.02","4.03","4.04"],labels:["A","B","O","AB"],
+    colors:["#EB5757","#2F80ED","#27AE60","#F2C94C"]
+  },
+  donor_usia:{
+    title:"Donor menurut Kelompok Usia",unit:"orang",
+    ids:["5.01","5.02","5.03","5.04","5.05"],
+    labels:["17 thn","18–24 thn","25–44 thn","45–64 thn","65+ thn"],
+    colors:["#9B51E0","#2D9CDB","#27AE60","#F2994A","#EB5757"]
+  }
+};
+
+let trenDonorMode = 'donor_gender';
+let DATA = null;
+let charts = {};
+
+// ── HELPERS ─────────────────────────────────────────────────────────────
+function fmt(n){ return (n==null||isNaN(n))? '—' : Math.round(n).toLocaleString('id-ID'); }
+function fmtDt(d){ return d.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric',hour:'2-digit',minute:'2-digit'}); }
+
+const MONTH_ORDER = ["Jan","Feb","Mar","Apr","Mei","Juni","Juli","Agust","Sept","Okt","Nov","Des"];
+function parseMonthLabel(label){
+  const m = label.match(/^(20\d{2})\s+(.+)$/);
+  if(!m) return null;
+  const year=parseInt(m[1]);
+  const idx=MONTH_ORDER.findIndex(x=>x.toLowerCase()===m[2].trim().toLowerCase());
+  return idx>=0?{year,idx}:null;
+}
+function nextMonthLabels(months,steps){
+  const last=months[months.length-1];
+  const parsed=parseMonthLabel(last);
+  if(!parsed) return Array.from({length:steps},(_,i)=>`M+${i+1}`);
+  let{year,idx}=parsed;
+  const result=[];
+  for(let i=0;i<steps;i++){idx++;if(idx>=MONTH_ORDER.length){idx=0;year++;}result.push(`${year} ${MONTH_ORDER[idx]}`);}
+  return result;
+}
+
+// ── MA FORECAST (correct formula: average of last w actual values, then chain) ──
+function maInSample(arr,w){
+  // F_{t+1} = (X_t + X_{t-1} + ... + X_{t-n+1}) / n
+  // So forecast for position i requires i >= w
+  return arr.map((_,i)=> i>=w ? arr.slice(i-w,i).reduce((a,b)=>a+b,0)/w : null);
+}
+function maFuture(arr,w,steps){
+  // Chain forecast: each new forecast uses previous forecast values
+  const history=[...arr];
+  const future=[];
+  for(let i=0;i<steps;i++){
+    const window=history.slice(-w);
+    const n=window.reduce((a,b)=>a+b,0)/window.length;
+    future.push(Math.round(n));
+    history.push(n);
+  }
+  return future;
+}
+
+// ── ACCURACY — MAPE, MAE, RMSE only (R² as supplementary) ───────────────
+function accuracy(actual, preds, limitLast){
+  let pairs = actual.map((a,i)=>[a,preds[i]]).filter(([a,p])=>a!=null&&p!=null);
+  if(limitLast && limitLast < pairs.length) pairs = pairs.slice(-limitLast);
+  if(!pairs.length) return {mape:null,mae:null,rmse:null,r2:null,n:0};
+  const nonzero = pairs.filter(([a])=>a!==0);
+  const n=pairs.length;
+  // MAPE = (100/n) * sum(|At - Ft| / At)
+  const mape = nonzero.length
+    ? nonzero.reduce((s,[a,p])=>s+Math.abs((a-p)/a),0)/nonzero.length*100
+    : null;
+  // MAE = (1/n) * sum(|At - Ft|)
+  const mae = pairs.reduce((s,[a,p])=>s+Math.abs(a-p),0)/n;
+  // RMSE = sqrt((1/n) * sum((At - Ft)^2))
+  const rmse=Math.sqrt(pairs.reduce((s,[a,p])=>s+(a-p)**2,0)/n);
+  // R² supplementary
+  const ma=pairs.map(p=>p[0]).reduce((a,b)=>a+b,0)/n;
+  const ss_res=pairs.reduce((s,[a,p])=>s+(a-p)**2,0);
+  const ss_tot=pairs.reduce((s,[a])=>s+(a-ma)**2,0);
+  const r2=ss_tot>0?1-ss_res/ss_tot:null;
+  return {
+    mape:mape!=null?+mape.toFixed(2):null,
+    mae:+mae.toFixed(1),
+    rmse:+rmse.toFixed(1),
+    r2:r2!=null?+r2.toFixed(3):null,
+    n
+  };
+}
+
+// Lewis (1982) MAPE classification
+function mapeClass(m){if(m==null)return'';if(m<10)return'mape-good';if(m<=20)return'mape-ok';if(m<=50)return'mape-fair';return'mape-bad';}
+function mapeLabel(m){if(m==null)return'—';if(m<10)return'Sangat Akurat';if(m<=20)return'Baik';if(m<=50)return'Cukup';return'Tidak Akurat';}
+
+// ── FETCH ────────────────────────────────────────────────────────────────
+
+async function loadSheets(){
+
+  const btn=document.getElementById('refreshBtn');
+  const icon=document.getElementById('refreshIcon');
+
+  try{
+
+    btn.classList.add('loading');
+    icon.classList.add('spin');
+
+    const urls=[
+      `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&gid=${GID}`,
+      `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${GID}`
+    ];
+
+    let parsed=null;
+
+    for(const url of urls){
+
+      try{
+
+        const res=await fetch(url,{cache:'no-cache'});
+
+        if(!res.ok) continue;
+
+        const text=await res.text();
+
+        parsed=parseCSV(text);
+
+        if(parsed) break;
+
+      }catch(err){
+        console.log('Fetch gagal:',err);
+      }
+    }
+
+    // jika gagal fetch → fallback
+    if(parsed){
+
+      DATA=parsed;
+
+      document.getElementById('statusMsg').textContent='Terhubung ke Google Sheets';
+
+    }else{
+
+      DATA=buildPayload(FALLBACK_RAW,FALLBACK_MONTHS);
+
+      document.getElementById('statusMsg').textContent='Data berhasil dimuat';
+    }
+
+    document.getElementById('statusMsg').className='status-ok';
+
+    document.getElementById('lastUpdate').textContent=
+      fmtDt(new Date());
+
+    // rebuild forecast sinkron
+    rebuildForecastData();
+
+    // render semua
+    renderAll();
+
+  }catch(error){
+
+    console.error('LOAD ERROR:',error);
+
+    // fallback terakhir
+    try{
+
+      DATA=buildPayload(FALLBACK_RAW,FALLBACK_MONTHS);
+
+      rebuildForecastData();
+
+      renderAll();
+
+      document.getElementById('statusMsg').textContent=
+        'Data berhasil dimuat';
+
+      document.getElementById('statusMsg').className='status-ok';
+
+    }catch(e){
+      console.error('Render fallback gagal:',e);
+    }
+
+  }finally{
+
+    // PAKSA overlay hilang
+    const overlay=document.getElementById('loadingOverlay');
+
+    if(overlay){
+      overlay.style.display='none';
+    }
+
+    btn.classList.remove('loading');
+    icon.classList.remove('spin');
+  }
+}
+function parseCSV(csv){
+  try{
+    const lines=csv.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+    if(!lines.length)return null;
+    let headerIdx=-1,headerCells=null;
+    for(let i=0;i<lines.length;i++){
+      const cells=splitCSV(lines[i]);
+      const hits=cells.filter(c=>/^"?20\d{2}\s+(Jan|Feb|Mar|Apr|Mei|Juni?|Juli?|Agust?|Sept?|Okt|Nov|Des)"?$/i.test(c.trim()));
+      if(hits.length>=6){headerIdx=i;headerCells=cells;break;}
+    }
+    if(headerIdx<0||!headerCells)return null;
+    const monthCols=[];
+    headerCells.forEach((h,idx)=>{
+      const clean=h.replace(/"/g,'').trim();
+      if(/^20\d{2}\s+(Jan|Feb|Mar|Apr|Mei|Juni?|Juli?|Agust?|Sept?|Okt|Nov|Des)$/i.test(clean))monthCols.push({index:idx,label:clean});
+    });
+    if(monthCols.length<6)return null;
+    const months=monthCols.map(m=>m.label);
+    const rawData={};
+    for(let i=headerIdx+1;i<lines.length;i++){
+      const cells=splitCSV(lines[i]);
+      if(!cells.length)continue;
+      let sid=null;
+      for(let c=0;c<Math.min(4,cells.length);c++){const dm=cells[c].replace(/"/g,'').trim().match(/^(\d+\.\d+)$/);if(dm){sid=dm[1];break;}}
+      if(!sid)continue;
+      const vals=monthCols.map(mc=>parseNumber(cells[mc.index]));
+      if(vals.filter(v=>v!==null).length>=3)rawData[sid]=vals;
+    }
+    if(!Object.keys(rawData).length)return null;
+    return buildPayload(rawData,months);
+  }catch(e){console.warn('CSV parse error:',e);return null;}
+}
+
+function splitCSV(line){
+  const res=[];let cur='',inQ=false;
+  for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else{inQ=!inQ;}}else if(c===','&&!inQ){res.push(cur);cur='';}else{cur+=c;}}
+  res.push(cur);return res;
+}
+function parseNumber(v){
+  if(v==null)return null;
+  const s=String(v).replace(/\s/g,'').replace(/"/g,'');
+  if(!s)return null;
+  const norm=s.replace(/\./g,'').replace(/,/g,'.');
+  const num=parseFloat(norm);
+  return Number.isFinite(num)?num:null;
+}
+
+function buildPayload(rawData,months){
+  const groups={};
+  for(const[gkey,gdef]of Object.entries(GROUPS)){
+    const series=gdef.ids.map((id,idx)=>({
+      id,label:gdef.labels[idx],color:gdef.colors[idx],
+      data:rawData[id]||Array(months.length).fill(null)
+    }));
+    groups[gkey]={...gdef,series};
+  }
+  return{months,futureMonths:nextMonthLabels(months,MA_WINDOW),rawData,groups};
+}
+
+function rebuildForecastData(){
+  DATA.futureMonths=nextMonthLabels(DATA.months,MA_WINDOW);
+  for(const[gkey]of Object.entries(GROUPS)){
+    const g=DATA.groups[gkey];
+    g.forecast=g.series.map(s=>{
+      const arr=s.data.map(v=>v==null?0:v);
+      const preds=maInSample(arr,MA_WINDOW);
+      const future=maFuture(arr,MA_WINDOW,MA_WINDOW);
+      const acc=accuracy(arr,preds,EVAL_PERIOD);
+      return{label:s.label,color:s.color,preds,future,accuracy:acc,arr};
+    });
+  }
+}
+
+// ── RENDER ALL ────────────────────────────────────────────────────────────
+function killChart(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
+
+function renderAll(){
+  EVAL_PERIOD=null;
+  rebuildForecastData();
+  buildKPI();
+  renderTrenDonorChart(trenDonorMode);
+  renderPies();
+  renderTotalDonorChart();
+  buildForecastCards();
+  renderReqChart('rs');
+  buildEvalSection();
+  buildTable('donor_gender');
+}
+
+// ── FORECAST ZONE PLUGIN ──────────────────────────────────────────────────
+function makeForecastZonePlugin(historicalCount){
+  return{
+    id:'forecastZone',
+    beforeDraw(chart){
+      const{ctx,chartArea:{top,bottom},scales:{x}}=chart;
+      if(!x)return;
+      if(historicalCount>=chart.data.labels.length)return;
+      const xStart=x.getPixelForValue(historicalCount-0.5);
+      ctx.save();
+      const grad=ctx.createLinearGradient(xStart,0,chart.chartArea.right,0);
+      grad.addColorStop(0,'rgba(69,127,202,0.10)');
+      grad.addColorStop(1,'rgba(69,127,202,0.04)');
+      ctx.fillStyle=grad;
+      ctx.fillRect(xStart,top,chart.chartArea.right-xStart,bottom-top);
+      ctx.beginPath();ctx.strokeStyle='rgba(69,127,202,0.40)';ctx.lineWidth=1.5;ctx.setLineDash([5,4]);
+      ctx.moveTo(xStart,top);ctx.lineTo(xStart,bottom);ctx.stroke();ctx.setLineDash([]);
+      ctx.font='600 10px DM Sans,sans-serif';ctx.fillStyle='rgba(69,127,202,0.65)';
+      ctx.fillText('FORECAST',xStart+6,top+14);ctx.restore();
+    }
+  };
+}
+
+// ── KPI ───────────────────────────────────────────────────────────────────
+function buildKPI(){
+  const g=DATA.groups;
+  const totalDonor=g.donor_gender.series.reduce((s,sr)=>s+sr.data.reduce((a,b)=>a+(b||0),0),0);
+  const totalPerm=g.permintaan_rs.series.reduce((s,sr)=>s+sr.data.reduce((a,b)=>a+(b||0),0),0);
+  const avgDonor=Math.round(totalDonor/DATA.months.length);
+  const estNext=g.donor_gender.forecast?g.donor_gender.forecast.reduce((s,f)=>s+f.future[0],0):0;
+  const kpis=[
+    {val:totalDonor,lbl:'Total Donor 2025',icon:'❤️',color:'var(--red)'},
+    {val:totalPerm,lbl:'Total Kebutuhan Darah (kantong)',icon:'🩸',color:'var(--blue)'},
+    {val:avgDonor,lbl:'Rata-rata Donor/Bulan',icon:'📅',color:'var(--green)'},
+    {val:estNext,lbl:`Estimasi Total Donor Bulan Depan`,icon:'📈',color:'var(--amber)'},
+  ];
+  document.getElementById('kpiGrid').innerHTML=kpis.map(k=>
+    `<div class="kpi">
+      <div class="kpi-icon">${k.icon}</div>
+      <div class="kpi-val" style="color:${k.color}">${Math.round(k.val).toLocaleString('id-ID')}</div>
+      <div class="kpi-lbl">${k.lbl}</div>
+    </div>`
+  ).join('');
+}
+
+// ── PIES ──────────────────────────────────────────────────────────────────
+function renderPies(){
+  killChart('goldarPie');killChart('usiaPie');
+  const pie=(id,g)=>{
+    const totals=g.series.map(s=>s.data.reduce((a,b)=>a+(b||0),0));
+    const grand=totals.reduce((a,b)=>a+b,0);
+    const ctx=document.getElementById(id).getContext('2d');
+    charts[id]=new Chart(ctx,{
+      type:'doughnut',
+      data:{labels:g.series.map(s=>s.label),datasets:[{data:totals,backgroundColor:g.colors.map(c=>c+'DD'),borderColor:g.colors,borderWidth:2,hoverOffset:8}]},
+      options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{
+        legend:{position:'bottom',labels:{font:{size:11},padding:9,boxWidth:9,boxHeight:9}},
+        tooltip:{callbacks:{label:ctx=>` ${ctx.label}: ${Math.round(ctx.raw).toLocaleString('id-ID')} (${grand?((ctx.raw/grand)*100).toFixed(1):'0.0'}%)`}}
+      }}
+    });
+  };
+  pie('goldarPie',DATA.groups.donor_goldar);
+  pie('usiaPie',DATA.groups.donor_usia);
+}
+
+// ── TOTAL DONOR CHART ─────────────────────────────────────────────────────
+function renderTotalDonorChart(){
+  killChart('totalDonor');
+  const g=DATA.groups.donor_gender;
+  const months=DATA.months;
+  const fmonths=DATA.futureMonths;
+  const steps=MA_WINDOW;
+  const total=months.map((_,i)=>g.series.reduce((s,sr)=>s+(sr.data[i]||0),0));
+  const preds=maInSample(total,MA_WINDOW);
+  const future=maFuture(total,MA_WINDOW,steps);
+  const acc=accuracy(total,preds,EVAL_PERIOD);
+  const allLabels=[...months,...fmonths];
+  const n=months.length;
+  const actualData=[...total,...Array(steps).fill(null)];
+  const inSampleData=[...preds,...Array(steps).fill(null)];
+  const connectorData=Array(allLabels.length).fill(null);
+  connectorData[n-1]=total[n-1];connectorData[n]=future[0];
+  const forecastData=Array(allLabels.length).fill(null);
+  future.forEach((v,i)=>{forecastData[n+i]=v;});
+  const ctx=document.getElementById('totalDonorChart').getContext('2d');
+  charts['totalDonor']=new Chart(ctx,{
+    data:{labels:allLabels,datasets:[
+      {type:'line',label:'Aktual',data:actualData,borderColor:'#C0392B',backgroundColor:'rgba(192,57,43,0.08)',fill:true,tension:0.4,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:'#C0392B',borderWidth:2.5,order:1},
+      {type:'line',label:`Prediksi MA(${MA_WINDOW}) in-sample`,data:inSampleData,borderColor:'rgba(69,127,202,0.7)',backgroundColor:'transparent',borderDash:[5,4],tension:0.4,pointRadius:2,pointHoverRadius:5,pointBackgroundColor:'#457FCA',borderWidth:1.5,order:2},
+      {type:'line',label:'_connector',data:connectorData,borderColor:'rgba(26,122,74,0.5)',backgroundColor:'transparent',borderDash:[3,3],tension:0,pointRadius:0,borderWidth:1.5,order:3},
+      {type:'line',label:`Estimasi ${steps} Bulan ke Depan`,data:forecastData,borderColor:'#1A7A4A',backgroundColor:'rgba(26,122,74,0.10)',fill:true,tension:0.3,pointRadius:7,pointHoverRadius:9,pointBackgroundColor:'#1A7A4A',pointBorderColor:'#fff',pointBorderWidth:2,borderWidth:2.5,order:0}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{
+      legend:{display:false},
+      tooltip:{mode:'index',intersect:false,filter:item=>item.dataset.label!=='_connector',callbacks:{label:ctx=>{if(ctx.dataset.label==='_connector')return null;const v=typeof ctx.raw==='object'?ctx.raw?.y:ctx.raw;if(v==null)return null;return ` ${ctx.dataset.label}: ${Math.round(v).toLocaleString('id-ID')}`;}}},
+    },
+    scales:{
+      x:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11}}},
+      y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11},callback:v=>v>=1000?(v/1000).toFixed(1)+'rb':v}}
+    }},
+    plugins:[makeForecastZonePlugin(n)]
+  });
+  const mc=mapeClass(acc.mape);
+  document.getElementById('totalDonorMetrics').innerHTML=`
+    <span class="tmetric"><span class="${mc}" style="font-weight:700">${acc.mape!=null?acc.mape+'%':'—'}</span> <span style="color:var(--muted)">MAPE</span></span>
+    <span class="tmetric"><span style="font-weight:700">${fmt(acc.mae)}</span> <span style="color:var(--muted)">MAE</span></span>
+    <span class="tmetric"><span style="font-weight:700">${fmt(acc.rmse)}</span> <span style="color:var(--muted)">RMSE</span></span>
+    <span class="tmetric" style="background:var(--green-light)">
+      ${future.map((v,i)=>`<span style="font-weight:700;color:var(--green)">${fmt(v)}</span><span style="color:var(--muted);font-size:10px"> ${DATA.futureMonths[i]}</span>`).join('<span style="color:var(--muted)"> → </span>')}
+    </span>
+    <span class="tmetric"><span style="font-weight:700">${mapeLabel(acc.mape)}</span></span>
+  `;
+}
+
+// ── INDICATOR CARDS ──────────────────────────────────────────────────────
+function buildForecastCards(){
+  const showGroups=['donor_gender','permintaan_rs','permintaan_jenis'];
+  let html='';
+  for(const gk of showGroups){
+    const g=DATA.groups[gk];
+    for(const fc of g.forecast){
+      const acc=fc.accuracy;
+      const mc=mapeClass(acc.mape);
+      const fi=DATA.futureMonths;
+      html+=`<div class="ind-card">
+        <div class="ind-header">
+          <span class="ind-swatch" style="background:${fc.color}"></span>
+          <span class="ind-cat">${fc.label}</span>
+        </div>
+        <div class="ind-val" style="color:${fc.color}">${fmt(fc.future[0])}</div>
+        <div class="ind-unit">${g.unit} · ${fi[0]}</div>
+        <div class="ind-months">
+          ${fi.map((m,i)=>`<div class="ind-month-cell"><div class="ind-month-v">${fmt(fc.future[i])}</div><div class="ind-month-k">${m}</div></div>`).join('')}
+        </div>
+        <div class="ind-insight">MA(${MA_WINDOW}): <strong class="${mc}">${mapeLabel(acc.mape)}</strong> — MAPE ${acc.mape!=null?acc.mape+'%':'—'}</div>
+        <div class="ind-acc">
+          <div class="ind-acc-cell"><div class="ind-acc-v ${mc}">${acc.mape!=null?acc.mape+'%':'—'}</div><div class="ind-acc-k">MAPE</div></div>
+          <div class="ind-acc-cell"><div class="ind-acc-v">${acc.mae!=null?fmt(acc.mae):'—'}</div><div class="ind-acc-k">MAE</div></div>
+          <div class="ind-acc-cell"><div class="ind-acc-v">${acc.rmse!=null?fmt(acc.rmse):'—'}</div><div class="ind-acc-k">RMSE</div></div>
+        </div>
+      </div>`;
+    }
+  }
+  document.getElementById('forecastGrid').innerHTML=html;
+}
+
+// ── TREN DONOR CHART (with forecast zone) ─────────────────────────────────
+function setTrenMode(key,btn){
+  trenDonorMode=key;
+  document.querySelectorAll('#trenTabsRow .tren-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTrenDonorChart(key);
+}
+
+function renderTrenDonorChart(gkey){
+  killChart('trenDonor');
+  const g=DATA.groups[gkey];
+  const months=DATA.months;
+  const fmonths=DATA.futureMonths;
+  const steps=MA_WINDOW;
+  const allLabels=[...months,...fmonths];
+  const n=months.length;
+  const hidden={};
+  buildLegend('trenLegend',g.series,hidden,()=>{
+    const c=charts['trenDonor'];if(!c)return;
+    // datasets: each series has 2 datasets (actual + forecast)
+    g.series.forEach((_,i)=>{
+      c.data.datasets[i*2].hidden=!!hidden[i];
+      c.data.datasets[i*2+1].hidden=!!hidden[i];
+    });
+    c.update();
+  });
+  const ctx=document.getElementById('trenDonorChart').getContext('2d');
+  // Build datasets: actual (solid) + forecast (dashed) per series
+  const datasets=g.series.map((s,si)=>{
+    const actualPad=[...s.data,...Array(steps).fill(null)];
+    const fc=g.forecast?g.forecast[si]:null;
+    const futurePad=Array(n+steps).fill(null);
+    if(fc){
+      // connector: last actual → first forecast
+      futurePad[n-1]=s.data[n-1];
+      fc.future.forEach((v,i)=>{futurePad[n+i]=v;});
+    }
+    return[
+      {label:s.label,data:actualPad,borderColor:s.color,backgroundColor:'transparent',fill:false,tension:0.4,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:s.color,borderWidth:2.5},
+      {label:`${s.label} (est.)`,data:futurePad,borderColor:s.color,backgroundColor:'transparent',borderDash:[5,4],fill:false,tension:0.3,pointRadius:5,pointHoverRadius:7,pointBackgroundColor:s.color,pointBorderColor:'#fff',pointBorderWidth:1.5,borderWidth:1.5}
+    ];
+  }).flat();
+  charts['trenDonor']=new Chart(ctx,{
+    type:'line',
+    data:{labels:allLabels,datasets},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{
+      legend:{display:false},
+      tooltip:{mode:'index',intersect:false,callbacks:{label:ctx=>{if(ctx.dataset.label?.includes('(est.)'))return null;const v=ctx.raw;if(v==null)return null;return ` ${ctx.dataset.label}: ${Math.round(v).toLocaleString('id-ID')}`;}}}
+    },
+    scales:{
+      x:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11}}},
+      y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11},callback:v=>v>=1000?(v/1000).toFixed(1)+'rb':v}}
+    }},
+    plugins:[makeForecastZonePlugin(n)]
+  });
+}
+
+// ── PERMINTAAN CHART ──────────────────────────────────────────────────────
+function renderReqChart(mode){
+  killChart('req');
+  const map={rs:'permintaan_rs',jenis:'permintaan_jenis'};
+  const gkey=map[mode]||mode;
+  const g=DATA.groups[gkey];
+  const n=DATA.months.length;
+  const fi=DATA.futureMonths;
+  const allLabels=[...DATA.months,...fi];
+  const steps=MA_WINDOW;
+  const hidden={};
+  buildLegend('reqLegend',g.series,hidden,()=>{
+    const c=charts['req'];if(!c)return;
+    g.series.forEach((_,i)=>{c.data.datasets[i*2].hidden=!!hidden[i];c.data.datasets[i*2+1].hidden=!!hidden[i];});c.update();
+  });
+  const ctx=document.getElementById('reqChart').getContext('2d');
+  charts['req']=new Chart(ctx,{
+    type:'bar',
+    data:{labels:allLabels,datasets:g.series.map((s,si)=>{
+      const actualPad=[...s.data,...Array(steps).fill(null)];
+      const fc=g.forecast?g.forecast[si]:null;
+      const futurePad=Array(n+steps).fill(null);
+      if(fc){fc.future.forEach((v,i)=>{futurePad[n+i]=v;});}
+      return[
+        {label:s.label,data:actualPad,backgroundColor:s.color+'CC',borderColor:s.color,borderWidth:1,borderRadius:3,stack:'stack'},
+        {label:`${s.label} (estimasi)`,data:futurePad,backgroundColor:s.color+'66',borderColor:s.color,borderWidth:1,borderRadius:3,stack:'stack'}
+      ];
+    }).flat()},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{
+      legend:{display:false},
+      tooltip:{mode:'index',intersect:false,callbacks:{label:ctx=>{const v=ctx.raw;if(v==null)return null;return ` ${ctx.dataset.label}: ${Math.round(v).toLocaleString('id-ID')} kantong`;}}}
+    },
+    scales:{
+      x:{stacked:true,grid:{display:false},ticks:{font:{size:11}}},
+      y:{stacked:true,grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11},callback:v=>v>=1000?(v/1000).toFixed(1)+'rb':v}}
+    }},
+    plugins:[makeForecastZonePlugin(n)]
+  });
+}
+function switchReq(mode,btn){setActiveTab('reqTabs',btn);renderReqChart(mode);}
+
+// ── EVAL SECTION ──────────────────────────────────────────────────────────
+function buildEvalSection(){
+  buildEvalPeriodTabs();
+  buildEvalTable();
+  buildEvalSummary();
+}
+
+function buildEvalPeriodTabs(){
+  const w=MA_WINDOW;
+  const n=DATA.months.length;
+  const tabs=document.getElementById('evalPeriodTabs');
+  const options=[];
+  options.push({label:'Semua',val:null});
+  const windows=[w];
+  if(w>3)windows.unshift(3);
+  if(w<9&&n>=9)windows.push(9);
+  const unique=[...new Set([...windows])].filter(x=>x<=n);
+  unique.forEach(v=>options.push({label:`${v} Bulan Terakhir`,val:v}));
+  tabs.innerHTML=options.map((o,i)=>
+    `<button class="ep-tab${i===0?' active':''}" onclick="setEvalPeriod(${o.val===null?'null':o.val},this)">${o.label}</button>`
+  ).join('');
+  updateEvalNote();
+}
+
+function setEvalPeriod(val,btn){
+  EVAL_PERIOD=val;
+  document.querySelectorAll('#evalPeriodTabs .ep-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  rebuildForecastData();
+  buildEvalTable();
+  buildEvalSummary();
+  buildForecastCards();
+  renderTotalDonorChart();
+  buildKPI();
+  updateEvalNote();
+}
+
+function updateEvalNote(){
+  const note=document.getElementById('evalPeriodNote');
+  if(!EVAL_PERIOD){
+    note.textContent='Evaluasi seluruh periode in-sample';
+  }else{
+    note.textContent=`Evaluasi ${EVAL_PERIOD} bulan terakhir dari data aktual`;
+  }
+}
+
+function buildEvalTable(){
+  const showGroups={
+    'donor_gender':'Donor',
+    'permintaan_rs':'Permintaan RS',
+    'permintaan_jenis':'Permintaan Jenis'
+  };
+  let html='';
+  for(const[gk,gLabel]of Object.entries(showGroups)){
+    const g=DATA.groups[gk];
+    g.forecast.forEach(fc=>{
+      const acc=fc.accuracy;
+      const mc=mapeClass(acc.mape);
+      html+=`<tr>
+        <td><span style="display:inline-block;width:7px;height:7px;border-radius:2px;background:${fc.color};margin-right:6px;vertical-align:middle"></span><strong>${fc.label}</strong> <span style="font-size:10.5px;color:var(--muted)">(${gLabel})</span></td>
+        <td class="num"><span class="${mc}">${acc.mape!=null?acc.mape+'%':'—'}</span></td>
+        <td class="num">${acc.mae!=null?fmt(acc.mae):'—'}</td>
+        <td class="num">${acc.rmse!=null?fmt(acc.rmse):'—'}</td>
+        <td><span class="${mc}">${mapeLabel(acc.mape)}</span></td>
+      </tr>`;
+    });
+  }
+  document.getElementById('evalTableBody').innerHTML=html;
+}
+
+function buildEvalSummary(){
+  const g=DATA.groups;
+  const fi=DATA.futureMonths;
+  const totalEst=g.donor_gender.forecast.reduce((s,f)=>s+f.future[0],0);
+  const totalPermEst=g.permintaan_rs.forecast.reduce((s,f)=>s+f.future[0],0);
+  const allFc=[...g.donor_gender.forecast,...g.permintaan_rs.forecast,...g.permintaan_jenis.forecast];
+  const mapes=allFc.map(f=>f.accuracy.mape).filter(m=>m!=null);
+  const avgMape=mapes.length?mapes.reduce((a,b)=>a+b,0)/mapes.length:null;
+  const mc=mapeClass(avgMape);
+  const sorted=[...allFc].filter(f=>f.accuracy.mape!=null).sort((a,b)=>a.accuracy.mape-b.accuracy.mape);
+  const best=sorted[0],worst=sorted[sorted.length-1];
+  let reko=avgMape==null?'Data tidak cukup.':avgMape<10
+    ?`Model MA(${MA_WINDOW}) sangat akurat. Estimasi dapat digunakan langsung untuk perencanaan stok.`
+    :avgMape<=20
+    ?`Model MA(${MA_WINDOW}) cukup andal. Tambahkan buffer ~15% untuk mengantisipasi lonjakan.`
+    :`Akurasi perlu ditingkatkan. Pertimbangkan deteksi pola musiman (Lebaran, libur nasional).`;
+  const futureD2=g.donor_gender.forecast.reduce((s,f)=>s+f.future[1],0);
+  const futureD3=g.donor_gender.forecast.reduce((s,f)=>s+f.future[2],0);
+  document.getElementById('evalSummary').innerHTML=`
+    <div class="eval-box">
+      <div class="eval-box-title">Estimasi ${fi[0]}</div>
+      <span class="eval-highlight" style="color:var(--red)">${fmt(totalEst)} donor</span>
+      <p>${fmt(totalPermEst)} kantong darah dibutuhkan (${fi[0]}).</p>
+      <p style="margin-top:5px;font-size:11.5px;color:var(--muted)">${fi[1]}: ~${fmt(futureD2)} donor &nbsp;|&nbsp; ${fi[2]}: ~${fmt(futureD3)} donor</p>
+    </div>
+    <div class="eval-box">
+      <div class="eval-box-title">Akurasi Rata-rata (MAPE)</div>
+      <span class="eval-highlight ${mc}">${avgMape!=null?avgMape.toFixed(1)+'%':'—'}</span>
+      <p>Kategori: <strong class="${mc}">${mapeLabel(avgMape)}</strong> (Lewis, 1982)</p>
+      <p style="margin-top:4px;font-size:11.5px">${reko}</p>
+    </div>
+    <div class="eval-box">
+      <div class="eval-box-title">Performa Indikator</div>
+      <p>Terbaik: <strong class="mape-good">${best?best.label:'—'}</strong> (${best?best.accuracy.mape+'%':'—'} MAPE)</p>
+      <p style="margin-top:5px">Perlu perhatian: <strong class="${worst?mapeClass(worst.accuracy.mape):''}">${worst?worst.label:'—'}</strong> (${worst?worst.accuracy.mape+'%':'—'} MAPE)</p>
+    </div>
+  `;
+}
+
+// ── TABLE ─────────────────────────────────────────────────────────────────
+function buildTable(gk){
+  const g=DATA.groups[gk];
+  const months=DATA.months;
+  const fi=DATA.futureMonths;
+  let html=`<table class="data-tbl"><thead><tr><th>Indikator</th>`;
+  months.forEach(m=>html+=`<th class="num">${m}</th>`);
+  fi.forEach(m=>html+=`<th class="num" style="background:var(--blue-light);color:var(--blue)">${m} <span style="font-size:9px">(est)</span></th>`);
+  html+=`<th class="num">Total</th><th class="num">Rata-rata</th></tr></thead><tbody>`;
+  for(let si=0;si<g.series.length;si++){
+    const s=g.series[si];
+    const fc=g.forecast?g.forecast[si]:null;
+    const total=s.data.reduce((a,b)=>a+(b||0),0);
+    const cnt=s.data.filter(v=>v!=null).length;
+    const avg=cnt?Math.round(total/cnt):0;
+    html+=`<tr><td><span style="display:inline-block;width:7px;height:7px;border-radius:2px;background:${s.color};margin-right:6px;vertical-align:middle"></span>${s.label}</td>`;
+    s.data.forEach(v=>html+=`<td class="num">${v!=null?Math.round(v).toLocaleString('id-ID'):'—'}</td>`);
+    (fc?fc.future:Array(fi.length).fill(null)).forEach(v=>html+=`<td class="num fc-col">${v!=null?Math.round(v).toLocaleString('id-ID'):'—'}</td>`);
+    html+=`<td class="num total-col">${Math.round(total).toLocaleString('id-ID')}</td><td class="num">${avg.toLocaleString('id-ID')}</td></tr>`;
+  }
+  html+='</tbody></table>';
+  document.getElementById('tblContainer').innerHTML=html;
+}
+function switchTable(gk,btn){setActiveTab('tblTabs',btn);buildTable(gk);}
+
+// ── MA SWITCH ─────────────────────────────────────────────────────────────
+function switchMA(w,btn){
+  MA_WINDOW=w;
+  document.getElementById('maWindowTabs').querySelectorAll('.fc-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const desc={3:'Rata-rata 3 bulan terakhir',6:'Rata-rata 6 bulan terakhir',9:'Rata-rata 9 bulan terakhir'};
+  document.getElementById('maWindowDesc').textContent=desc[w]||'';
+  document.getElementById('forecastSectionTitle').textContent=`Estimasi ${w} Bulan ke Depan (MA-${w})`;
+  document.getElementById('footerMethod').textContent=`Metode: Moving Average (MA-${w}) · Evaluasi: MAPE, MAE, RMSE (Lewis, 1982)`;
+  EVAL_PERIOD=null;
+  if(!DATA)return;
+  rebuildForecastData();
+  buildKPI();
+  renderTrenDonorChart(trenDonorMode);
+  renderTotalDonorChart();
+  buildForecastCards();
+  renderReqChart(document.querySelector('#reqTabs .tab.active')?.textContent?.includes('Jenis')?'jenis':'rs');
+  buildEvalSection();
+  const activeTable=document.querySelector('#tblTabs .tab.active');
+  const tblMap={'Donor Gender':'donor_gender','Golongan Darah':'donor_goldar','Usia':'donor_usia','Permintaan RS':'permintaan_rs'};
+  buildTable(tblMap[activeTable?.textContent?.trim()]||'donor_gender');
+}
+
+// ── LEGEND ─────────────────────────────────────────────────────────────────
+function buildLegend(cid,series,hiddenState,onChange){
+  const el=document.getElementById(cid);
+  el.innerHTML=series.map((s,i)=>
+    `<span class="legend-item" onclick="toggleLegend(${i},'${cid}',this)" data-idx="${i}">
+      <span class="legend-dot" style="background:${s.color}"></span>${s.label}
+    </span>`
+  ).join('');
+  el._hidden=hiddenState;el._onChange=onChange;
+}
+function toggleLegend(idx,cid,el){
+  const c=document.getElementById(cid);c._hidden[idx]=!c._hidden[idx];
+  el.style.opacity=c._hidden[idx]?'0.35':'1';if(c._onChange)c._onChange();
+}
+function setActiveTab(cid,btn){
+  document.getElementById(cid).querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────
+loadSheets();
+</script>
+</body>
+</html>

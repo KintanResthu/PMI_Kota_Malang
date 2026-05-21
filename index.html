@@ -271,19 +271,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       </div>
       <span class="model-desc" id="modelDesc">Moving Average 3 bulan — prediksi 3 bulan ke depan berdasarkan rata-rata 3 bulan terakhir</span>
     </div>
-
-    <!-- Grafik total donor aktual vs prediksi -->
-    <div class="card" style="margin-bottom:1rem">
-      <p class="card-title">Total Donor: Aktual vs Prediksi</p>
-      <div class="legend" id="totalDonorLegend">
-        <span class="legend-item"><span class="legend-dot" style="background:#C0392B"></span>Aktual</span>
-        <span class="legend-item"><span class="legend-dot" style="background:#457FCA"></span>In-sample MA</span>
-        <span class="legend-item"><span class="legend-dot" style="background:#1A7A4A;border-radius:50%"></span>Prediksi ke depan</span>
-      </div>
-      <div class="chart-wrap" style="height:260px"><canvas id="totalDonorChart"></canvas></div>
-      <div class="trend-metrics" id="totalDonorMetrics"></div>
-    </div>
-
+    
     <!-- Tren donor per kategori -->
     <div class="section-hd" style="margin-bottom:.75rem">
       <div class="section-title" style="font-size:.95rem;color:var(--muted)">Tren Jumlah Donor per Bulan</div>
@@ -352,6 +340,19 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
         <div class="section-sub">Perbandingan hasil prediksi dengan data aktual 2025 — MAPE = (1/n)Σ|Aₜ−Fₜ|/Aₜ × 100% · Referensi: Lewis (1982)</div>
       </div>
     </div>
+
+    <!-- Grafik total donor aktual vs prediksi -->
+    <div class="card" style="margin-bottom:1rem">
+      <p class="card-title">Total Donor: Aktual vs Prediksi</p>
+      <div class="legend" id="totalDonorLegend">
+        <span class="legend-item"><span class="legend-dot" style="background:#C0392B"></span>Aktual</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#457FCA"></span>In-sample MA</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#1A7A4A;border-radius:50%"></span>Prediksi ke depan</span>
+      </div>
+      <div class="chart-wrap" style="height:260px"><canvas id="totalDonorChart"></canvas></div>
+      <div class="trend-metrics" id="totalDonorMetrics"></div>
+    </div>
+
     <div class="eval-card">
       <div class="eval-header">
         <div class="eval-title" id="evalModelTitle">Evaluasi Model MA-3</div>

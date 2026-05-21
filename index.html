@@ -472,6 +472,7 @@ function nextMonthLabels(steps){
 
 // ── MA MATH ───────────────────────────────────────────────────────────────
 function maInSample(arr,w){
+  // i=w: prediksi untuk data[w] menggunakan data[0..w-1]
   return arr.map((_,i)=> i>=w ? arr.slice(i-w,i).reduce((a,b)=>a+b,0)/w : null);
 }
 function maFuture(arr,w,steps){
@@ -698,16 +699,19 @@ function renderTotalDonorChart(){
 // ── FORECAST MONTH TABS ───────────────────────────────────────────────────
 function buildFcMonthTabs(){
   const fm = DATA.futureMonths;
+  // Pastikan FC_MONTH_IDX tidak melebihi jumlah bulan prediksi
   if(FC_MONTH_IDX >= fm.length) FC_MONTH_IDX = 0;
 
-  ['fcMonthTabs','fcMonthTabs2'].forEach((id,i) => {
+  ['fcMonthTabs','fcMonthTabs2'].forEach((id, i) => {
     const descId = i===0 ? 'fcMonthDesc' : 'fcMonthDesc2';
     const container = document.getElementById(id);
     if(!container) return;
+    // Buat tab sesuai jumlah bulan prediksi MA_WINDOW (3, 6, atau 9 tab)
     container.innerHTML = fm.map((m, j) =>
       `<button class="model-tab${j===FC_MONTH_IDX?' active':''}" onclick="switchFcMonth(${j},this,'${id}')">${m}</button>`
     ).join('');
-    document.getElementById(descId).textContent =
+    const descEl = document.getElementById(descId);
+    if(descEl) descEl.textContent =
       `Menampilkan estimasi untuk ${fm[FC_MONTH_IDX]} berdasarkan MA-${MA_WINDOW}`;
   });
 }
@@ -720,7 +724,8 @@ function switchFcMonth(idx, btn, tabsId){
     if(!c) return;
     c.querySelectorAll('.model-tab').forEach((b,j)=>b.classList.toggle('active', j===idx));
     const descId = i===0 ? 'fcMonthDesc' : 'fcMonthDesc2';
-    document.getElementById(descId).textContent =
+    const descEl = document.getElementById(descId);
+    if(descEl) descEl.textContent =
       `Menampilkan estimasi untuk ${DATA.futureMonths[idx]} berdasarkan MA-${MA_WINDOW}`;
   });
   buildForecastDonorCards();
@@ -730,7 +735,7 @@ function switchFcMonth(idx, btn, tabsId){
 // ── FORECAST CARDS: DONOR ────────────────────────────────────────────────
 function buildForecastDonorCards(){
   const fm = DATA.futureMonths;
-  const idx = FC_MONTH_IDX;
+  const idx = Math.min(FC_MONTH_IDX, fm.length - 1);
   const selectedMonth = fm[idx];
   let html = '';
   for(const fc of DATA.groups.donor_gender.forecast){
@@ -745,7 +750,7 @@ function buildForecastDonorCards(){
 // ── FORECAST CARDS: PERMINTAAN ───────────────────────────────────────────
 function buildForecastReqCards(){
   const fm = DATA.futureMonths;
-  const idx = FC_MONTH_IDX;
+  const idx = Math.min(FC_MONTH_IDX, fm.length - 1);
   const selectedMonth = fm[idx];
   let html = '';
   for(const gk of ['permintaan_rs','permintaan_jenis']){
@@ -867,8 +872,8 @@ function switchModel(w,btn){
   };
   document.getElementById('modelDesc').textContent=descs[w]||'';
   document.getElementById('fcSectionTitle').textContent=`Tren Donor 2025 & Estimasi ${w} Bulan ke Depan (MA-${w})`;
-  document.getElementById('fcWindowSpan').textContent=w;
   document.getElementById('footerMethod').textContent=`Metode: Moving Average (MA-${w}) · Evaluasi: MAPE, MAE, RMSE · Lewis (1982) · Hyndman & Athanasopoulos (2021)`;
+  FC_MONTH_IDX=0;
   renderAll();
 }
 

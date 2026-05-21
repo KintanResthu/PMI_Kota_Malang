@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>PMI Kota Malang — Sistem Analisis dan Prediksi Donor Darah</title>
+<title>PMI Kota Malang — Sistem Analisis dan Forecasting Donor Darah</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
@@ -195,8 +195,8 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
   <div class="site-header">
     <div class="header-top">
       <div class="header-text">
-        <h1>Sistem Analisis dan Prediksi Donor Darah<br><span>PMI Kota Malang</span></h1>
-        <p>Pemantauan tren donor darah dan prediksi kebutuhan darah menggunakan metode Moving Average berdasarkan data PMI Kota Malang.</p>
+        <h1>Sistem Analisis dan Forecasting Donor Darah<br><span>PMI Kota Malang</span></h1>
+        <p>Pemantauan tren donor darah dan peramalan kebutuhan darah menggunakan metode Moving Average berdasarkan data PMI Kota Malang.</p>
       </div>
     </div>
     <div class="header-meta">
@@ -258,7 +258,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
         <div class="section-title" id="fcSectionTitle">Tren Donor 2025 &amp; Estimasi 3 Bulan ke Depan (MA-3)</div>
         <div class="section-sub">Data Donor Darah — satuan: pendonor (orang) </div>
       </div>
-      <span class="fc-zone-badge"><span class="stripe"></span> Zona biru = prediksi</span>
+      <span class="fc-zone-badge"><span class="stripe"></span> Zona biru = forecasting</span>
     </div>
 
     <!-- Model selector -->
@@ -269,7 +269,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
         <button class="model-tab" onclick="switchModel(6,this)">MA-6</button>
         <button class="model-tab" onclick="switchModel(9,this)">MA-9</button>
       </div>
-      <span class="model-desc" id="modelDesc">Moving Average 3 bulan — prediksi 3 bulan ke depan berdasarkan rata-rata 3 bulan terakhir</span>
+      <span class="model-desc" id="modelDesc">Moving Average 3 bulan — peramalan 3 bulan ke depan berdasarkan rata-rata 3 bulan terakhir</span>
     </div>
     
     <!-- Tren donor per kategori -->
@@ -288,7 +288,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
 
     <!-- Selector bulan & kartu prediksi donor -->
     <div class="fc-month-bar">
-      <span class="model-bar-label">Prediksi donor bulan:</span>
+      <span class="model-bar-label">Forecasting donor bulan:</span>
       <div class="model-tabs" id="fcMonthTabs"></div>
       <span style="font-size:12px;color:var(--muted)" id="fcMonthDesc"></span>
     </div>
@@ -322,7 +322,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
 
     <!-- Kartu prediksi permintaan — selector bulan sama, re-render terpisah -->
     <div class="fc-month-bar">
-      <span class="model-bar-label">Prediksi permintaan bulan:</span>
+      <span class="model-bar-label">Peramalan permintaan bulan:</span>
       <div class="model-tabs" id="fcMonthTabs2"></div>
       <span style="font-size:12px;color:var(--muted)" id="fcMonthDesc2"></span>
     </div>
@@ -336,8 +336,8 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     <div class="section-hd">
       <div>
         <div class="section-label">⑤ Evaluasi &amp; Data Lengkap</div>
-        <div class="section-title">Evaluasi Akurasi Model Prediksi</div>
-        <div class="section-sub">Perbandingan hasil prediksi dengan data aktual 2025 — Lewis (1982)</div>
+        <div class="section-title">Evaluasi Akurasi Model Peramalan</div>
+        <div class="section-sub">Perbandingan hasil peramalan dengan data aktual 2025 — Lewis (1982)</div>
       </div>
     </div>
 
@@ -347,7 +347,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       <div class="legend" id="totalDonorLegend">
         <span class="legend-item"><span class="legend-dot" style="background:#C0392B"></span>Aktual</span>
         <span class="legend-item"><span class="legend-dot" style="background:#457FCA"></span>In-sample MA</span>
-        <span class="legend-item"><span class="legend-dot" style="background:#1A7A4A;border-radius:50%"></span>Prediksi ke depan</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#1A7A4A;border-radius:50%"></span>Peramalan ke depan</span>
       </div>
       <div class="chart-wrap" style="height:260px"><canvas id="totalDonorChart"></canvas></div>
       <div class="trend-metrics" id="totalDonorMetrics"></div>
@@ -356,7 +356,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     <div class="eval-card">
       <div class="eval-header">
         <div class="eval-title" id="evalModelTitle">Evaluasi Model MA-3</div>
-        <div class="eval-desc">Metrik akurasi dihitung dari selisih antara prediksi in-sample vs data aktual sepanjang 2025. Referensi: <strong>Lewis (1982)</strong> untuk klasifikasi MAPE, <strong>Hyndman &amp; Athanasopoulos (2021)</strong> untuk metrik MAPE/MAE/RMSE.</div>
+        <div class="eval-desc">Metrik akurasi dihitung dari selisih antara peramalan in-sample vs data aktual sepanjang 2025. Referensi: <strong>Lewis (1982)</strong> untuk klasifikasi MAPE, <strong>Hyndman &amp; Athanasopoulos (2021)</strong> untuk metrik MAPE/MAE/RMSE.</div>
       </div>
 
       <div class="mape-legend">
@@ -391,8 +391,8 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     <div style="margin-top:1.5rem">
       <div class="section-hd" style="margin-bottom:.85rem">
         <div>
-          <div class="section-title" style="font-size:1rem">Tabel Data &amp; Prediksi Lengkap</div>
-          <div class="section-sub">Kolom biru = nilai prediksi · Digunakan sebagai acuan perencanaan stok darah PMI</div>
+          <div class="section-title" style="font-size:1rem">Tabel Data &amp; Peramalan Lengkap</div>
+          <div class="section-sub">Kolom biru = nilai peramalan · Digunakan sebagai acuan perencanaan stok darah PMI</div>
         </div>
         <div class="tabs" id="tblTabs">
           <button class="tab active" onclick="switchTable('donor_gender',this)">Gender</button>

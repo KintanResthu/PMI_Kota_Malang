@@ -149,12 +149,14 @@ a{color:var(--red);text-decoration:none}
 .eval-highlight{font-family:'DM Serif Display',serif;font-size:1.4rem;line-height:1.1;display:block;margin-bottom:3px}
 
 /* TABLE */
-.tbl-wrap{overflow-x:auto}
-table.data-tbl{width:100%;border-collapse:collapse;font-size:12px}
-table.data-tbl th{text-align:left;padding:7px 9px;font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;border-bottom:1.5px solid var(--border);white-space:nowrap}
-table.data-tbl td{padding:7px 9px;border-bottom:1px solid var(--border);white-space:nowrap}
+.tbl-wrap{overflow-x:auto;position:relative}
+table.data-tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:12px}
+table.data-tbl th{text-align:left;padding:7px 9px;font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;border-bottom:1.5px solid var(--border);white-space:nowrap;background:var(--surface)}
+table.data-tbl td{padding:7px 9px;border-bottom:1px solid var(--border);white-space:nowrap;background:var(--surface)}
 table.data-tbl tr:last-child td{border-bottom:none}
-table.data-tbl tr:hover td{background:var(--surface2)}
+table.data-tbl tr:hover td{background:var(--surface2)!important}
+table.data-tbl th:first-child,table.data-tbl td:first-child{position:sticky;left:0;z-index:2;background:var(--surface);box-shadow:2px 0 6px -2px rgba(80,40,10,0.1)}
+table.data-tbl tr:hover td:first-child{background:var(--surface2)!important}
 .num{text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
 .total-col{font-weight:700;color:var(--red)}
 .fc-col{background:var(--blue-light)!important;color:var(--blue)!important;font-weight:700}
@@ -181,6 +183,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
 #loadingOverlay{position:fixed;inset:0;background:rgba(247,244,239,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;gap:12px}
 #loadingOverlay p{font-size:13px;color:var(--muted)}
 .loader{width:30px;height:30px;border:3px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite}
+.kpi-fc-carousel:hover{box-shadow:var(--shadow);border-color:var(--amber)!important}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
 </style>
@@ -230,11 +233,11 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     <div class="section-hd">
       <div>
         <div class="section-label">② Komposisi Donor 2025</div>
-        <div class="section-title">Distribusi Golongan Darah &amp; Kelompok Usia</div>
-        <div class="section-sub">Proporsi total donor sepanjang Januari–Desember 2025 berdasarkan golongan darah dan kelompok usia</div>
+        <div class="section-title">Distribusi Golongan Darah, Kelompok Usia &amp; Jenis Kelamin</div>
+        <div class="section-sub">Proporsi total donor sepanjang Januari–Desember 2025 berdasarkan golongan darah, kelompok usia, dan jenis kelamin</div>
       </div>
     </div>
-    <div class="grid-2">
+    <div class="grid-3">
       <div class="card">
         <p class="card-title">Komposisi Golongan Darah</p>
         <p class="card-sub">Distribusi total donor per golongan darah</p>
@@ -245,6 +248,46 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
         <p class="card-sub">Distribusi total donor per kelompok usia</p>
         <div class="chart-wrap" style="height:200px"><canvas id="usiaPie"></canvas></div>
       </div>
+      <div class="card">
+        <p class="card-title">Komposisi Jenis Kelamin</p>
+        <p class="card-sub">Distribusi total darah berdasarkan jenis kelamin</p>
+        <div class="chart-wrap" style="height:200px"><canvas id="genderPie"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+    <!-- Model selector -->
+    <div class="model-bar" style="margin-bottom:1.25rem">
+      <span class="model-bar-label">Jendela Moving Average:</span>
+      <div class="model-tabs" id="modelTabs">
+        <button class="model-tab active" onclick="switchModel(3,this)">MA-3</button>
+        <button class="model-tab" onclick="switchModel(6,this)">MA-6</button>
+        <button class="model-tab" onclick="switchModel(9,this)">MA-9</button>
+      </div>
+      <span class="model-desc" id="modelDesc">Moving Average 3 bulan — prediksi 3 bulan ke depan berdasarkan rata-rata 3 bulan terakhir</span>
+    </div>
+
+    <!-- ══ BLOK 1B: PERBANDINGAN DONOR VS PERMINTAAN ══ -->
+  <div class="section">
+    <div class="section-hd">
+      <div>
+        <div class="section-label">① Perbandingan Donor &amp; Permintaan</div>
+        <div class="section-title">Total Donor vs Total Permintaan Darah 2025 &amp; Prediksi</div>
+        <div class="section-sub">Perbandingan tren aktual dan prediksi Moving Average antara jumlah pendonor (orang) dan permintaan darah (kantong) — ikut pengaturan MA yang aktif</div>
+      </div>
+      <span class="fc-zone-badge"><span class="stripe"></span> Zona biru = prediksi</span>
+    </div>
+    <div class="card">
+      <div class="legend" id="dvpLegend">
+        <span class="legend-item"><span class="legend-dot" style="background:#C0392B"></span>Donor Aktual</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#C0392B;opacity:.4"></span>Donor Prediksi</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#1F5FA6"></span>Permintaan Aktual</span>
+        <span class="legend-item"><span class="legend-dot" style="background:#1F5FA6;opacity:.4"></span>Permintaan Prediksi</span>
+      </div>
+      <div class="chart-wrap" style="height:280px"><canvas id="dvpChart"></canvas></div>
+      <div class="trend-metrics" id="dvpMetrics"></div>
     </div>
   </div>
 
@@ -261,16 +304,6 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       <span class="fc-zone-badge"><span class="stripe"></span> Zona biru = prediksi</span>
     </div>
 
-    <!-- Model selector -->
-    <div class="model-bar" style="margin-bottom:1.25rem">
-      <span class="model-bar-label">Jendela Moving Average:</span>
-      <div class="model-tabs" id="modelTabs">
-        <button class="model-tab active" onclick="switchModel(3,this)">MA-3</button>
-        <button class="model-tab" onclick="switchModel(6,this)">MA-6</button>
-        <button class="model-tab" onclick="switchModel(9,this)">MA-9</button>
-      </div>
-      <span class="model-desc" id="modelDesc">Moving Average 3 bulan — prediksi 3 bulan ke depan berdasarkan rata-rata 3 bulan terakhir</span>
-    </div>
     
     <!-- Tren donor per kategori -->
     <div class="section-hd" style="margin-bottom:.75rem">
@@ -289,10 +322,23 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     <!-- Selector bulan & kartu prediksi donor -->
     <div class="fc-month-bar">
       <span class="model-bar-label">Prediksi donor bulan:</span>
+      <button onclick="switchFcMonthAll(FC_MONTH_IDX-1)" style="background:none;border:1px solid var(--border2);border-radius:99px;width:26px;height:26px;cursor:pointer;font-size:13px;color:var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0">‹</button>
       <div class="model-tabs" id="fcMonthTabs"></div>
+      <button onclick="switchFcMonthAll(FC_MONTH_IDX+1)" style="background:none;border:1px solid var(--border2);border-radius:99px;width:26px;height:26px;cursor:pointer;font-size:13px;color:var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0">›</button>
       <span style="font-size:12px;color:var(--muted)" id="fcMonthDesc"></span>
     </div>
-    <div class="fc-result-grid" id="forecastDonorGrid"></div>
+    <div id="fcSection-donor_gender" style="margin-bottom:.5rem">
+      <div style="font-size:11px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Prediksi Donor — Jenis Kelamin</div>
+      <div class="fc-result-grid" id="forecastDonorGrid"></div>
+    </div>
+    <div id="fcSection-donor_goldar" style="margin-bottom:.5rem;display:none">
+      <div style="font-size:11px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Prediksi Donor — Golongan Darah</div>
+      <div class="fc-result-grid" id="forecastGoldarGrid"></div>
+    </div>
+    <div id="fcSection-donor_usia" style="margin-bottom:.5rem;display:none">
+      <div style="font-size:11px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Prediksi Donor — Kelompok Usia</div>
+      <div class="fc-result-grid" id="forecastUsiaGrid"></div>
+    </div>
   </div>
 
   <hr class="section-divider">
@@ -323,10 +369,19 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     <!-- Kartu prediksi permintaan — selector bulan sama, re-render terpisah -->
     <div class="fc-month-bar">
       <span class="model-bar-label">Prediksi permintaan bulan:</span>
+      <button onclick="switchFcMonthAll(FC_MONTH_IDX-1)" style="background:none;border:1px solid var(--border2);border-radius:99px;width:26px;height:26px;cursor:pointer;font-size:13px;color:var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0">‹</button>
       <div class="model-tabs" id="fcMonthTabs2"></div>
+      <button onclick="switchFcMonthAll(FC_MONTH_IDX+1)" style="background:none;border:1px solid var(--border2);border-radius:99px;width:26px;height:26px;cursor:pointer;font-size:13px;color:var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0">›</button>
       <span style="font-size:12px;color:var(--muted)" id="fcMonthDesc2"></span>
     </div>
-    <div class="fc-result-grid" id="forecastReqGrid"></div>
+    <div id="fcSection-permintaan_rs" style="margin-bottom:.5rem">
+      <div style="font-size:11px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Prediksi Permintaan — Per Bagian RS</div>
+      <div class="fc-result-grid" id="forecastRsGrid"></div>
+    </div>
+    <div id="fcSection-permintaan_jenis" style="margin-bottom:.5rem;display:none">
+      <div style="font-size:11px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem">Prediksi Permintaan — Per Jenis Darah</div>
+      <div class="fc-result-grid" id="forecastJenisGrid"></div>
+    </div>
   </div>
 
   <hr class="section-divider">
@@ -472,6 +527,7 @@ function nextMonthLabels(steps){
 
 // ── MA MATH ───────────────────────────────────────────────────────────────
 function maInSample(arr,w){
+  // i=w: prediksi untuk data[w] menggunakan data[0..w-1]
   return arr.map((_,i)=> i>=w ? arr.slice(i-w,i).reduce((a,b)=>a+b,0)/w : null);
 }
 function maFuture(arr,w,steps){
@@ -541,30 +597,92 @@ function fzPlugin(n){
 
 function killChart(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
 
-// ── KPI ───────────────────────────────────────────────────────────────────
+// ── KPI AUTO-ROTATE ───────────────────────────────────────────────────────
+let kpiCarouselIdx = 0;
+let kpiCarouselTimer = null;
+
 function buildKPI(){
   const g = DATA.groups;
   const totalDonor = g.donor_gender.series.reduce((s,sr)=>s+sr.data.reduce((a,b)=>a+(b||0),0),0);
   const totalPerm  = g.permintaan_rs.series.reduce((s,sr)=>s+sr.data.reduce((a,b)=>a+(b||0),0),0);
   const avgDonor   = Math.round(totalDonor/MONTHS.length);
-  const estNext    = g.donor_gender.forecast.reduce((s,f)=>s+f.future[0],0);
-  const fm0        = DATA.futureMonths[0];
-  document.getElementById('kpiGrid').innerHTML = [
-    {val:totalDonor, lbl:'Total Donor 2025',             sub:'Jan–Des 2025',  icon:'❤️',  color:'var(--red)'},
-    {val:totalPerm,  lbl:'Total Permintaan Darah 2025',  sub:'dalam kantong', icon:'🩸',  color:'var(--blue)'},
-    {val:avgDonor,   lbl:'Rata-rata Donor/Bulan',        sub:'sepanjang 2025',icon:'📅',  color:'var(--green)'},
-    {val:estNext,    lbl:`Estimasi Donor ${fm0}`,        sub:`prediksi MA-${MA_WINDOW}`,icon:'📈',color:'var(--amber)'},
-  ].map(k=>`<div class="kpi">
-    <div class="kpi-icon">${k.icon}</div>
-    <div class="kpi-val" style="color:${k.color}">${fmt(k.val)}</div>
-    <div class="kpi-lbl">${k.lbl}</div>
-    <div class="kpi-sub">${k.sub}</div>
-  </div>`).join('');
+  const fm         = DATA.futureMonths;
+
+  document.getElementById('kpiGrid').innerHTML = `
+    <div class="kpi">
+      <div class="kpi-icon">❤️</div>
+      <div class="kpi-val" style="color:var(--red)">${fmt(totalDonor)}</div>
+      <div class="kpi-lbl">Total Donor 2025</div>
+      <div class="kpi-sub">orang · Jan–Des 2025</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-icon">🩸</div>
+      <div class="kpi-val" style="color:var(--blue)">${fmt(totalPerm)}</div>
+      <div class="kpi-lbl">Total Permintaan Darah 2025</div>
+      <div class="kpi-sub">kantong · Jan–Des 2025</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-icon">📅</div>
+      <div class="kpi-val" style="color:var(--green)">${fmt(avgDonor)}</div>
+      <div class="kpi-lbl">Rata-rata Donor/Bulan</div>
+      <div class="kpi-sub">orang/bulan · 2025</div>
+    </div>
+    <div class="kpi kpi-fc-carousel" id="kpiFcCard" style="cursor:pointer;user-select:none;position:relative;overflow:hidden" onclick="kpiCarouselStep(1)" title="Klik untuk bulan berikutnya">
+      <div style="position:absolute;top:7px;right:10px;display:flex;gap:4px;align-items:center" id="kpiFcDots"></div>
+      <div class="kpi-icon">📈</div>
+      <div class="kpi-val" id="kpiFcVal" style="color:var(--amber);transition:opacity .25s"></div>
+      <div class="kpi-lbl" id="kpiFcLbl"></div>
+      <div class="kpi-sub" id="kpiFcSub"></div>
+      <div style="position:absolute;bottom:8px;right:10px;font-size:10px;color:var(--muted2)">◀ ▶</div>
+    </div>
+  `;
+  kpiCarouselIdx = 0;
+  updateKpiFcCard();
+  startKpiCarousel();
 }
+
+function updateKpiFcCard(){
+  const fm = DATA.futureMonths;
+  const g  = DATA.groups;
+  const idx = kpiCarouselIdx % fm.length;
+  const estDonor = g.donor_gender.forecast.reduce((s,f)=>s+f.future[idx],0);
+  const m = fm[idx];
+  const valEl  = document.getElementById('kpiFcVal');
+  const lblEl  = document.getElementById('kpiFcLbl');
+  const subEl  = document.getElementById('kpiFcSub');
+  const dotEl  = document.getElementById('kpiFcDots');
+  if(!valEl) return;
+  valEl.style.opacity='0';
+  setTimeout(()=>{
+    valEl.textContent = fmt(estDonor);
+    valEl.style.opacity='1';
+    lblEl.textContent = `Estimasi Donor ${m}`;
+    subEl.textContent = `orang · prediksi MA-${MA_WINDOW}`;
+    // dots
+    dotEl.innerHTML = fm.map((_,i)=>`<span style="width:6px;height:6px;border-radius:50%;background:${i===idx?'var(--amber)':'var(--border2)'};display:inline-block;transition:background .2s"></span>`).join('');
+  },120);
+}
+
+function kpiCarouselStep(dir){
+  const fm = DATA.futureMonths;
+  kpiCarouselIdx = (kpiCarouselIdx + dir + fm.length) % fm.length;
+  updateKpiFcCard();
+  restartKpiCarousel();
+}
+
+function startKpiCarousel(){
+  if(kpiCarouselTimer) clearInterval(kpiCarouselTimer);
+  kpiCarouselTimer = setInterval(()=>{
+    const fm = DATA.futureMonths;
+    kpiCarouselIdx = (kpiCarouselIdx + 1) % fm.length;
+    updateKpiFcCard();
+  }, 8000);
+}
+function restartKpiCarousel(){ startKpiCarousel(); }
 
 // ── PIES ─────────────────────────────────────────────────────────────────
 function renderPies(){
-  ['goldarPie','usiaPie'].forEach(id=>killChart(id));
+  ['goldarPie','usiaPie','genderPie'].forEach(id=>killChart(id));
   const pie=(id,g)=>{
     const tots=g.series.map(s=>s.data.reduce((a,b)=>a+(b||0),0));
     const grand=tots.reduce((a,b)=>a+b,0);
@@ -579,6 +697,7 @@ function renderPies(){
   };
   pie('goldarPie',DATA.groups.donor_goldar);
   pie('usiaPie',DATA.groups.donor_usia);
+  pie('genderPie',DATA.groups.donor_gender);
 }
 
 // ── TREN DONOR CHART ──────────────────────────────────────────────────────
@@ -587,6 +706,11 @@ function setTrenMode(key,btn){
   document.querySelectorAll('#trenTabsRow .tren-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderTrenDonorChart(key);
+  // Tampilkan hanya card forecasting yang sesuai dengan tab aktif
+  ['donor_gender','donor_goldar','donor_usia'].forEach(k=>{
+    const el=document.getElementById('fcSection-'+k);
+    if(el) el.style.display=(k===key)?'':'none';
+  });
 }
 function renderTrenDonorChart(gkey){
   killChart('trenDonor');
@@ -651,7 +775,146 @@ function renderReqChart(mode){
     }},plugins:[fzPlugin(n)]
   });
 }
-function switchReq(mode,btn){setActiveTab('reqTabs',btn);renderReqChart(mode);}
+function switchReq(mode,btn){
+  setActiveTab('reqTabs',btn);
+  renderReqChart(mode);
+  // Tampilkan hanya card forecasting permintaan yang sesuai tab aktif
+  const activeKey = mode==='rs' ? 'permintaan_rs' : 'permintaan_jenis';
+  ['permintaan_rs','permintaan_jenis'].forEach(k=>{
+    const el=document.getElementById('fcSection-'+k);
+    if(el) el.style.display=(k===activeKey)?'':'none';
+  });
+}
+
+// ── DONOR VS PERMINTAAN CHART ─────────────────────────────────────────────
+function renderDonorVsPermintaanChart(){
+  killChart('dvp');
+  const gDonor = DATA.groups.donor_gender;
+  const gPerm  = DATA.groups.permintaan_rs;
+  const n = MONTHS.length, fm = DATA.futureMonths, steps = MA_WINDOW;
+  const allLabels = [...MONTHS, ...fm];
+
+  // Total donor & permintaan per bulan (aktual)
+  const totalDonor = MONTHS.map((_,i) => gDonor.series.reduce((s,sr)=>s+(sr.data[i]||0),0));
+  const totalPerm  = MONTHS.map((_,i) => gPerm.series.reduce((s,sr)=>s+(sr.data[i]||0),0));
+
+  // Prediksi in-sample
+  const predsD = maInSample(totalDonor, MA_WINDOW);
+  const predsP = maInSample(totalPerm, MA_WINDOW);
+
+  // Prediksi ke depan
+  const futureD = maFuture(totalDonor, MA_WINDOW, steps);
+  const futureP = maFuture(totalPerm,  MA_WINDOW, steps);
+
+  // Akurasi
+  const accD = accuracy(totalDonor, predsD);
+  const accP = accuracy(totalPerm,  predsP);
+
+  // Dataset arrays (pad dengan null untuk bulan prediksi)
+  const donorActual  = [...totalDonor, ...Array(steps).fill(null)];
+  const permActual   = [...totalPerm,  ...Array(steps).fill(null)];
+
+  // Garis prediksi menyambung dari titik terakhir aktual
+  const donorFc = Array(allLabels.length).fill(null);
+  donorFc[n-1] = totalDonor[n-1];
+  futureD.forEach((v,i)=>{ donorFc[n+i]=v; });
+
+  const permFc = Array(allLabels.length).fill(null);
+  permFc[n-1] = totalPerm[n-1];
+  futureP.forEach((v,i)=>{ permFc[n+i]=v; });
+
+  // In-sample pad
+  const donorIS = [...predsD, ...Array(steps).fill(null)];
+  const permIS  = [...predsP, ...Array(steps).fill(null)];
+
+  charts['dvp'] = new Chart(document.getElementById('dvpChart').getContext('2d'), {
+    data:{labels: allLabels, datasets:[
+      // Donor aktual
+      {type:'line', label:'Donor Aktual', data:donorActual,
+        borderColor:'#C0392B', backgroundColor:'rgba(192,57,43,0.08)', fill:true,
+        tension:0.4, pointRadius:3.5, pointHoverRadius:7, pointBackgroundColor:'#C0392B',
+        borderWidth:2.5, order:2, yAxisID:'yD'},
+      // Donor in-sample
+      {type:'line', label:`Donor In-sample MA(${MA_WINDOW})`, data:donorIS,
+        borderColor:'rgba(192,57,43,0.45)', backgroundColor:'transparent',
+        borderDash:[5,4], tension:0.4, pointRadius:0, pointHoverRadius:4,
+        borderWidth:1.5, order:3, yAxisID:'yD'},
+      // Donor prediksi ke depan
+      {type:'line', label:`Donor Prediksi (MA-${MA_WINDOW})`, data:donorFc,
+        borderColor:'#C0392B', backgroundColor:'rgba(192,57,43,0.05)', fill:true,
+        borderDash:[6,3], tension:0.3, pointRadius:6, pointHoverRadius:9,
+        pointBackgroundColor:'#C0392B', pointBorderColor:'#fff', pointBorderWidth:2,
+        borderWidth:2, order:1, yAxisID:'yD'},
+      // Permintaan aktual
+      {type:'line', label:'Permintaan Aktual', data:permActual,
+        borderColor:'#1F5FA6', backgroundColor:'rgba(31,95,166,0.07)', fill:true,
+        tension:0.4, pointRadius:3.5, pointHoverRadius:7, pointBackgroundColor:'#1F5FA6',
+        borderWidth:2.5, order:2, yAxisID:'yP'},
+      // Permintaan in-sample
+      {type:'line', label:`Permintaan In-sample MA(${MA_WINDOW})`, data:permIS,
+        borderColor:'rgba(31,95,166,0.4)', backgroundColor:'transparent',
+        borderDash:[5,4], tension:0.4, pointRadius:0, pointHoverRadius:4,
+        borderWidth:1.5, order:3, yAxisID:'yP'},
+      // Permintaan prediksi ke depan
+      {type:'line', label:`Permintaan Prediksi (MA-${MA_WINDOW})`, data:permFc,
+        borderColor:'#1F5FA6', backgroundColor:'rgba(31,95,166,0.04)', fill:true,
+        borderDash:[6,3], tension:0.3, pointRadius:6, pointHoverRadius:9,
+        pointBackgroundColor:'#1F5FA6', pointBorderColor:'#fff', pointBorderWidth:2,
+        borderWidth:2, order:1, yAxisID:'yP'},
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index', intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          callbacks:{
+            label: c => {
+              if(c.raw==null) return null;
+              const unit = c.yAxisID==='yD' ? 'orang' : 'kantong';
+              return ` ${c.dataset.label}: ${fmt(c.raw)} ${unit}`;
+            }
+          }
+        }
+      },
+      scales:{
+        x:{grid:{color:'rgba(0,0,0,0.04)'}, ticks:{font:{size:11}}},
+        yD:{
+          position:'left', grid:{color:'rgba(192,57,43,0.08)'},
+          title:{display:true, text:'Donor (orang)', color:'#C0392B', font:{size:11,weight:'600'}},
+          ticks:{font:{size:11}, color:'#C0392B', callback:v=>v>=1000?(v/1000).toFixed(1)+'rb':v}
+        },
+        yP:{
+          position:'right', grid:{drawOnChartArea:false},
+          title:{display:true, text:'Permintaan (kantong)', color:'#1F5FA6', font:{size:11,weight:'600'}},
+          ticks:{font:{size:11}, color:'#1F5FA6', callback:v=>v>=1000?(v/1000).toFixed(1)+'rb':v}
+        }
+      }
+    },
+    plugins:[fzPlugin(n)]
+  });
+
+  // Metrics row
+  const mcD = mapeClass(accD.mape), mcP = mapeClass(accP.mape);
+  document.getElementById('dvpMetrics').innerHTML = `
+    <span class="tmetric" style="border-left:3px solid #C0392B;padding-left:8px">
+      <span style="font-size:10px;color:var(--muted)">Donor</span>
+      <span class="${mcD}" style="font-weight:700;margin-left:5px">${accD.mape!=null?accD.mape+'%':'—'}</span> <span style="color:var(--muted)">MAPE</span>
+      · <strong>${mapeLabel(accD.mape)}</strong>
+    </span>
+    <span class="tmetric" style="border-left:3px solid #1F5FA6;padding-left:8px">
+      <span style="font-size:10px;color:var(--muted)">Permintaan</span>
+      <span class="${mcP}" style="font-weight:700;margin-left:5px">${accP.mape!=null?accP.mape+'%':'—'}</span> <span style="color:var(--muted)">MAPE</span>
+      · <strong>${mapeLabel(accP.mape)}</strong>
+    </span>
+    <span class="tmetric" style="background:var(--red-light)">
+      Prediksi Donor: ${futureD.map((v,i)=>`<strong style="color:#C0392B">${fmt(v)}</strong> <span style="font-size:10px;color:var(--muted)">${fm[i]}</span>`).join(' → ')}
+    </span>
+    <span class="tmetric" style="background:var(--blue-light)">
+      Prediksi Permintaan: ${futureP.map((v,i)=>`<strong style="color:#1F5FA6">${fmt(v)}</strong> <span style="font-size:10px;color:var(--muted)">${fm[i]}</span>`).join(' → ')}
+    </span>
+  `;
+}
 
 // ── TOTAL DONOR CHART ─────────────────────────────────────────────────────
 function renderTotalDonorChart(){
@@ -698,18 +961,27 @@ function renderTotalDonorChart(){
 // ── FORECAST MONTH TABS ───────────────────────────────────────────────────
 function buildFcMonthTabs(){
   const fm = DATA.futureMonths;
+  // Pastikan FC_MONTH_IDX tidak melebihi jumlah bulan prediksi
   if(FC_MONTH_IDX >= fm.length) FC_MONTH_IDX = 0;
 
-  ['fcMonthTabs','fcMonthTabs2'].forEach((id,i) => {
+  ['fcMonthTabs','fcMonthTabs2'].forEach((id, i) => {
     const descId = i===0 ? 'fcMonthDesc' : 'fcMonthDesc2';
     const container = document.getElementById(id);
     if(!container) return;
+    // Buat tab sesuai jumlah bulan prediksi MA_WINDOW (3, 6, atau 9 tab)
     container.innerHTML = fm.map((m, j) =>
       `<button class="model-tab${j===FC_MONTH_IDX?' active':''}" onclick="switchFcMonth(${j},this,'${id}')">${m}</button>`
     ).join('');
-    document.getElementById(descId).textContent =
+    const descEl = document.getElementById(descId);
+    if(descEl) descEl.textContent =
       `Menampilkan estimasi untuk ${fm[FC_MONTH_IDX]} berdasarkan MA-${MA_WINDOW}`;
   });
+}
+
+function switchFcMonthAll(idx){
+  const fm = DATA.futureMonths;
+  idx = ((idx % fm.length) + fm.length) % fm.length;
+  switchFcMonth(idx, null, 'fcMonthTabs');
 }
 
 function switchFcMonth(idx, btn, tabsId){
@@ -720,17 +992,20 @@ function switchFcMonth(idx, btn, tabsId){
     if(!c) return;
     c.querySelectorAll('.model-tab').forEach((b,j)=>b.classList.toggle('active', j===idx));
     const descId = i===0 ? 'fcMonthDesc' : 'fcMonthDesc2';
-    document.getElementById(descId).textContent =
+    const descEl = document.getElementById(descId);
+    if(descEl) descEl.textContent =
       `Menampilkan estimasi untuk ${DATA.futureMonths[idx]} berdasarkan MA-${MA_WINDOW}`;
   });
   buildForecastDonorCards();
+  buildForecastGoldarCards();
+  buildForecastUsiaCards();
   buildForecastReqCards();
 }
 
 // ── FORECAST CARDS: DONOR ────────────────────────────────────────────────
 function buildForecastDonorCards(){
   const fm = DATA.futureMonths;
-  const idx = FC_MONTH_IDX;
+  const idx = Math.min(FC_MONTH_IDX, fm.length - 1);
   const selectedMonth = fm[idx];
   let html = '';
   for(const fc of DATA.groups.donor_gender.forecast){
@@ -742,22 +1017,50 @@ function buildForecastDonorCards(){
   document.getElementById('forecastDonorGrid').innerHTML = html;
 }
 
+// ── FORECAST CARDS: GOLDAR ────────────────────────────────────────────────
+function buildForecastGoldarCards(){
+  const fm = DATA.futureMonths;
+  const idx = Math.min(FC_MONTH_IDX, fm.length - 1);
+  const selectedMonth = fm[idx];
+  let html = '';
+  for(const fc of DATA.groups.donor_goldar.forecast){
+    const mc  = mapeClass(fc.accuracy.mape);
+    const val = fc.future[idx];
+    html += _fcCardHtml(fc, val, selectedMonth, 'orang', mc, fc.accuracy);
+  }
+  document.getElementById('forecastGoldarGrid').innerHTML = html;
+}
+
+// ── FORECAST CARDS: USIA ─────────────────────────────────────────────────
+function buildForecastUsiaCards(){
+  const fm = DATA.futureMonths;
+  const idx = Math.min(FC_MONTH_IDX, fm.length - 1);
+  const selectedMonth = fm[idx];
+  let html = '';
+  for(const fc of DATA.groups.donor_usia.forecast){
+    const mc  = mapeClass(fc.accuracy.mape);
+    const val = fc.future[idx];
+    html += _fcCardHtml(fc, val, selectedMonth, 'orang', mc, fc.accuracy);
+  }
+  document.getElementById('forecastUsiaGrid').innerHTML = html;
+}
+
 // ── FORECAST CARDS: PERMINTAAN ───────────────────────────────────────────
 function buildForecastReqCards(){
   const fm = DATA.futureMonths;
-  const idx = FC_MONTH_IDX;
+  const idx = Math.min(FC_MONTH_IDX, fm.length - 1);
   const selectedMonth = fm[idx];
-  let html = '';
-  for(const gk of ['permintaan_rs','permintaan_jenis']){
-    const g = DATA.groups[gk];
-    for(const fc of g.forecast){
-      const mc  = mapeClass(fc.accuracy.mape);
-      const acc = fc.accuracy;
-      const val = fc.future[idx];
-      html += _fcCardHtml(fc, val, selectedMonth, 'kantong', mc, acc);
-    }
+  let rsHtml = '', jenisHtml = '';
+  for(const fc of DATA.groups.permintaan_rs.forecast){
+    const mc  = mapeClass(fc.accuracy.mape);
+    rsHtml += _fcCardHtml(fc, fc.future[idx], selectedMonth, 'kantong', mc, fc.accuracy);
   }
-  document.getElementById('forecastReqGrid').innerHTML = html;
+  for(const fc of DATA.groups.permintaan_jenis.forecast){
+    const mc  = mapeClass(fc.accuracy.mape);
+    jenisHtml += _fcCardHtml(fc, fc.future[idx], selectedMonth, 'kantong', mc, fc.accuracy);
+  }
+  document.getElementById('forecastRsGrid').innerHTML = rsHtml;
+  document.getElementById('forecastJenisGrid').innerHTML = jenisHtml;
 }
 
 function _fcCardHtml(fc, val, selectedMonth, unit, mc, acc){
@@ -780,7 +1083,7 @@ function _fcCardHtml(fc, val, selectedMonth, unit, mc, acc){
 // ── EVALUASI TABLE ────────────────────────────────────────────────────────
 function buildEvalSection(){
   document.getElementById('evalModelTitle').textContent=`Evaluasi Model MA-${MA_WINDOW}`;
-  const showGroups={donor_gender:'Donor',permintaan_rs:'Permintaan RS',permintaan_jenis:'Permintaan Jenis'};
+  const showGroups={donor_gender:'Donor Gender',donor_goldar:'Donor Goldar',donor_usia:'Donor Usia',permintaan_rs:'Permintaan RS',permintaan_jenis:'Permintaan Jenis'};
   let html='';
   for(const[gk,gLabel] of Object.entries(showGroups)){
     const g=DATA.groups[gk];
@@ -801,7 +1104,7 @@ function buildEvalSection(){
   // Summary
   const g=DATA.groups;
   const fm=DATA.futureMonths;
-  const allFc=[...g.donor_gender.forecast,...g.permintaan_rs.forecast,...g.permintaan_jenis.forecast];
+  const allFc=[...g.donor_gender.forecast,...g.donor_goldar.forecast,...g.donor_usia.forecast,...g.permintaan_rs.forecast,...g.permintaan_jenis.forecast];
   const mapes=allFc.map(f=>f.accuracy.mape).filter(m=>m!=null);
   const avgMape=mapes.length?mapes.reduce((a,b)=>a+b,0)/mapes.length:null;
   const mc=mapeClass(avgMape);
@@ -867,8 +1170,8 @@ function switchModel(w,btn){
   };
   document.getElementById('modelDesc').textContent=descs[w]||'';
   document.getElementById('fcSectionTitle').textContent=`Tren Donor 2025 & Estimasi ${w} Bulan ke Depan (MA-${w})`;
-  document.getElementById('fcWindowSpan').textContent=w;
   document.getElementById('footerMethod').textContent=`Metode: Moving Average (MA-${w}) · Evaluasi: MAPE, MAE, RMSE · Lewis (1982) · Hyndman & Athanasopoulos (2021)`;
+  FC_MONTH_IDX=0;
   renderAll();
 }
 
@@ -891,13 +1194,27 @@ function setActiveTab(cid,btn){
 function renderAll(){
   DATA = buildData();
   buildKPI();
+  renderDonorVsPermintaanChart();
   renderTrenDonorChart(trenDonorMode);
   renderPies();
   renderTotalDonorChart();
   buildFcMonthTabs();
   buildForecastDonorCards();
+  buildForecastGoldarCards();
+  buildForecastUsiaCards();
+  // Sync visibility kartu forecasting sesuai tab tren aktif
+  ['donor_gender','donor_goldar','donor_usia'].forEach(k=>{
+    const el=document.getElementById('fcSection-'+k);
+    if(el) el.style.display=(k===trenDonorMode)?'':'none';
+  });
   renderReqChart(document.querySelector('#reqTabs .tab.active')?.textContent?.includes('Jenis')?'jenis':'rs');
   buildForecastReqCards();
+  // Sync visibility kartu forecasting permintaan sesuai tab aktif
+  const activeReqMode = document.querySelector('#reqTabs .tab.active')?.textContent?.includes('Jenis') ? 'permintaan_jenis' : 'permintaan_rs';
+  ['permintaan_rs','permintaan_jenis'].forEach(k=>{
+    const el=document.getElementById('fcSection-'+k);
+    if(el) el.style.display=(k===activeReqMode)?'':'none';
+  });
   buildEvalSection();
   const activeTable=document.querySelector('#tblTabs .tab.active');
   const tblMap={'Gender':'donor_gender','Golongan Darah':'donor_goldar','Usia':'donor_usia','Permintaan RS':'permintaan_rs'};

@@ -85,11 +85,15 @@ a{color:var(--red);text-decoration:none}
 @media(max-width:640px){.grid-2,.grid-3{grid-template-columns:1fr}}
 
 /* LEGEND */
-.legend{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:.9rem}
+.legend{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:.9rem;align-items:center}
 .legend-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);cursor:pointer;user-select:none;transition:opacity .15s,font-weight .15s;border-radius:99px;padding:3px 9px}
 .legend-item:hover{color:var(--text);background:var(--surface2)}
 .legend-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0}
 .chart-wrap{position:relative;width:100%}
+/* Toggle angka button */
+.lbl-toggle{margin-left:auto;display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--muted);border:1.5px solid var(--border2);border-radius:99px;padding:3px 10px;cursor:pointer;user-select:none;background:var(--surface);transition:all .15s;white-space:nowrap;flex-shrink:0}
+.lbl-toggle:hover{background:var(--surface2);color:var(--text)}
+.lbl-toggle.active{background:var(--amber-light);color:var(--amber);border-color:var(--amber)}
 
 /* FC MONTH BAR */
 .fc-month-bar{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:.75rem 1.1rem;margin-bottom:1rem}
@@ -135,6 +139,7 @@ a{color:var(--red);text-decoration:none}
 .eval-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
 .eval-tbl th{text-align:left;padding:8px 10px;font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;border-bottom:1.5px solid var(--border)}
 .eval-tbl td{padding:8px 10px;border-bottom:1px solid var(--border);white-space:nowrap}
+.eval-tbl tr.tbl-total-row td{background:var(--surface2);border-top:1.5px solid var(--border2);border-bottom:none;font-weight:700}
 .eval-tbl tr:last-child td{border-bottom:none}
 .eval-tbl tr:hover td{background:var(--surface2)}
 .eval-tbl .num{text-align:right;font-variant-numeric:tabular-nums}
@@ -180,6 +185,26 @@ table.data-tbl tr:hover td:first-child{background:var(--surface2)!important}
 /* FOOTER */
 footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);font-size:12px;color:var(--muted);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
 
+/* INSIGHT CARDS */
+.insight-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:9px;margin-bottom:1.5rem}
+.insight-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.1rem;display:flex;gap:.75rem;align-items:flex-start}
+.insight-icon{font-size:1.25rem;flex-shrink:0;margin-top:1px}
+.insight-body{}
+.insight-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.3rem}
+.insight-text{font-size:12.5px;line-height:1.6;color:var(--text)}
+.insight-card.ins-red{border-left:3px solid var(--red)}
+.insight-card.ins-amber{border-left:3px solid var(--amber)}
+.insight-card.ins-blue{border-left:3px solid var(--blue)}
+/* REKOMENDASI PERSEDIAAN HERO */
+.rek-hero{background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--radius);padding:1.2rem 1.35rem;margin-bottom:1rem}
+.rek-hero-title{font-family:'DM Serif Display',serif;font-size:1.05rem;margin-bottom:.15rem}
+.rek-hero-sub{font-size:12px;color:var(--muted);margin-bottom:1rem}
+.rek-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px}
+.rek-cell{background:var(--bg);border-radius:var(--radius-sm);padding:.8rem 1rem;text-align:center}
+.rek-cell-icon{font-size:1.1rem;margin-bottom:.25rem}
+.rek-cell-val{font-family:'DM Serif Display',serif;font-size:1.6rem;line-height:1.05;margin-bottom:2px}
+.rek-cell-lbl{font-size:11px;color:var(--muted);font-weight:500}
+.rek-cell-sub{font-size:10.5px;color:var(--muted2);margin-top:2px}
 /* LOADING */
 #loadingOverlay{position:fixed;inset:0;background:rgba(247,244,239,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;gap:12px}
 #loadingOverlay p{font-size:13px;color:var(--muted)}
@@ -215,27 +240,28 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
   </div>
 
 
-  <!-- ══ BLOK 1: GAMBARAN UMUM ══ -->
+  <!-- ══ ① GAMBARAN UMUM ══ -->
   <div class="section">
     <div class="section-hd">
       <div>
-        <div class="section-label">① Overview Data</div>
+        <div class="section-label">① Gambaran Umum</div>
         <div class="section-title">Ringkasan Data PMI Kota Malang 2023–2025</div>
         <div class="section-sub">Statistik keseluruhan donor dan permintaan darah sepanjang Januari 2023–Desember 2025</div>
       </div>
     </div>
     <div class="kpi-grid" id="kpiGrid"></div>
+    <div id="rasioBar" style="margin-top:.65rem"></div>
   </div>
 
   <hr class="section-divider">
 
-  <!-- ══ BLOK 2: KOMPOSISI DONOR ══ -->
+  <!-- ══ ② KOMPOSISI DONOR ══ -->
   <div class="section">
     <div class="section-hd">
       <div>
-        <div class="section-label">② Komposisi Donor 2023–2025</div>
+        <div class="section-label">② Profil Donor</div>
         <div class="section-title">Distribusi Golongan Darah, Kelompok Usia &amp; Jenis Kelamin</div>
-        <div class="section-sub">Proporsi total donor sepanjang Januari 2023–Desember 2025 berdasarkan golongan darah, kelompok usia, dan jenis kelamin</div>
+        <div class="section-sub">Siapa saja pendonor darah PMI Kota Malang? Proporsi total 2023–2025</div>
       </div>
     </div>
     <div class="grid-3">
@@ -259,34 +285,29 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
 
   <hr class="section-divider">
 
-    <!-- Model selector -->
-    <div class="model-bar" style="margin-bottom:1.25rem">
-      <span class="model-bar-label">Jendela Moving Average:</span>
-      <div class="model-tabs" id="modelTabs">
-        <button class="model-tab active" onclick="switchModel(3,this)">MA-3</button>
-        <button class="model-tab" onclick="switchModel(6,this)">MA-6</button>
-        <button class="model-tab" onclick="switchModel(9,this)">MA-9</button>
-      </div>
-      <span class="model-desc" id="modelDesc">Moving Average 3 bulan — prediksi 3 bulan ke depan berdasarkan rata-rata 3 bulan terakhir</span>
+  <!-- ══ ③ TREN & PERBANDINGAN ══ -->
+  <!-- Model selector — berlaku untuk semua grafik prediksi di bawah -->
+  <div class="model-bar" style="margin-bottom:1.25rem">
+    <span class="model-bar-label">Jendela Moving Average:</span>
+    <div class="model-tabs" id="modelTabs">
+      <button class="model-tab active" onclick="switchModel(3,this)">MA-3</button>
+      <button class="model-tab" onclick="switchModel(6,this)">MA-6</button>
+      <button class="model-tab" onclick="switchModel(9,this)">MA-9</button>
     </div>
+    <span class="model-desc" id="modelDesc">Moving Average 3 bulan — prediksi 3 bulan ke depan berdasarkan rata-rata 3 bulan terakhir</span>
+  </div>
 
-    <!-- ══ BLOK 1B: PERBANDINGAN DONOR VS PERMINTAAN ══ -->
   <div class="section">
     <div class="section-hd">
       <div>
-        <div class="section-label">① Perbandingan Donor &amp; Permintaan</div>
+        <div class="section-label">③ Tren &amp; Perbandingan</div>
         <div class="section-title">Total Donor vs Total Permintaan Darah 2023–2025 &amp; Prediksi</div>
-        <div class="section-sub">Perbandingan tren aktual dan prediksi Moving Average antara jumlah pendonor (orang) dan permintaan darah (kantong) — ikut pengaturan MA yang aktif</div>
+        <div class="section-sub">Apakah donor mencukupi permintaan? Perbandingan tren aktual dan prediksi ke depan</div>
       </div>
       <span class="fc-zone-badge"><span class="stripe"></span> Zona biru = prediksi</span>
     </div>
     <div class="card">
-      <div class="legend" id="dvpLegend">
-        <span class="legend-item"><span class="legend-dot" style="background:#C0392B"></span>Donor Aktual</span>
-        <span class="legend-item"><span class="legend-dot" style="background:#C0392B;opacity:.4"></span>Donor Prediksi</span>
-        <span class="legend-item"><span class="legend-dot" style="background:#1F5FA6"></span>Permintaan Aktual</span>
-        <span class="legend-item"><span class="legend-dot" style="background:#1F5FA6;opacity:.4"></span>Permintaan Prediksi</span>
-      </div>
+      <div class="legend" id="dvpLegend"></div>
       <div class="chart-wrap" style="height:280px"><canvas id="dvpChart"></canvas></div>
       <div class="trend-metrics" id="dvpMetrics"></div>
     </div>
@@ -294,19 +315,17 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
 
   <hr class="section-divider">
 
-  <!-- ══ BLOK 3: ANALISIS & FORECASTING DONOR ══ -->
+  <!-- ══ ④ FORECASTING DONOR ══ -->
   <div class="section">
     <div class="section-hd">
       <div>
-        <div class="section-label">③ Analisis &amp; Forecasting Donor</div>
+        <div class="section-label">④ Forecasting Donor</div>
         <div class="section-title" id="fcSectionTitle">Tren Donor 2023–2025 &amp; Estimasi 3 Bulan ke Depan (MA-3)</div>
-        <div class="section-sub">Data Donor Darah — satuan: pendonor (orang) </div>
+        <div class="section-sub">Prediksi jumlah pendonor per kategori — satuan: orang</div>
       </div>
       <span class="fc-zone-badge"><span class="stripe"></span> Zona biru = prediksi</span>
     </div>
 
-    
-    <!-- Tren donor per kategori -->
     <div class="section-hd" style="margin-bottom:.75rem">
       <div class="section-title" style="font-size:.95rem;color:var(--muted)">Tren Jumlah Donor per Bulan</div>
       <div class="tren-tabs-row" id="trenTabsRow">
@@ -320,7 +339,6 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       <div class="chart-wrap" style="height:260px"><canvas id="trenDonorChart"></canvas></div>
     </div>
 
-    <!-- Selector bulan & kartu prediksi donor -->
     <div class="fc-month-bar">
       <span class="model-bar-label">Prediksi donor bulan:</span>
       <button onclick="switchFcMonthAll(FC_MONTH_IDX-1)" style="background:none;border:1px solid var(--border2);border-radius:99px;width:26px;height:26px;cursor:pointer;font-size:13px;color:var(--muted);display:flex;align-items:center;justify-content:center;flex-shrink:0">‹</button>
@@ -344,13 +362,13 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
 
   <hr class="section-divider">
 
-  <!-- ══ BLOK 4: ANALISIS & FORECASTING PERMINTAAN DARAH ══ -->
+  <!-- ══ ⑤ FORECASTING PERMINTAAN DARAH ══ -->
   <div class="section">
     <div class="section-hd">
       <div>
-        <div class="section-label">④ Analisis &amp; Forecasting Permintaan Darah</div>
+        <div class="section-label">⑤ Forecasting Permintaan Darah</div>
         <div class="section-title">Tren Permintaan Darah 2023–2025 &amp; Estimasi ke Depan</div>
-        <div class="section-sub">Data permintaan darah dari rumah sakit — satuan: kantong (1 kantong ≈ 350–450 ml)</div>
+        <div class="section-sub">Berapa kantong darah yang dibutuhkan rumah sakit? — satuan: kantong (1 kantong ≈ 350–450 ml)</div>
       </div>
     </div>
 
@@ -387,24 +405,20 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
 
   <hr class="section-divider">
 
-  <!-- ══ BLOK 5: EVALUASI + TABEL DATA ══ -->
+  <!-- ══ ⑥ EVALUASI MODEL ══ -->
   <div class="section">
     <div class="section-hd">
       <div>
-        <div class="section-label">⑤ Evaluasi &amp; Data Lengkap</div>
+        <div class="section-label">⑥ Evaluasi Model</div>
         <div class="section-title">Evaluasi Akurasi Model Prediksi</div>
-        <div class="section-sub">Perbandingan hasil prediksi dengan data aktual 2023–2025 — Lewis (1982)</div>
+        <div class="section-sub">Seberapa akurat prediksi yang dihasilkan? Perbandingan dengan data aktual 2023–2025</div>
       </div>
     </div>
 
     <!-- Grafik total donor aktual vs prediksi -->
     <div class="card" style="margin-bottom:1rem">
       <p class="card-title">Total Donor: Aktual vs Prediksi</p>
-      <div class="legend" id="totalDonorLegend">
-        <span class="legend-item"><span class="legend-dot" style="background:#C0392B"></span>Aktual</span>
-        <span class="legend-item"><span class="legend-dot" style="background:#457FCA"></span>In-sample MA</span>
-        <span class="legend-item"><span class="legend-dot" style="background:#1A7A4A;border-radius:50%"></span>Prediksi ke depan</span>
-      </div>
+      <div class="legend" id="totalDonorLegend"></div>
       <div class="chart-wrap" style="height:260px"><canvas id="totalDonorChart"></canvas></div>
       <div class="trend-metrics" id="totalDonorMetrics"></div>
     </div>
@@ -412,7 +426,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     <div class="eval-card">
       <div class="eval-header">
         <div class="eval-title" id="evalModelTitle">Evaluasi Model MA-3</div>
-        <div class="eval-desc">Metrik akurasi dihitung dari selisih antara prediksi in-sample (SMA) vs data aktual sepanjang 2023–2025, menggunakan metrik standar forecasting <strong>MFE, MAE, RMSE, MAPE</strong> (Hyndman &amp; Athanasopoulos, 2021). Referensi klasifikasi MAPE: <strong>Lewis (1982)</strong>. Metode peramalan mengacu pada Kemal Farouq &amp; Jayyidah (2022), JIPI Vol.07 No.04.</div>
+        <div class="eval-desc">Akurasi model diukur menggunakan <strong>MAPE</strong> — semakin kecil nilainya, semakin baik prediksi model. Detail metodologi tersedia pada <a href="#" style="color:var(--muted);text-decoration:underline;font-size:11px" onclick="return false">halaman dokumentasi</a>.</div>
       </div>
 
       <div class="mape-legend">
@@ -423,7 +437,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       </div>
 
       <div class="eval-note-box">
-        <strong>Interpretasi:</strong> MAPE = rata-rata persentase kesalahan prediksi terhadap data aktual. MAE (Mean Absolute Error) = rata-rata selisih absolut (dalam satuan asli, mudah dibaca). RMSE (Root Mean Square Error) = akar rata-rata kuadrat selisih, lebih sensitif terhadap outlier. MFE (Mean Forecast Error) menunjukkan bias model — positif berarti cenderung under-estimasi, negatif berarti over-estimasi.
+        <strong>MAPE</strong> = tingkat kesalahan prediksi (%). Semakin kecil, semakin akurat. &nbsp;·&nbsp; <strong title="Mean Absolute Error — selisih absolut rata-rata dalam satuan asli">MAE</strong>, <strong title="Root Mean Square Error — lebih sensitif terhadap lonjakan data ekstrem">RMSE</strong>, <strong title="Mean Forecast Error — positif = model cenderung under-estimasi, negatif = over-estimasi">MFE</strong> tersedia di tabel untuk analisis lanjutan.
       </div>
 
       <div class="eval-tbl-wrap">
@@ -443,85 +457,99 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
 
       <div class="eval-summary" id="evalSummary"></div>
     </div>
+  </div>
 
-    <!-- ── SAFETY STOCK / REKOMENDASI MANAJERIAL ── -->
-    <div class="section" style="margin-top:1.5rem">
-      <div class="section-label">④ Rekomendasi Manajerial <span class="num-badge">Safety Stock</span></div>
-      <div class="eval-card">
-        <div class="eval-header">
-          <div class="eval-title">Buffer Persediaan Darah (Safety Stock)</div>
-          <div class="eval-desc">
-            Selain hasil forecasting MA, dashboard ini menghitung <strong>safety stock</strong> sebagai rekomendasi manajerial berdasarkan teori manajemen persediaan (inventory management), untuk mengantisipasi fluktuasi permintaan darah dan meminimalkan risiko kekurangan stok.
-          </div>
-        </div>
+  <hr class="section-divider">
 
-        <div class="eval-note-box" style="font-family:'DM Serif Display',serif;font-size:14px;text-align:center;letter-spacing:.02em">
-          Safety Stock&nbsp;=&nbsp;Z&nbsp;×&nbsp;σ&nbsp;×&nbsp;√LT
-        </div>
-        <div class="eval-desc" style="margin:-.3rem 0 1rem;text-align:center">
-          <strong>Z</strong> = nilai service level &nbsp;·&nbsp; <strong>σ</strong> = standar deviasi permintaan bulanan &nbsp;·&nbsp; <strong>LT</strong> = lead time (bulan)
-        </div>
-
-        <div class="fc-month-bar" style="margin-bottom:1.1rem">
-          <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Service Level (Z)</span>
-          <div class="tabs" id="ssZTabs">
-            <button class="tab" onclick="switchSSZ(1.282,this)">90% (Z=1,28)</button>
-            <button class="tab active" onclick="switchSSZ(1.645,this)">95% (Z=1,65)</button>
-            <button class="tab" onclick="switchSSZ(2.326,this)">99% (Z=2,33)</button>
-          </div>
-          <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-left:.5rem">Lead Time</span>
-          <div class="tabs" id="ssLTTabs">
-            <button class="tab active" onclick="switchSSLT(1,this)">1 bulan</button>
-            <button class="tab" onclick="switchSSLT(2,this)">2 bulan</button>
-            <button class="tab" onclick="switchSSLT(3,this)">3 bulan</button>
-          </div>
-        </div>
-
-        <div class="eval-tbl-wrap">
-          <table class="eval-tbl">
-            <thead><tr>
-              <th>Indikator Permintaan</th>
-              <th class="num">Rata-rata/Bulan</th>
-              <th class="num">σ (Std Dev)</th>
-              <th class="num">Safety Stock</th>
-              <th class="num">Estimasi Bulan Depan</th>
-              <th class="num">Target Stok (Estimasi + Safety Stock)</th>
-            </tr></thead>
-            <tbody id="ssTableBody"></tbody>
-          </table>
-        </div>
-
-        <div class="eval-summary" id="ssSummary"></div>
-
-        <div class="eval-note-box" style="margin-top:1rem">
-          <strong>Catatan akademik:</strong> Penambahan buffer persediaan ini didasarkan pada konsep <em>safety stock</em> dalam manajemen persediaan untuk mengantisipasi fluktuasi permintaan darah dan meminimalkan risiko kekurangan stok (Jennings, 1973; Dillon et al., 2017). Safety stock berfungsi mengatasi lonjakan permintaan, ketidakpastian pasokan donor, dan mencegah <em>stockout</em>, sehingga target persediaan darah yang direkomendasikan merupakan hasil penjumlahan antara estimasi kebutuhan berdasarkan forecasting dan nilai safety stock (<strong>Target Stok = Forecast + Safety Stock</strong>).
-        </div>
+  <!-- ══ ⑦ INSIGHT & REKOMENDASI PERSEDIAAN ══ -->
+  <div class="section">
+    <div class="section-hd">
+      <div>
+        <div class="section-label">⑦ Insight &amp; Rekomendasi</div>
+        <div class="section-title">Kesimpulan &amp; Target Persediaan Darah</div>
+        <div class="section-sub">Model sudah dievaluasi — inilah output keputusan yang direkomendasikan untuk PMI</div>
       </div>
     </div>
 
-    <!-- Tabel data lengkap menyatu di blok evaluasi -->
-    <div style="margin-top:1.5rem">
-      <div class="section-hd" style="margin-bottom:.85rem">
-        <div>
-          <div class="section-title" style="font-size:1rem">Tabel Data &amp; Prediksi Lengkap</div>
-          <div class="section-sub">Kolom biru = nilai prediksi · Digunakan sebagai acuan perencanaan stok darah PMI</div>
+    <!-- Insight otomatis -->
+    <div class="insight-grid" id="insightGrid" style="margin-bottom:1.25rem"></div>
+
+    <!-- Rincian Safety Stock (atur parameter dulu) -->
+    <div class="eval-card">
+      <div class="eval-header">
+        <div class="eval-title">Rincian Safety Stock per Bagian RS</div>
+        <div class="eval-desc">Sesuaikan service level dan lead time sesuai kebijakan PMI untuk mendapatkan rekomendasi stok yang tepat.</div>
+      </div>
+
+      <div class="fc-month-bar" style="margin-bottom:.75rem">
+        <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Bulan Prediksi</span>
+        <div class="model-tabs" id="ssMonthTabs"></div>
+        <span style="font-size:12px;color:var(--muted)" id="ssMonthDesc"></span>
+      </div>
+
+      <div class="fc-month-bar" style="margin-bottom:1.1rem">
+        <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Service Level (Z)</span>
+        <div class="tabs" id="ssZTabs">
+          <button class="tab" onclick="switchSSZ(1.282,this)">90% (Z=1,28)</button>
+          <button class="tab active" onclick="switchSSZ(1.645,this)">95% (Z=1,65)</button>
+          <button class="tab" onclick="switchSSZ(2.326,this)">99% (Z=2,33)</button>
         </div>
-        <div class="tabs" id="tblTabs">
-          <button class="tab active" onclick="switchTable('donor_gender',this)">Gender</button>
-          <button class="tab" onclick="switchTable('donor_goldar',this)">Golongan Darah</button>
-          <button class="tab" onclick="switchTable('donor_usia',this)">Usia</button>
-          <button class="tab" onclick="switchTable('permintaan_rs',this)">Permintaan RS</button>
+        <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-left:.5rem">Lead Time</span>
+        <div class="tabs" id="ssLTTabs">
+          <button class="tab active" onclick="switchSSLT(1,this)">1 bulan</button>
+          <button class="tab" onclick="switchSSLT(2,this)">2 bulan</button>
+          <button class="tab" onclick="switchSSLT(3,this)">3 bulan</button>
         </div>
       </div>
-      <div class="card">
-        <div class="tbl-wrap" id="tblContainer"></div>
+
+      <div class="eval-tbl-wrap">
+        <table class="eval-tbl">
+          <thead><tr>
+            <th>Indikator Permintaan</th>
+            <th class="num">Rata-rata/Bulan</th>
+            <th class="num">σ (Std Dev)</th>
+            <th class="num">Safety Stock</th>
+            <th class="num" id="ssThEst">Estimasi Bulan Depan</th>
+            <th class="num">Target Stok (Estimasi + Safety Stock)</th>
+          </tr></thead>
+          <tbody id="ssTableBody"></tbody>
+        </table>
       </div>
+
+      <div class="eval-note-box" style="margin-top:1rem">
+        <strong>Target Stok = Forecast + Safety Stock.</strong> Safety stock dihitung berdasarkan standar deviasi permintaan historis dan service level yang dipilih — bukan estimasi kasar. Detail metodologi tersedia pada halaman dokumentasi.
+      </div>
+    </div>
+
+    <!-- Rekomendasi Persediaan Hero (kesimpulan dari parameter di atas) -->
+    <div id="rekHero" style="margin-top:1rem"></div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ══ ⑧ TABEL DATA LENGKAP ══ -->
+  <div class="section">
+    <div class="section-hd">
+      <div>
+        <div class="section-label">⑧ Data Lengkap</div>
+        <div class="section-title">Tabel Data &amp; Prediksi Lengkap</div>
+        <div class="section-sub">Kolom biru = nilai prediksi · Digunakan sebagai acuan perencanaan stok darah PMI</div>
+      </div>
+      <div class="tabs" id="tblTabs">
+        <button class="tab active" onclick="switchTable('donor_gender',this)">Gender</button>
+        <button class="tab" onclick="switchTable('donor_goldar',this)">Golongan Darah</button>
+        <button class="tab" onclick="switchTable('donor_usia',this)">Usia</button>
+        <button class="tab" onclick="switchTable('permintaan_rs',this)">Permintaan RS</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap" id="tblContainer"></div>
     </div>
   </div>
 
   <footer>
     <span>Sumber: <a href="https://satudata.malangkota.go.id" target="_blank">Satu Data Kota Malang</a> · PMI Kota Malang</span>
-    <span id="footerMethod">Metode: Single Moving Average (MA-3) · Evaluasi: MFE, MAE, RMSE, MAPE (Hyndman &amp; Athanasopoulos, 2021) · Lewis (1982)</span>
+    <span id="footerMethod">Metode: Single Moving Average (MA-3) · Evaluasi: MAPE, MAE, RMSE, MFE</span>
   </footer>
 </div>
 
@@ -828,7 +856,7 @@ function renderTrenDonorChart(gkey){
     const active=sel&&sel.size>0;
     g.series.forEach((_,i)=>{const hide=active&&!sel.has(i);c.data.datasets[i*2].hidden=hide;c.data.datasets[i*2+1].hidden=hide;});
     c.update();
-  });
+  },{showToggle:true});
   const datasets=g.series.map((s,si)=>{
     const actualPad=[...s.data,...Array(steps).fill(null)];
     const fc=g.forecast?g.forecast[si]:null;
@@ -846,7 +874,7 @@ function renderTrenDonorChart(gkey){
     type:'line',data:{labels:allLabels,datasets},
     options:{responsive:true,maintainAspectRatio:false,plugins:{
       legend:{display:false},
-      datalabels:{display:(ctx)=>{const sel=isolatedSeries['trenDonor'];if(!sel||sel.size===0)return false;return sel.has(Math.floor(ctx.datasetIndex/2));}},
+      datalabels:{display:(ctx)=>shouldShowLabel('trenDonor',Math.floor(ctx.datasetIndex/2))},
       tooltip:{mode:'index',intersect:false,callbacks:{label:c=>{const v=c.raw;if(v==null)return null;const isP=c.dataset.label?.includes('(prediksi)');const name=isP?c.dataset.label.replace(' (prediksi)',''):c.dataset.label;return isP?` ${name}: ${fmt(v)} ⟶ est.`:` ${name}: ${fmt(v)}`;}}}
     },scales:{
       x:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11}}},
@@ -867,7 +895,7 @@ function renderReqChart(mode){
     const active=sel&&sel.size>0;
     g.series.forEach((_,i)=>{const hide=active&&!sel.has(i);c.data.datasets[i*2].hidden=hide;c.data.datasets[i*2+1].hidden=hide;});
     c.update();
-  });
+  },{showToggle:true});
   const reqDatasets=g.series.map((s,si)=>{
     const actualPad=[...s.data,...Array(steps).fill(null)];
     const fc=g.forecast?g.forecast[si]:null;
@@ -886,7 +914,7 @@ function renderReqChart(mode){
     data:{labels:allLabels,datasets:reqDatasets},
     options:{responsive:true,maintainAspectRatio:false,plugins:{
       legend:{display:false},
-      datalabels:{display:(ctx)=>{const sel=isolatedSeries['req'];if(!sel||sel.size===0)return false;return sel.has(Math.floor(ctx.datasetIndex/2));},color:'#fff',font:{size:9,weight:'700'}},
+      datalabels:{display:(ctx)=>shouldShowLabel('req',Math.floor(ctx.datasetIndex/2)),color:'#fff',font:{size:9,weight:'700'}},
       tooltip:{mode:'index',intersect:false,callbacks:{label:c=>{const v=c.raw;if(v==null)return null;return ` ${c.dataset.label}: ${fmt(v)} kantong`;}}}
     },scales:{
       x:{stacked:true,grid:{display:false},ticks:{font:{size:11}}},
@@ -947,10 +975,27 @@ function renderDonorVsPermintaanChart(){
   const donorIS = [...predsD, ...Array(steps).fill(null)];
   const permIS  = [...predsP, ...Array(steps).fill(null)];
 
+  // Legend manual (mode isolasi + toggle angka). Map idx legend -> index dataset chart.
+  const dvpLegendMap = [0,2,3,5]; // Donor Aktual, Donor Prediksi, Permintaan Aktual, Permintaan Prediksi
+  buildLegend('dvpLegend',null,'dvp',()=>{
+    const c=charts['dvp'];if(!c)return;
+    const sel=isolatedSeries['dvp'];
+    const active=sel&&sel.size>0;
+    dvpLegendMap.forEach((dsIdx,li)=>{ c.data.datasets[dsIdx].hidden=(active&&!sel.has(li)); });
+    c.update();
+  },{showToggle:true,manualLabels:[
+    {color:'#C0392B',label:'Donor Aktual'},
+    {color:'#C0392B',label:'Donor Prediksi',dashed:true},
+    {color:'#1F5FA6',label:'Permintaan Aktual'},
+    {color:'#1F5FA6',label:'Permintaan Prediksi',dashed:true}
+  ]});
+  const sel0=isolatedSeries['dvp']; const active0=sel0&&sel0.size>0;
+  const dsHidden = (li)=> active0 && !sel0.has(li);
+
   charts['dvp'] = new Chart(document.getElementById('dvpChart').getContext('2d'), {
     data:{labels: allLabels, datasets:[
       // Donor aktual
-      {type:'line', label:'Donor Aktual', data:donorActual,
+      {type:'line', label:'Donor Aktual', data:donorActual, hidden:dsHidden(0),
         borderColor:'#C0392B', backgroundColor:'rgba(192,57,43,0.08)', fill:true,
         tension:0.4, pointRadius:3.5, pointHoverRadius:7, pointBackgroundColor:'#C0392B',
         borderWidth:2.5, order:2, yAxisID:'yD'},
@@ -960,13 +1005,13 @@ function renderDonorVsPermintaanChart(){
         borderDash:[5,4], tension:0.4, pointRadius:0, pointHoverRadius:4,
         borderWidth:1.5, order:3, yAxisID:'yD'},
       // Donor prediksi ke depan
-      {type:'line', label:`Donor Prediksi (MA-${MA_WINDOW})`, data:donorFc,
+      {type:'line', label:`Donor Prediksi (MA-${MA_WINDOW})`, data:donorFc, hidden:dsHidden(1),
         borderColor:'#C0392B', backgroundColor:'rgba(192,57,43,0.05)', fill:true,
         borderDash:[6,3], tension:0.3, pointRadius:6, pointHoverRadius:9,
         pointBackgroundColor:'#C0392B', pointBorderColor:'#fff', pointBorderWidth:2,
         borderWidth:2, order:1, yAxisID:'yD'},
       // Permintaan aktual
-      {type:'line', label:'Permintaan Aktual', data:permActual,
+      {type:'line', label:'Permintaan Aktual', data:permActual, hidden:dsHidden(2),
         borderColor:'#1F5FA6', backgroundColor:'rgba(31,95,166,0.07)', fill:true,
         tension:0.4, pointRadius:3.5, pointHoverRadius:7, pointBackgroundColor:'#1F5FA6',
         borderWidth:2.5, order:2, yAxisID:'yP'},
@@ -976,7 +1021,7 @@ function renderDonorVsPermintaanChart(){
         borderDash:[5,4], tension:0.4, pointRadius:0, pointHoverRadius:4,
         borderWidth:1.5, order:3, yAxisID:'yP'},
       // Permintaan prediksi ke depan
-      {type:'line', label:`Permintaan Prediksi (MA-${MA_WINDOW})`, data:permFc,
+      {type:'line', label:`Permintaan Prediksi (MA-${MA_WINDOW})`, data:permFc, hidden:dsHidden(3),
         borderColor:'#1F5FA6', backgroundColor:'rgba(31,95,166,0.04)', fill:true,
         borderDash:[6,3], tension:0.3, pointRadius:6, pointHoverRadius:9,
         pointBackgroundColor:'#1F5FA6', pointBorderColor:'#fff', pointBorderWidth:2,
@@ -987,7 +1032,9 @@ function renderDonorVsPermintaanChart(){
       interaction:{mode:'index', intersect:false},
       plugins:{
         legend:{display:false},
-        datalabels:{display:false},
+        datalabels:{display:(ctx)=>{const rev={0:0,2:1,3:2,5:3}; const li=rev[ctx.datasetIndex]; if(li==null) return false; return shouldShowLabel('dvp',li);},
+          color:(ctx)=>ctx.dataset.borderColor, font:{size:9,weight:'700'},
+          formatter:(v)=>v==null?'':fmt(v)},
         tooltip:{
           callbacks:{
             label: c => {
@@ -1052,16 +1099,32 @@ function renderTotalDonorChart(){
   connData[n-1]=total[n-1];connData[n]=future[0];
   const fcData=Array(allLabels.length).fill(null);
   future.forEach((v,i)=>{fcData[n+i]=v;});
+  const tdLegendMap = [0,1,3]; // Aktual, In-sample MA, Prediksi ke depan
+  buildLegend('totalDonorLegend',null,'totalDonor',()=>{
+    const c=charts['totalDonor'];if(!c)return;
+    const sel=isolatedSeries['totalDonor'];
+    const active=sel&&sel.size>0;
+    tdLegendMap.forEach((dsIdx,li)=>{ c.data.datasets[dsIdx].hidden=(active&&!sel.has(li)); });
+    c.update();
+  },{showToggle:true,manualLabels:[
+    {color:'#C0392B',label:'Aktual'},
+    {color:'#457FCA',label:'In-sample MA',dashed:true},
+    {color:'#1A7A4A',label:'Prediksi ke depan'}
+  ]});
+  const selTd=isolatedSeries['totalDonor']; const activeTd=selTd&&selTd.size>0;
+  const tdHidden=(li)=>activeTd&&!selTd.has(li);
   charts['totalDonor']=new Chart(document.getElementById('totalDonorChart').getContext('2d'),{
     data:{labels:allLabels,datasets:[
-      {type:'line',label:'Aktual',data:actualData,borderColor:'#C0392B',backgroundColor:'rgba(192,57,43,0.07)',fill:true,tension:0.4,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:'#C0392B',borderWidth:2.5,order:1},
-      {type:'line',label:`In-sample MA(${MA_WINDOW})`,data:inSampleData,borderColor:'rgba(69,127,202,0.65)',backgroundColor:'transparent',borderDash:[5,4],tension:0.4,pointRadius:2,pointHoverRadius:5,pointBackgroundColor:'#457FCA',borderWidth:1.5,order:2},
+      {type:'line',label:'Aktual',data:actualData,hidden:tdHidden(0),borderColor:'#C0392B',backgroundColor:'rgba(192,57,43,0.07)',fill:true,tension:0.4,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:'#C0392B',borderWidth:2.5,order:1},
+      {type:'line',label:`In-sample MA(${MA_WINDOW})`,data:inSampleData,hidden:tdHidden(1),borderColor:'rgba(69,127,202,0.65)',backgroundColor:'transparent',borderDash:[5,4],tension:0.4,pointRadius:2,pointHoverRadius:5,pointBackgroundColor:'#457FCA',borderWidth:1.5,order:2},
       {type:'line',label:'_conn',data:connData,borderColor:'rgba(26,122,74,0.4)',backgroundColor:'transparent',borderDash:[3,3],tension:0,pointRadius:0,borderWidth:1.5,order:3},
-      {type:'line',label:`Prediksi ${steps} Bulan ke Depan`,data:fcData,borderColor:'#1A7A4A',backgroundColor:'rgba(26,122,74,0.09)',fill:true,tension:0.3,pointRadius:7,pointHoverRadius:9,pointBackgroundColor:'#1A7A4A',pointBorderColor:'#fff',pointBorderWidth:2,borderWidth:2.5,order:0}
+      {type:'line',label:`Prediksi ${steps} Bulan ke Depan`,data:fcData,hidden:tdHidden(2),borderColor:'#1A7A4A',backgroundColor:'rgba(26,122,74,0.09)',fill:true,tension:0.3,pointRadius:7,pointHoverRadius:9,pointBackgroundColor:'#1A7A4A',pointBorderColor:'#fff',pointBorderWidth:2,borderWidth:2.5,order:0}
     ]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{
       legend:{display:false},
-      datalabels:{display:false},
+      datalabels:{display:(ctx)=>{const rev={0:0,1:1,3:2}; const li=rev[ctx.datasetIndex]; if(li==null) return false; return shouldShowLabel('totalDonor',li);},
+        color:(ctx)=>ctx.dataset.borderColor, font:{size:9,weight:'700'},
+        formatter:(v)=>{const val=typeof v==='object'?v?.y:v; return val==null?'':fmt(val);}},
       tooltip:{mode:'index',intersect:false,filter:i=>i.dataset.label!=='_conn',callbacks:{label:c=>{if(c.dataset.label==='_conn')return null;const v=typeof c.raw==='object'?c.raw?.y:c.raw;if(v==null)return null;return ` ${c.dataset.label}: ${fmt(v)}`;}}}
     },scales:{
       x:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11}}},
@@ -1240,9 +1303,9 @@ function buildEvalSection(){
     ? ` ${highErrCount} indikator dengan data kecil masih kurang akurat — lihat kolom "Perlu perhatian".`
     : '';
   const reko=avgMape==null?'Data tidak cukup.'
-    :avgMape<10?`MA-${MA_WINDOW} sangat akurat (MAPE ${avgMape.toFixed(1)}%). Hasil forecasting digabung dengan safety stock untuk menentukan target stok.${caveat}`
-    :avgMape<=20?`MA-${MA_WINDOW} cukup akurat (MAPE ${avgMape.toFixed(1)}%). Hasil forecasting digabung dengan safety stock untuk menentukan target stok.${caveat}`
-    :`MAPE rata-rata ${avgMape.toFixed(1)}% (${mapeLabel(avgMape)}).${caveat} Hasil forecasting tetap digabung dengan safety stock untuk menentukan target stok.`;
+    :avgMape<10?`Model MA-${MA_WINDOW} menunjukkan akurasi yang sangat baik (MAPE ${avgMape.toFixed(1)}%). Untuk mendukung perencanaan persediaan darah, sistem menghitung kebutuhan cadangan (safety stock) sehingga diperoleh target stok yang direkomendasikan.${caveat}`
+    :avgMape<=20?`Model MA-${MA_WINDOW} menunjukkan akurasi yang baik (MAPE ${avgMape.toFixed(1)}%). Untuk mendukung perencanaan persediaan darah, sistem menghitung kebutuhan cadangan (safety stock) sehingga diperoleh target stok yang direkomendasikan.${caveat}`
+    :`Model MA-${MA_WINDOW}: MAPE rata-rata ${avgMape.toFixed(1)}% (${mapeLabel(avgMape)}).${caveat} Hasil forecasting tetap digabung dengan safety stock untuk menentukan target stok yang direkomendasikan.`;
   document.getElementById('evalSummary').innerHTML=`
     <div class="eval-box">
       <div class="eval-box-title">Estimasi ${fm[0]}</div>
@@ -1271,6 +1334,7 @@ function buildEvalSection(){
 // LT = lead time, dalam satuan bulan
 let SS_Z = 1.645;   // default service level 95%
 let SS_LT = 1;      // default lead time 1 bulan
+let SS_MONTH_IDX = 0; // index bulan prediksi yang dipilih (0..MA_WINDOW-1)
 
 function stdevPop(arr){
   const v = arr.filter(x=>x!=null);
@@ -1285,26 +1349,49 @@ function switchSSZ(z,btn){
   document.getElementById('ssZTabs').querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   buildSafetyStockSection();
+  buildRekHero();
 }
 function switchSSLT(lt,btn){
   SS_LT=lt;
   document.getElementById('ssLTTabs').querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   buildSafetyStockSection();
+  buildRekHero();
+}
+function switchSSMonth(idx,btn){
+  SS_MONTH_IDX=idx;
+  document.querySelectorAll('#ssMonthTabs .model-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  buildSafetyStockSection();
+  buildRekHero();
 }
 
 function buildSafetyStockSection(){
   const g = DATA.groups.permintaan_rs;
+  const fm = DATA.futureMonths;
+  if(SS_MONTH_IDX >= fm.length) SS_MONTH_IDX = 0;
+
+  // Bangun tab bulan prediksi — konsisten dengan pola fc-month-bar di bagian lain dashboard,
+  // supaya safety stock tidak hanya menampilkan 1 bulan ke depan saja melainkan semua bulan hasil MA-window aktif.
+  const tabsEl = document.getElementById('ssMonthTabs');
+  if(tabsEl){
+    tabsEl.innerHTML = fm.map((m,j)=>`<button class="model-tab${j===SS_MONTH_IDX?' active':''}" onclick="switchSSMonth(${j},this)">${m}</button>`).join('');
+  }
+  const descEl = document.getElementById('ssMonthDesc');
+  if(descEl) descEl.textContent = `Menampilkan safety stock & target stok untuk ${fm[SS_MONTH_IDX]} (MA-${MA_WINDOW})`;
+  const thEst = document.getElementById('ssThEst');
+  if(thEst) thEst.textContent = `Estimasi ${fm[SS_MONTH_IDX]}`;
+
   let html='';
-  let totalSS=0, totalTarget=0;
+  let totalSS=0, totalTarget=0, totalAvg=0;
   g.series.forEach((s,si)=>{
     const fc = g.forecast[si];
     const mean = s.data.reduce((a,b)=>a+(b||0),0)/s.data.length;
     const sd = stdevPop(s.data);
     const ss = Math.round(SS_Z * sd * Math.sqrt(SS_LT));
-    const estNext = fc.future[0];
+    const estNext = fc.future[SS_MONTH_IDX];
     const target = estNext + ss;
-    totalSS += ss; totalTarget += target;
+    totalSS += ss; totalTarget += target; totalAvg += mean;
     html += `<tr>
       <td><span style="display:inline-block;width:7px;height:7px;border-radius:2px;background:${s.color};margin-right:7px;vertical-align:middle"></span>${s.label}</td>
       <td class="num">${fmt(mean)}</td>
@@ -1314,27 +1401,16 @@ function buildSafetyStockSection(){
       <td class="num"><strong style="color:var(--red)">${fmt(target)}</strong></td>
     </tr>`;
   });
-  document.getElementById('ssTableBody').innerHTML = html;
-
-  const sl = SS_Z===1.282?'90%':SS_Z===2.326?'99%':'95%';
   const totalForecast = totalTarget - totalSS;
-  document.getElementById('ssSummary').innerHTML = `
-    <div class="eval-box">
-      <div class="eval-box-title">Forecast ${DATA.futureMonths[0]}</div>
-      <span class="eval-highlight" style="color:var(--amber)">${fmt(totalForecast)} kantong</span>
-      <p>Estimasi kebutuhan dari hasil forecasting MA-${MA_WINDOW}</p>
-    </div>
-    <div class="eval-box">
-      <div class="eval-box-title">Safety Stock</div>
-      <span class="eval-highlight" style="color:var(--blue)">${fmt(totalSS)} kantong</span>
-      <p>Buffer pada service level ${sl}, lead time ${SS_LT} bulan</p>
-    </div>
-    <div class="eval-box">
-      <div class="eval-box-title">Target Stok = Forecast + Safety Stock</div>
-      <span class="eval-highlight" style="color:var(--red)">${fmt(totalTarget)} kantong</span>
-      <p>Rekomendasi jumlah stok yang harus disiapkan PMI</p>
-    </div>
-  `;
+  html += `<tr class="tbl-total-row">
+    <td>Total Seluruh Bagian</td>
+    <td class="num">${fmt(totalAvg)}</td>
+    <td class="num">—</td>
+    <td class="num" style="color:var(--blue)">${fmt(totalSS)}</td>
+    <td class="num">${fmt(totalForecast)}</td>
+    <td class="num" style="color:var(--red)">${fmt(totalTarget)}</td>
+  </tr>`;
+  document.getElementById('ssTableBody').innerHTML = html;
 }
 
 // ── TABLE ─────────────────────────────────────────────────────────────────
@@ -1357,10 +1433,137 @@ function buildTable(gk){
 }
 function switchTable(gk,btn){setActiveTab('tblTabs',btn);buildTable(gk);}
 
+// ── RASIO DONOR VS PERMINTAAN BAR ─────────────────────────────────────────
+function buildRasioBar(){
+  const g = DATA.groups;
+  const totalDonor = g.donor_gender.series.reduce((s,sr)=>s+sr.data.reduce((a,b)=>a+(b||0),0),0);
+  const totalPerm  = g.permintaan_rs.series.reduce((s,sr)=>s+sr.data.reduce((a,b)=>a+(b||0),0),0);
+  const rasio = totalPerm > 0 ? (totalDonor/totalPerm*100).toFixed(1) : 0;
+  const el = document.getElementById('rasioBar');
+  if(!el) return;
+  const kurang = totalDonor < totalPerm;
+  el.innerHTML = `
+    <div style="background:${kurang?'var(--red-light)':'var(--green-light)'};border:1px solid ${kurang?'var(--red)':'var(--green)'};border-radius:var(--radius-sm);padding:.6rem 1rem;display:flex;align-items:center;gap:.6rem;font-size:12.5px">
+      <span style="font-size:1.1rem">${kurang?'📉':'📊'}</span>
+      <span><strong>Rasio Donor terhadap Permintaan: ${rasio}%</strong> — ${kurang?'Kebutuhan darah lebih tinggi dari jumlah donor yang tercatat sepanjang 2023–2025.':'Jumlah donor mencukupi total permintaan darah 2023–2025.'}</span>
+    </div>`;
+}
+
+// ── REKOMENDASI PERSEDIAAN HERO ───────────────────────────────────────────
+function buildRekHero(){
+  const g = DATA.groups.permintaan_rs;
+  const fm = DATA.futureMonths;
+  const idx = SS_MONTH_IDX || 0;
+  const safeIdx = Math.min(idx, fm.length-1);
+  let totalFc=0, totalSS=0;
+  g.series.forEach((s,si)=>{
+    const fc = g.forecast[si];
+    const sd = stdevPop(s.data);
+    const ss = Math.round(SS_Z * sd * Math.sqrt(SS_LT));
+    const estNext = fc.future[safeIdx];
+    totalFc += estNext;
+    totalSS += ss;
+  });
+  const totalTarget = totalFc + totalSS;
+  const sl = SS_Z===1.282?'90%':SS_Z===2.326?'99%':'95%';
+  const el = document.getElementById('rekHero');
+  if(!el) return;
+  el.innerHTML = `
+    <div class="rek-hero">
+      <div class="rek-hero-title">Rekomendasi Persediaan Darah</div>
+      <div class="rek-hero-sub">Berdasarkan forecasting MA-${MA_WINDOW} + safety stock (service level ${sl}) untuk ${fm[safeIdx]}</div>
+      <div class="rek-row">
+        <div class="rek-cell" style="border-top:3px solid var(--amber)">
+          <div class="rek-cell-icon">📦</div>
+          <div class="rek-cell-val" style="color:var(--amber)">${fmt(totalFc)}</div>
+          <div class="rek-cell-lbl">Prediksi Kebutuhan</div>
+          <div class="rek-cell-sub">kantong · ${fm[safeIdx]}</div>
+        </div>
+        <div class="rek-cell" style="border-top:3px solid var(--blue)">
+          <div class="rek-cell-icon">🛡️</div>
+          <div class="rek-cell-val" style="color:var(--blue)">${fmt(totalSS)}</div>
+          <div class="rek-cell-lbl">Safety Stock</div>
+          <div class="rek-cell-sub">cadangan · Z=${SS_Z.toFixed(3)}, LT=${SS_LT} bln</div>
+        </div>
+        <div class="rek-cell" style="border-top:3px solid var(--red);background:var(--red-light)">
+          <div class="rek-cell-icon">🩸</div>
+          <div class="rek-cell-val" style="color:var(--red)">${fmt(totalTarget)}</div>
+          <div class="rek-cell-lbl">Target Persediaan</div>
+          <div class="rek-cell-sub">kantong yang harus disiapkan PMI</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── INSIGHT OTOMATIS ──────────────────────────────────────────────────────
+function buildInsights(){
+  const g = DATA.groups;
+  const el = document.getElementById('insightGrid');
+  if(!el) return;
+
+  // Kelompok usia dominan donor
+  const usiaTotals = g.donor_usia.series.map(s=>({
+    label:s.label, total:s.data.reduce((a,b)=>a+(b||0),0),
+    mape: g.donor_usia.forecast[g.donor_usia.series.indexOf(s)]?.accuracy?.mape
+  }));
+  const domUsia = [...usiaTotals].sort((a,b)=>b.total-a.total)[0];
+  const domUsiaFc = g.donor_usia.forecast[usiaTotals.indexOf(domUsia)];
+
+  // Usia dengan akurasi tertinggi (MAPE terkecil, minimal data)
+  const usiaFcList = g.donor_usia.forecast.map((fc,i)=>({label:g.donor_usia.series[i].label,mape:fc.accuracy.mape}));
+  const bestUsia = usiaFcList.filter(x=>x.mape!=null&&x.mape<20).sort((a,b)=>a.mape-b.mape)[0];
+  const worstUsia = usiaFcList.filter(x=>x.mape!=null).sort((a,b)=>b.mape-a.mape)[0];
+
+  // Permintaan terbesar
+  const rsTotals = g.permintaan_rs.series.map((s,si)=>({
+    label:s.label, total:s.data.reduce((a,b)=>a+(b||0),0), fc:g.permintaan_rs.forecast[si]
+  }));
+  const domRS = [...rsTotals].sort((a,b)=>b.total-a.total)[0];
+  const domRSest = domRS?.fc?.future?.[0];
+  const fm = DATA.futureMonths;
+
+  const insights = [
+    {
+      cls:'ins-red',
+      icon:'❤️',
+      title:'Insight Donor',
+      text: bestUsia
+        ? `Donor didominasi kelompok usia <strong>${domUsia.label}</strong> dengan akurasi prediksi sangat baik (MAPE ${bestUsia.mape}%).`
+        : `Donor didominasi kelompok usia <strong>${domUsia.label}</strong>.`
+    },
+    {
+      cls:'ins-amber',
+      icon:'🔍',
+      title:'Insight Risiko',
+      text: worstUsia?.mape > 30
+        ? `Prediksi donor usia <strong>${worstUsia.label}</strong> memiliki tingkat kesalahan lebih tinggi (MAPE ${worstUsia.mape}%) — interpretasikan dengan hati-hati.`
+        : `Seluruh kelompok usia memiliki akurasi prediksi yang memadai. Indikator terbaik: <strong>${bestUsia?.label||'—'}</strong> (MAPE ${bestUsia?.mape||'—'}%).`
+    },
+    {
+      cls:'ins-blue',
+      icon:'🏥',
+      title:'Insight Permintaan',
+      text: domRS && domRSest
+        ? `Permintaan terbesar berasal dari <strong>${domRS.label}</strong> dengan estimasi sekitar <strong>${fmt(domRSest)} kantong</strong> pada ${fm[0]}.`
+        : `Permintaan terbesar berasal dari <strong>${domRS?.label||'—'}</strong>.`
+    }
+  ];
+
+  el.innerHTML = insights.map(ins=>`
+    <div class="insight-card ${ins.cls}">
+      <div class="insight-icon">${ins.icon}</div>
+      <div class="insight-body">
+        <div class="insight-title">${ins.title}</div>
+        <div class="insight-text">${ins.text}</div>
+      </div>
+    </div>`).join('');
+}
+
 // ── MODEL SWITCH ──────────────────────────────────────────────────────────
 function switchModel(w,btn){
   MA_WINDOW=w;
   FC_MONTH_IDX=0;
+  SS_MONTH_IDX=0;
   document.querySelectorAll('#modelTabs .model-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   const descs={
@@ -1370,20 +1573,37 @@ function switchModel(w,btn){
   };
   document.getElementById('modelDesc').textContent=descs[w]||'';
   document.getElementById('fcSectionTitle').textContent=`Tren Donor 2023–2025 & Estimasi ${w} Bulan ke Depan (MA-${w})`;
-  document.getElementById('footerMethod').textContent=`Metode: Single Moving Average (MA-${w}) · Evaluasi: MFE, MAE, RMSE, MAPE (Hyndman & Athanasopoulos, 2021) · Lewis (1982)`;
+  document.getElementById('footerMethod').textContent=`Metode: Single Moving Average (MA-${w}) · Evaluasi: MAPE, MAE, RMSE, MFE`;
   FC_MONTH_IDX=0;
   renderAll();
 }
 
-// ── LEGEND (mode isolasi) ───────────────────────────────────────────────
-function buildLegend(cid,series,chartId,onChange){
+// ── LEGEND (mode isolasi) + TOGGLE ANGKA ───────────────────────────────
+// showToggle: true = tampilkan tombol 👁 "Tampilkan Angka" di legend bar
+// manualLabels: array [{color,label}] untuk override legend manual (dvp/totalDonor)
+const manualLabelOn = {};
+function buildLegend(cid,series,chartId,onChange,opts){
+  opts = opts||{};
   const el=document.getElementById(cid);
-  el.innerHTML=series.map((s,i)=>`<span class="legend-item" onclick="toggleLegend(${i},'${cid}','${chartId}',this)" data-idx="${i}"><span class="legend-dot" style="background:${s.color}"></span>${s.label}</span>`).join('');
+  if(!el) return;
+  const items = (opts.manualLabels||series).map((s,i)=>
+    `<span class="legend-item" onclick="toggleLegend(${i},'${cid}','${chartId}',this)" data-idx="${i}">
+      <span class="legend-dot" style="background:${s.color};${s.dashed?'opacity:.55':''}"></span>${s.label}
+    </span>`
+  ).join('');
+  const toggleBtn = opts.showToggle
+    ? `<span class="lbl-toggle" id="lblToggle-${chartId}" onclick="toggleAllLabels('${chartId}')">👁 Tampilkan Angka</span>`
+    : '';
+  el.innerHTML = items + toggleBtn;
+  el.dataset.chartid = chartId;
   el._onChange=onChange;
+  if(!isolatedSeries[chartId]) isolatedSeries[chartId]=new Set();
+  manualLabelOn[chartId]=manualLabelOn[chartId]||false;
   applyIsolateOpacity(cid,chartId);
 }
 function applyIsolateOpacity(cid,chartId){
   const el=document.getElementById(cid);
+  if(!el) return;
   const sel=isolatedSeries[chartId];
   const active=sel&&sel.size>0;
   el.querySelectorAll('.legend-item').forEach(item=>{
@@ -1392,18 +1612,40 @@ function applyIsolateOpacity(cid,chartId){
     item.style.opacity=(!active||isSel)?'1':'0.35';
     item.style.fontWeight=isSel?'700':'600';
   });
+  const btn=document.getElementById('lblToggle-'+chartId);
+  if(btn){
+    // sembunyikan toggle jika ada pilihan legend (angka sudah auto-muncul lewat seleksi)
+    btn.style.display=active?'none':'';
+  }
 }
 function toggleLegend(idx,cid,chartId,el){
   if(!isolatedSeries[chartId]) isolatedSeries[chartId]=new Set();
   const sel=isolatedSeries[chartId];
   sel.has(idx) ? sel.delete(idx) : sel.add(idx);
+  if(sel.size>0 && manualLabelOn[chartId]) manualLabelOn[chartId]=false;
   applyIsolateOpacity(cid,chartId);
   const c=document.getElementById(cid);
   if(c._onChange) c._onChange();
 }
+// Toggle semua angka sekaligus (tombol 👁)
+function toggleAllLabels(chartId){
+  manualLabelOn[chartId]=!manualLabelOn[chartId];
+  const btn=document.getElementById('lblToggle-'+chartId);
+  if(btn) btn.classList.toggle('active', manualLabelOn[chartId]);
+  const c=charts[chartId];
+  if(c) c.update();
+}
 function setActiveTab(cid,btn){
   document.getElementById(cid).querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
+}
+// Helper: apakah datalabels harus aktif untuk index legend tertentu di chart
+function shouldShowLabel(chartId, legendIdx){
+  const sel=isolatedSeries[chartId];
+  const hasIso=sel&&sel.size>0;
+  if(hasIso) return sel.has(legendIdx);
+  if(manualLabelOn[chartId]) return true;
+  return false;
 }
 
 // ── RENDER ALL ────────────────────────────────────────────────────────────
@@ -1433,6 +1675,9 @@ function renderAll(){
   });
   buildEvalSection();
   buildSafetyStockSection();
+  buildRasioBar();
+  buildRekHero();
+  buildInsights();
   const activeTable=document.querySelector('#tblTabs .tab.active');
   const tblMap={'Gender':'donor_gender','Golongan Darah':'donor_goldar','Usia':'donor_usia','Permintaan RS':'permintaan_rs'};
   buildTable(tblMap[activeTable?.textContent?.trim()]||'donor_gender');

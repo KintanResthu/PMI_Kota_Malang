@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>PMI Kota Malang — Sistem Analisis dan Prediksi Donor Darah</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -85,8 +86,8 @@ a{color:var(--red);text-decoration:none}
 
 /* LEGEND */
 .legend{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:.9rem}
-.legend-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);cursor:pointer;user-select:none;transition:opacity .15s}
-.legend-item:hover{color:var(--text)}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted);cursor:pointer;user-select:none;transition:opacity .15s,font-weight .15s;border-radius:99px;padding:3px 9px}
+.legend-item:hover{color:var(--text);background:var(--surface2)}
 .legend-dot{width:9px;height:9px;border-radius:3px;flex-shrink:0}
 .chart-wrap{position:relative;width:100%}
 
@@ -203,7 +204,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       </div>
     </div>
     <div class="header-meta">
-      <span class="badge badge-data"> Data 2025 · Jan–Des</span>
+      <span class="badge badge-data"> Data 2023–2025 · Jan–Des</span>
       <span class="badge badge-source">PMI Kota Malang</span>
     </div>
   </div>
@@ -219,8 +220,8 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     <div class="section-hd">
       <div>
         <div class="section-label">① Overview Data</div>
-        <div class="section-title">Ringkasan Data PMI Kota Malang 2025</div>
-        <div class="section-sub">Statistik keseluruhan donor dan permintaan darah sepanjang Januari–Desember 2025</div>
+        <div class="section-title">Ringkasan Data PMI Kota Malang 2023–2025</div>
+        <div class="section-sub">Statistik keseluruhan donor dan permintaan darah sepanjang Januari 2023–Desember 2025</div>
       </div>
     </div>
     <div class="kpi-grid" id="kpiGrid"></div>
@@ -232,9 +233,9 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
   <div class="section">
     <div class="section-hd">
       <div>
-        <div class="section-label">② Komposisi Donor 2025</div>
+        <div class="section-label">② Komposisi Donor 2023–2025</div>
         <div class="section-title">Distribusi Golongan Darah, Kelompok Usia &amp; Jenis Kelamin</div>
-        <div class="section-sub">Proporsi total donor sepanjang Januari–Desember 2025 berdasarkan golongan darah, kelompok usia, dan jenis kelamin</div>
+        <div class="section-sub">Proporsi total donor sepanjang Januari 2023–Desember 2025 berdasarkan golongan darah, kelompok usia, dan jenis kelamin</div>
       </div>
     </div>
     <div class="grid-3">
@@ -274,7 +275,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     <div class="section-hd">
       <div>
         <div class="section-label">① Perbandingan Donor &amp; Permintaan</div>
-        <div class="section-title">Total Donor vs Total Permintaan Darah 2025 &amp; Prediksi</div>
+        <div class="section-title">Total Donor vs Total Permintaan Darah 2023–2025 &amp; Prediksi</div>
         <div class="section-sub">Perbandingan tren aktual dan prediksi Moving Average antara jumlah pendonor (orang) dan permintaan darah (kantong) — ikut pengaturan MA yang aktif</div>
       </div>
       <span class="fc-zone-badge"><span class="stripe"></span> Zona biru = prediksi</span>
@@ -298,7 +299,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     <div class="section-hd">
       <div>
         <div class="section-label">③ Analisis &amp; Forecasting Donor</div>
-        <div class="section-title" id="fcSectionTitle">Tren Donor 2025 &amp; Estimasi 3 Bulan ke Depan (MA-3)</div>
+        <div class="section-title" id="fcSectionTitle">Tren Donor 2023–2025 &amp; Estimasi 3 Bulan ke Depan (MA-3)</div>
         <div class="section-sub">Data Donor Darah — satuan: pendonor (orang) </div>
       </div>
       <span class="fc-zone-badge"><span class="stripe"></span> Zona biru = prediksi</span>
@@ -348,7 +349,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     <div class="section-hd">
       <div>
         <div class="section-label">④ Analisis &amp; Forecasting Permintaan Darah</div>
-        <div class="section-title">Tren Permintaan Darah 2025 &amp; Estimasi ke Depan</div>
+        <div class="section-title">Tren Permintaan Darah 2023–2025 &amp; Estimasi ke Depan</div>
         <div class="section-sub">Data permintaan darah dari rumah sakit — satuan: kantong (1 kantong ≈ 350–450 ml)</div>
       </div>
     </div>
@@ -392,7 +393,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       <div>
         <div class="section-label">⑤ Evaluasi &amp; Data Lengkap</div>
         <div class="section-title">Evaluasi Akurasi Model Prediksi</div>
-        <div class="section-sub">Perbandingan hasil prediksi dengan data aktual 2025 — Lewis (1982)</div>
+        <div class="section-sub">Perbandingan hasil prediksi dengan data aktual 2023–2025 — Lewis (1982)</div>
       </div>
     </div>
 
@@ -411,7 +412,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     <div class="eval-card">
       <div class="eval-header">
         <div class="eval-title" id="evalModelTitle">Evaluasi Model MA-3</div>
-        <div class="eval-desc">Metrik akurasi dihitung dari selisih antara prediksi in-sample vs data aktual sepanjang 2025. Referensi: <strong>Lewis (1982)</strong> untuk klasifikasi MAPE, <strong>Hyndman &amp; Athanasopoulos (2021)</strong> untuk metrik MAPE/MAE/RMSE.</div>
+        <div class="eval-desc">Metrik akurasi dihitung dari selisih antara prediksi in-sample (SMA) vs data aktual sepanjang 2023–2025, menggunakan metrik standar forecasting <strong>MFE, MAE, RMSE, MAPE</strong> (Hyndman &amp; Athanasopoulos, 2021). Referensi klasifikasi MAPE: <strong>Lewis (1982)</strong>. Metode peramalan mengacu pada Kemal Farouq &amp; Jayyidah (2022), JIPI Vol.07 No.04.</div>
       </div>
 
       <div class="mape-legend">
@@ -422,7 +423,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       </div>
 
       <div class="eval-note-box">
-        <strong>Interpretasi:</strong> MAPE 10% artinya prediksi model rata-rata meleset ~10% dari angka aktual. MAE = rata-rata selisih absolut (dalam satuan asli). RMSE = lebih sensitif terhadap outlier. R² <em>bukan metrik utama</em> untuk Moving Average — R² negatif berarti model lebih buruk dari sekadar menebak rata-rata data.
+        <strong>Interpretasi:</strong> MAPE = rata-rata persentase kesalahan prediksi terhadap data aktual. MAE (Mean Absolute Error) = rata-rata selisih absolut (dalam satuan asli, mudah dibaca). RMSE (Root Mean Square Error) = akar rata-rata kuadrat selisih, lebih sensitif terhadap outlier. MFE (Mean Forecast Error) menunjukkan bias model — positif berarti cenderung under-estimasi, negatif berarti over-estimasi.
       </div>
 
       <div class="eval-tbl-wrap">
@@ -431,6 +432,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
             <th>Indikator</th>
             <th>Kelompok</th>
             <th class="num">MAPE (%)</th>
+            <th class="num">MFE</th>
             <th class="num">MAE</th>
             <th class="num">RMSE</th>
             <th>Kategori</th>
@@ -440,6 +442,61 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       </div>
 
       <div class="eval-summary" id="evalSummary"></div>
+    </div>
+
+    <!-- ── SAFETY STOCK / REKOMENDASI MANAJERIAL ── -->
+    <div class="section" style="margin-top:1.5rem">
+      <div class="section-label">④ Rekomendasi Manajerial <span class="num-badge">Safety Stock</span></div>
+      <div class="eval-card">
+        <div class="eval-header">
+          <div class="eval-title">Buffer Persediaan Darah (Safety Stock)</div>
+          <div class="eval-desc">
+            Selain hasil forecasting MA, dashboard ini menghitung <strong>safety stock</strong> sebagai rekomendasi manajerial berdasarkan teori manajemen persediaan (inventory management), untuk mengantisipasi fluktuasi permintaan darah dan meminimalkan risiko kekurangan stok.
+          </div>
+        </div>
+
+        <div class="eval-note-box" style="font-family:'DM Serif Display',serif;font-size:14px;text-align:center;letter-spacing:.02em">
+          Safety Stock&nbsp;=&nbsp;Z&nbsp;×&nbsp;σ&nbsp;×&nbsp;√LT
+        </div>
+        <div class="eval-desc" style="margin:-.3rem 0 1rem;text-align:center">
+          <strong>Z</strong> = nilai service level &nbsp;·&nbsp; <strong>σ</strong> = standar deviasi permintaan bulanan &nbsp;·&nbsp; <strong>LT</strong> = lead time (bulan)
+        </div>
+
+        <div class="fc-month-bar" style="margin-bottom:1.1rem">
+          <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em">Service Level (Z)</span>
+          <div class="tabs" id="ssZTabs">
+            <button class="tab" onclick="switchSSZ(1.282,this)">90% (Z=1,28)</button>
+            <button class="tab active" onclick="switchSSZ(1.645,this)">95% (Z=1,65)</button>
+            <button class="tab" onclick="switchSSZ(2.326,this)">99% (Z=2,33)</button>
+          </div>
+          <span style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-left:.5rem">Lead Time</span>
+          <div class="tabs" id="ssLTTabs">
+            <button class="tab active" onclick="switchSSLT(1,this)">1 bulan</button>
+            <button class="tab" onclick="switchSSLT(2,this)">2 bulan</button>
+            <button class="tab" onclick="switchSSLT(3,this)">3 bulan</button>
+          </div>
+        </div>
+
+        <div class="eval-tbl-wrap">
+          <table class="eval-tbl">
+            <thead><tr>
+              <th>Indikator Permintaan</th>
+              <th class="num">Rata-rata/Bulan</th>
+              <th class="num">σ (Std Dev)</th>
+              <th class="num">Safety Stock</th>
+              <th class="num">Estimasi Bulan Depan</th>
+              <th class="num">Target Stok (Estimasi + Safety Stock)</th>
+            </tr></thead>
+            <tbody id="ssTableBody"></tbody>
+          </table>
+        </div>
+
+        <div class="eval-summary" id="ssSummary"></div>
+
+        <div class="eval-note-box" style="margin-top:1rem">
+          <strong>Catatan akademik:</strong> Penambahan buffer persediaan ini didasarkan pada konsep <em>safety stock</em> dalam manajemen persediaan untuk mengantisipasi fluktuasi permintaan darah dan meminimalkan risiko kekurangan stok (Jennings, 1973; Dillon et al., 2017). Safety stock berfungsi mengatasi lonjakan permintaan, ketidakpastian pasokan donor, dan mencegah <em>stockout</em>, sehingga target persediaan darah yang direkomendasikan merupakan hasil penjumlahan antara estimasi kebutuhan berdasarkan forecasting dan nilai safety stock (<strong>Target Stok = Forecast + Safety Stock</strong>).
+        </div>
+      </div>
     </div>
 
     <!-- Tabel data lengkap menyatu di blok evaluasi -->
@@ -464,7 +521,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
 
   <footer>
     <span>Sumber: <a href="https://satudata.malangkota.go.id" target="_blank">Satu Data Kota Malang</a> · PMI Kota Malang</span>
-    <span id="footerMethod">Metode: Moving Average (MA-3) · Evaluasi: MAPE, MAE, RMSE · Lewis (1982) · Hyndman &amp; Athanasopoulos (2021)</span>
+    <span id="footerMethod">Metode: Single Moving Average (MA-3) · Evaluasi: MFE, MAE, RMSE, MAPE (Hyndman &amp; Athanasopoulos, 2021) · Lewis (1982)</span>
   </footer>
 </div>
 
@@ -473,30 +530,45 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
 let MA_WINDOW = 3;
 let FC_MONTH_IDX = 0; // index bulan yang dipilih untuk kartu prediksi
 
+// ── DATALABELS PLUGIN (angka tampil langsung di chart, bukan cuma saat hover) ──
+if (window.ChartDataLabels) Chart.register(window.ChartDataLabels);
+Chart.defaults.set('plugins.datalabels', {
+  display: false,
+  color: '#7A6A55',
+  font: { size: 9, weight: '600', family: "'DM Sans',sans-serif" },
+  align: 'top',
+  offset: 4,
+  formatter: (v) => (v==null || isNaN(v)) ? '' : Math.round(v).toLocaleString('id-ID')
+});
+
 // ── DATA ─────────────────────────────────────────────────────────────────
 const MONTHS = [
+  "2023 Jan","2023 Feb","2023 Mar","2023 Apr","2023 Mei","2023 Juni",
+  "2023 Juli","2023 Agust","2023 Sept","2023 Okt","2023 Nov","2023 Des",
+  "2024 Jan","2024 Feb","2024 Mar","2024 Apr","2024 Mei","2024 Juni",
+  "2024 Juli","2024 Agust","2024 Sept","2024 Okt","2024 Nov","2024 Des",
   "2025 Jan","2025 Feb","2025 Mar","2025 Apr","2025 Mei","2025 Juni",
   "2025 Juli","2025 Agust","2025 Sept","2025 Okt","2025 Nov","2025 Des"
 ];
 const RAW = {
-  "1.01":[3061,3045,3677,2560,3000,2871,2513,3661,2632,2493,2644,2605],
-  "1.02":[1628,1554,2127,1756,2222,1945,1766,2632,2493,1809,1985,1755],
-  "2.01":[141,146,136,139,142,127,182,131,158,149,138,140],
-  "2.02":[180,168,164,183,205,214,241,240,215,158,162,170],
-  "2.03":[1199,1020,957,1042,1123,975,886,963,871,801,849,913],
-  "2.04":[153,91,69,87,42,117,92,66,78,57,76,51],
-  "2.05":[6861,5796,7688,6698,5988,6120,6289,5883,5957,5938,5913,6281],
-  "3.01":[114,126,199,161,129,144,82,72,111,118,146,136],
-  "3.02":[6900,5761,7558,6624,5901,6093,6299,5877,5924,5877,5843,6196],
-  "4.01":[1077,1028,1310,990,1234,1110,993,1415,1089,978,1024,977],
-  "4.02":[1433,1439,1774,1333,1601,1524,1276,1916,1457,1334,1449,1330],
-  "4.03":[1857,1804,2333,1705,2023,1852,1711,2438,1859,1673,1854,1751],
-  "4.04":[322,328,387,288,364,330,299,402,351,317,302,302],
-  "5.01":[12,39,10,26,25,30,28,63,28,42,38,15],
-  "5.02":[618,1138,821,765,1127,930,636,1509,1050,787,903,702],
-  "5.03":[2388,1997,2684,2023,2390,2240,2103,2581,2089,1996,2176,2129],
-  "5.04":[1663,1420,2274,1499,1678,1647,1503,2009,1580,1472,1510,1511],
-  "5.05":[8,5,15,3,2,5,9,9,9,5,2,3],
+  "1.01":[3114,2625,2655,2877,3082,3023,2995,3831,3288,3281,3309,2989,3543,3083,3726,2639,3362,3203,2853,3317,3552,3084,3385,3192,3061,3045,3677,2560,3000,2871,2513,3661,2632,2493,2644,2605],
+  "1.02":[1556,1354,1446,1731,1719,1785,1407,1622,1721,1658,1732,1561,1514,1506,2476,1071,1788,1589,1584,2055,1872,1806,1793,1533,1628,1554,2127,1756,2222,1945,1766,2632,2493,1809,1985,1755],
+  "2.01":[130,92,112,76,103,181,103,116,107,114,102,130,159,103,146,115,164,197,159,172,172,137,167,184,141,146,136,139,142,127,182,131,158,149,138,140],
+  "2.02":[288,255,304,307,301,248,269,205,244,218,259,278,297,276,275,296,254,227,299,263,221,229,285,241,180,168,164,183,205,214,241,240,215,158,162,170],
+  "2.03":[1281,1109,1192,1053,1240,1226,1266,1182,1202,1303,1176,1140,1385,1173,1346,1175,1399,1328,1268,1341,1171,1421,1187,1196,1199,1020,957,1042,1123,975,886,963,871,801,849,913],
+  "2.04":[99,107,146,72,79,86,79,74,83,71,66,110,53,88,162,110,92,97,104,108,94,83,76,128,153,91,69,87,42,117,92,66,78,57,76,51],
+  "2.05":[4774,4563,4533,6051,5881,5081,4942,5089,4998,5863,5038,4662,5458,5167,5260,5002,4918,4626,5419,4829,5173,5350,5152,5140,6861,5796,7688,6698,5988,6120,6289,5883,5957,5938,5913,6281],
+  "3.01":[445,152,76,155,221,116,201,223,126,221,254,234,153,148,118,163,126,154,213,152,126,134,102,189,114,126,199,161,129,144,82,72,111,118,146,136],
+  "3.02":[6127,5974,6211,7404,7383,6706,6458,6443,6508,7348,6387,6086,7199,6659,7071,6535,6701,6321,7036,6561,6705,7086,6765,6700,6900,5761,7558,6624,5901,6093,6299,5877,5924,5877,5843,6196],
+  "4.01":[1084,897,915,1041,1086,1064,962,1252,1102,1113,1095,1028,1110,1064,1406,852,1146,1092,1010,1229,1205,1124,1139,1053,1077,1028,1310,990,1234,1110,993,1415,1089,978,1024,977],
+  "4.02":[1462,1165,1298,1429,1473,1476,1440,1689,1600,1470,1625,1370,1640,1421,1876,1162,1513,1483,1371,1657,1675,1562,1582,1501,1433,1439,1774,1333,1601,1524,1276,1916,1457,1334,1449,1330],
+  "4.03":[1802,1629,1609,1818,1901,1906,1694,2092,1959,2010,1961,1814,1984,1790,2485,1444,2096,1903,1750,2107,2149,1868,2089,1858,1857,1804,2333,1705,2023,1852,1711,2438,1859,1673,1854,1751],
+  "4.04":[322,288,279,320,341,362,306,420,348,346,360,338,323,314,435,252,395,314,306,379,395,336,368,313,322,328,387,288,364,330,299,402,351,317,302,302],
+  "5.01":[46,8,18,7,45,12,11,30,52,26,17,31,41,37,17,6,13,21,10,18,24,24,17,29,12,39,10,26,25,30,28,63,28,42,38,15],
+  "5.02":[1142,846,881,665,1399,1018,699,1330,1236,1154,1219,796,1552,763,1254,642,1135,957,741,830,1158,1257,1067,675,618,1138,821,765,1127,930,636,1509,1050,787,903,702],
+  "5.03":[2010,1911,1848,2085,1967,2204,2162,2351,2199,2154,2205,2128,2010,2288,2723,1708,2320,2181,2184,2575,2527,2078,2390,2329,2388,1997,2684,2023,2390,2240,2103,2581,2089,1996,2176,2129],
+  "5.04":[1464,1207,1346,1828,1381,1569,1523,1735,1514,1603,1591,1588,1448,1498,2195,1346,1677,1625,1496,1944,1711,1522,1696,1683,1663,1420,2274,1499,1678,1647,1503,2009,1580,1472,1510,1511],
+  "5.05":[8,7,8,23,9,5,7,7,8,2,9,7,6,3,13,8,5,8,6,5,4,9,8,9,8,5,15,3,2,5,9,9,9,5,2,3],
 };
 const GROUPS = {
   donor_gender:{title:"Donor — Jenis Kelamin",unit:"orang",ids:["1.01","1.02"],labels:["Laki-laki","Perempuan"],colors:["#C0392B","#457FCA"]},
@@ -543,15 +615,24 @@ function maFuture(arr,w,steps){
 }
 
 // ── ACCURACY ─────────────────────────────────────────────────────────────
+// Metrik akurasi standar forecasting (Hyndman & Athanasopoulos, 2021) — lebih lazim dipakai
+// dan lebih mudah diinterpretasi reviewer/dosen statistik dibanding versi non-standar di paper acuan:
+// MFE  = rata-rata error bertanda (deteksi bias over/under-estimasi)
+// MAE  = rata-rata |error| (satuan asli, mudah dibaca)
+// RMSE = akar rata-rata error^2 (satuan asli, sensitif ke outlier)
+// MAPE = rata-rata |error|/aktual * 100
+// Pembagi memakai jumlah pasangan data yang benar-benar valid (bukan total - bobot),
+// supaya konsisten dengan definisi standar di buku teks forecasting.
 function accuracy(actual,preds){
   const pairs=actual.map((a,i)=>[a,preds[i]]).filter(([a,p])=>a!=null&&p!=null);
-  if(!pairs.length) return {mape:null,mae:null,rmse:null,n:0};
-  const nonzero=pairs.filter(([a])=>a!==0);
+  if(!pairs.length) return {mape:null,mfe:null,mae:null,rmse:null,n:0};
   const n=pairs.length;
-  const mape=nonzero.length ? nonzero.reduce((s,[a,p])=>s+Math.abs((a-p)/a),0)/nonzero.length*100 : null;
-  const mae=pairs.reduce((s,[a,p])=>s+Math.abs(a-p),0)/n;
-  const rmse=Math.sqrt(pairs.reduce((s,[a,p])=>s+(a-p)**2,0)/n);
-  return{mape:mape!=null?+mape.toFixed(2):null,mae:+mae.toFixed(1),rmse:+rmse.toFixed(1),n};
+  const nonzero=pairs.filter(([a])=>a!==0);
+  const mfe = pairs.reduce((s,[a,p])=>s+(a-p),0)/n;
+  const mae = pairs.reduce((s,[a,p])=>s+Math.abs(a-p),0)/n;
+  const rmse= Math.sqrt(pairs.reduce((s,[a,p])=>s+(a-p)**2,0)/n);
+  const mape= nonzero.length ? (nonzero.reduce((s,[a,p])=>s+Math.abs((a-p)/a)*100,0)/nonzero.length) : null;
+  return{mape:mape!=null?+mape.toFixed(2):null,mfe:+mfe.toFixed(1),mae:+mae.toFixed(1),rmse:+rmse.toFixed(1),n};
 }
 
 function mapeClass(m){if(m==null)return'';if(m<10)return'mape-good';if(m<=20)return'mape-ok';if(m<=50)return'mape-fair';return'mape-bad';}
@@ -595,6 +676,13 @@ function fzPlugin(n){
   }};
 }
 
+// ── ISOLASI / MULTI-SELECT GARIS + ANGKA OTOMATIS ───────────────────────
+// Klik nama kategori di legenda -> toggle tampil/sembunyi kategori itu.
+// Bisa pilih LEBIH DARI 1 kategori sekaligus (misal klik "Laki-laki" lalu klik
+// "Perempuan" juga) untuk membandingkan beberapa garis + angkanya bersamaan.
+// Klik semua kategori yang lagi aktif sampai kosong -> kembali tampilkan semua garis (tanpa angka).
+const isolatedSeries = {}; // { chartId: Set<idx> } — Set kosong/tidak ada = tampilkan semua
+
 function killChart(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
 
 // ── KPI AUTO-ROTATE ───────────────────────────────────────────────────────
@@ -612,20 +700,20 @@ function buildKPI(){
     <div class="kpi">
       <div class="kpi-icon">❤️</div>
       <div class="kpi-val" style="color:var(--red)">${fmt(totalDonor)}</div>
-      <div class="kpi-lbl">Total Donor 2025</div>
-      <div class="kpi-sub">orang · Jan–Des 2025</div>
+      <div class="kpi-lbl">Total Donor 2023–2025</div>
+      <div class="kpi-sub">orang · Jan 2023–Des 2025</div>
     </div>
     <div class="kpi">
       <div class="kpi-icon">🩸</div>
       <div class="kpi-val" style="color:var(--blue)">${fmt(totalPerm)}</div>
-      <div class="kpi-lbl">Total Permintaan Darah 2025</div>
-      <div class="kpi-sub">kantong · Jan–Des 2025</div>
+      <div class="kpi-lbl">Total Permintaan Darah 2023–2025</div>
+      <div class="kpi-sub">kantong · Jan 2023–Des 2025</div>
     </div>
     <div class="kpi">
       <div class="kpi-icon">📅</div>
       <div class="kpi-val" style="color:var(--green)">${fmt(avgDonor)}</div>
       <div class="kpi-lbl">Rata-rata Donor/Bulan</div>
-      <div class="kpi-sub">orang/bulan · 2025</div>
+      <div class="kpi-sub">orang/bulan · 2023–2025</div>
     </div>
     <div class="kpi kpi-fc-carousel" id="kpiFcCard" style="cursor:pointer;user-select:none;position:relative;overflow:hidden" onclick="kpiCarouselStep(1)" title="Klik untuk bulan berikutnya">
       <div style="position:absolute;top:7px;right:10px;display:flex;gap:4px;align-items:center" id="kpiFcDots"></div>
@@ -689,9 +777,26 @@ function renderPies(){
     charts[id]=new Chart(document.getElementById(id).getContext('2d'),{
       type:'doughnut',
       data:{labels:g.series.map(s=>s.label),datasets:[{data:tots,backgroundColor:g.colors.map(c=>c+'DD'),borderColor:g.colors,borderWidth:2,hoverOffset:8}]},
-      options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{
+      options:{responsive:true,maintainAspectRatio:false,cutout:'62%',layout:{padding:8},plugins:{
         legend:{position:'bottom',labels:{font:{size:11},padding:9,boxWidth:9,boxHeight:9}},
-        tooltip:{callbacks:{label:c=>` ${c.label}: ${fmt(c.raw)} (${grand?((c.raw/grand)*100).toFixed(1):'0.0'}%)`}}
+        tooltip:{callbacks:{label:c=>` ${c.label}: ${fmt(c.raw)} (${grand?((c.raw/grand)*100).toFixed(1):'0.0'}%)`}},
+        datalabels:{
+          display:true,
+          color:'#fff',
+          font:{size:10,weight:'700'},
+          anchor:'center',
+          align:'center',
+          offset:0,
+          clip:true,
+          clamp:true,
+          textStrokeColor:'rgba(0,0,0,0.25)',
+          textStrokeWidth:2,
+          formatter:(v)=>{
+            if(!grand) return '';
+            const pct=(v/grand)*100;
+            return pct<5 ? '' : pct.toFixed(1)+'%'; // sembunyikan label di slice yang terlalu kecil biar tidak numpuk
+          }
+        }
       }}
     });
   };
@@ -705,6 +810,7 @@ function setTrenMode(key,btn){
   trenDonorMode=key;
   document.querySelectorAll('#trenTabsRow .tren-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
+  isolatedSeries['trenDonor']=new Set(); // reset pilihan legend saat ganti kategori
   renderTrenDonorChart(key);
   // Tampilkan hanya card forecasting yang sesuai dengan tab aktif
   ['donor_gender','donor_goldar','donor_usia'].forEach(k=>{
@@ -716,10 +822,12 @@ function renderTrenDonorChart(gkey){
   killChart('trenDonor');
   const g=DATA.groups[gkey], n=MONTHS.length, fm=DATA.futureMonths, steps=MA_WINDOW;
   const allLabels=[...MONTHS,...fm];
-  const hidden={};
-  buildLegend('trenLegend',g.series,hidden,()=>{
+  buildLegend('trenLegend',g.series,'trenDonor',()=>{
     const c=charts['trenDonor'];if(!c)return;
-    g.series.forEach((_,i)=>{c.data.datasets[i*2].hidden=!!hidden[i];c.data.datasets[i*2+1].hidden=!!hidden[i];});c.update();
+    const sel=isolatedSeries['trenDonor'];
+    const active=sel&&sel.size>0;
+    g.series.forEach((_,i)=>{const hide=active&&!sel.has(i);c.data.datasets[i*2].hidden=hide;c.data.datasets[i*2+1].hidden=hide;});
+    c.update();
   });
   const datasets=g.series.map((s,si)=>{
     const actualPad=[...s.data,...Array(steps).fill(null)];
@@ -731,10 +839,14 @@ function renderTrenDonorChart(gkey){
       {label:`${s.label} (prediksi)`,data:futurePad,borderColor:s.color,backgroundColor:'transparent',borderDash:[5,4],fill:false,tension:0.3,pointRadius:5,pointHoverRadius:7,pointBackgroundColor:s.color,pointBorderColor:'#fff',pointBorderWidth:1.5,borderWidth:1.5}
     ];
   }).flat();
+  const sel0=isolatedSeries['trenDonor'];
+  const active0=sel0&&sel0.size>0;
+  datasets.forEach((ds,i)=>{ const seriesIdx=Math.floor(i/2); ds.hidden=(active0&&!sel0.has(seriesIdx)); });
   charts['trenDonor']=new Chart(document.getElementById('trenDonorChart').getContext('2d'),{
     type:'line',data:{labels:allLabels,datasets},
     options:{responsive:true,maintainAspectRatio:false,plugins:{
       legend:{display:false},
+      datalabels:{display:(ctx)=>{const sel=isolatedSeries['trenDonor'];if(!sel||sel.size===0)return false;return sel.has(Math.floor(ctx.datasetIndex/2));}},
       tooltip:{mode:'index',intersect:false,callbacks:{label:c=>{const v=c.raw;if(v==null)return null;const isP=c.dataset.label?.includes('(prediksi)');const name=isP?c.dataset.label.replace(' (prediksi)',''):c.dataset.label;return isP?` ${name}: ${fmt(v)} ⟶ est.`:` ${name}: ${fmt(v)}`;}}}
     },scales:{
       x:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11}}},
@@ -749,25 +861,32 @@ function renderReqChart(mode){
   const gkey=mode==='rs'?'permintaan_rs':'permintaan_jenis';
   const g=DATA.groups[gkey], n=MONTHS.length, fm=DATA.futureMonths, steps=MA_WINDOW;
   const allLabels=[...MONTHS,...fm];
-  const hidden={};
-  buildLegend('reqLegend',g.series,hidden,()=>{
+  buildLegend('reqLegend',g.series,'req',()=>{
     const c=charts['req'];if(!c)return;
-    g.series.forEach((_,i)=>{c.data.datasets[i*2].hidden=!!hidden[i];c.data.datasets[i*2+1].hidden=!!hidden[i];});c.update();
+    const sel=isolatedSeries['req'];
+    const active=sel&&sel.size>0;
+    g.series.forEach((_,i)=>{const hide=active&&!sel.has(i);c.data.datasets[i*2].hidden=hide;c.data.datasets[i*2+1].hidden=hide;});
+    c.update();
   });
+  const reqDatasets=g.series.map((s,si)=>{
+    const actualPad=[...s.data,...Array(steps).fill(null)];
+    const fc=g.forecast?g.forecast[si]:null;
+    const futurePad=Array(n+steps).fill(null);
+    if(fc){fc.future.forEach((v,i)=>{futurePad[n+i]=v;});}
+    return[
+      {label:s.label,data:actualPad,backgroundColor:s.color+'CC',borderColor:s.color,borderWidth:1,borderRadius:3,stack:'s'},
+      {label:`${s.label} (prediksi)`,data:futurePad,backgroundColor:s.color+'55',borderColor:s.color,borderWidth:1,borderDash:[4,3],borderRadius:3,stack:'s'}
+    ];
+  }).flat();
+  const selR=isolatedSeries['req'];
+  const activeR=selR&&selR.size>0;
+  reqDatasets.forEach((ds,i)=>{ const seriesIdx=Math.floor(i/2); ds.hidden=(activeR&&!selR.has(seriesIdx)); });
   charts['req']=new Chart(document.getElementById('reqChart').getContext('2d'),{
     type:'bar',
-    data:{labels:allLabels,datasets:g.series.map((s,si)=>{
-      const actualPad=[...s.data,...Array(steps).fill(null)];
-      const fc=g.forecast?g.forecast[si]:null;
-      const futurePad=Array(n+steps).fill(null);
-      if(fc){fc.future.forEach((v,i)=>{futurePad[n+i]=v;});}
-      return[
-        {label:s.label,data:actualPad,backgroundColor:s.color+'CC',borderColor:s.color,borderWidth:1,borderRadius:3,stack:'s'},
-        {label:`${s.label} (prediksi)`,data:futurePad,backgroundColor:s.color+'55',borderColor:s.color,borderWidth:1,borderDash:[4,3],borderRadius:3,stack:'s'}
-      ];
-    }).flat()},
+    data:{labels:allLabels,datasets:reqDatasets},
     options:{responsive:true,maintainAspectRatio:false,plugins:{
       legend:{display:false},
+      datalabels:{display:(ctx)=>{const sel=isolatedSeries['req'];if(!sel||sel.size===0)return false;return sel.has(Math.floor(ctx.datasetIndex/2));},color:'#fff',font:{size:9,weight:'700'}},
       tooltip:{mode:'index',intersect:false,callbacks:{label:c=>{const v=c.raw;if(v==null)return null;return ` ${c.dataset.label}: ${fmt(v)} kantong`;}}}
     },scales:{
       x:{stacked:true,grid:{display:false},ticks:{font:{size:11}}},
@@ -777,6 +896,7 @@ function renderReqChart(mode){
 }
 function switchReq(mode,btn){
   setActiveTab('reqTabs',btn);
+  isolatedSeries['req']=new Set(); // reset pilihan legend saat ganti kategori
   renderReqChart(mode);
   // Tampilkan hanya card forecasting permintaan yang sesuai tab aktif
   const activeKey = mode==='rs' ? 'permintaan_rs' : 'permintaan_jenis';
@@ -867,6 +987,7 @@ function renderDonorVsPermintaanChart(){
       interaction:{mode:'index', intersect:false},
       plugins:{
         legend:{display:false},
+        datalabels:{display:false},
         tooltip:{
           callbacks:{
             label: c => {
@@ -940,6 +1061,7 @@ function renderTotalDonorChart(){
     ]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{
       legend:{display:false},
+      datalabels:{display:false},
       tooltip:{mode:'index',intersect:false,filter:i=>i.dataset.label!=='_conn',callbacks:{label:c=>{if(c.dataset.label==='_conn')return null;const v=typeof c.raw==='object'?c.raw?.y:c.raw;if(v==null)return null;return ` ${c.dataset.label}: ${fmt(v)}`;}}}
     },scales:{
       x:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11}}},
@@ -1093,6 +1215,7 @@ function buildEvalSection(){
         <td><span style="display:inline-block;width:7px;height:7px;border-radius:2px;background:${fc.color};margin-right:7px;vertical-align:middle"></span><strong>${fc.label}</strong></td>
         <td style="font-size:11px;color:var(--muted)">${gLabel}</td>
         <td class="num"><span class="${mc}">${a.mape!=null?a.mape+'%':'—'}</span></td>
+        <td class="num">${a.mfe!=null?fmt(a.mfe):'—'}</td>
         <td class="num">${a.mae!=null?fmt(a.mae):'—'}</td>
         <td class="num">${a.rmse!=null?fmt(a.rmse):'—'}</td>
         <td><span class="${mc}">${mapeLabel(a.mape)}</span></td>
@@ -1112,10 +1235,14 @@ function buildEvalSection(){
   const best=sorted[0], worst=sorted[sorted.length-1];
   const totalEstNext=g.donor_gender.forecast.reduce((s,f)=>s+f.future[0],0);
   const permEstNext=g.permintaan_rs.forecast.reduce((s,f)=>s+f.future[0],0);
+  const highErrCount = allFc.filter(f=>f.accuracy.mape!=null && f.accuracy.mape>50).length;
+  const caveat = highErrCount>0
+    ? ` ${highErrCount} indikator dengan data kecil masih kurang akurat — lihat kolom "Perlu perhatian".`
+    : '';
   const reko=avgMape==null?'Data tidak cukup.'
-    :avgMape<10?`MA-${MA_WINDOW} sangat akurat — estimasi dapat langsung dipakai untuk perencanaan stok.`
-    :avgMape<=20?`MA-${MA_WINDOW} cukup andal — tambahkan buffer ~15% untuk mengantisipasi lonjakan.`
-    :`Akurasi perlu ditingkatkan — pertimbangkan pola musiman (Lebaran, libur nasional).`;
+    :avgMape<10?`MA-${MA_WINDOW} sangat akurat (MAPE ${avgMape.toFixed(1)}%). Hasil forecasting digabung dengan safety stock untuk menentukan target stok.${caveat}`
+    :avgMape<=20?`MA-${MA_WINDOW} cukup akurat (MAPE ${avgMape.toFixed(1)}%). Hasil forecasting digabung dengan safety stock untuk menentukan target stok.${caveat}`
+    :`MAPE rata-rata ${avgMape.toFixed(1)}% (${mapeLabel(avgMape)}).${caveat} Hasil forecasting tetap digabung dengan safety stock untuk menentukan target stok.`;
   document.getElementById('evalSummary').innerHTML=`
     <div class="eval-box">
       <div class="eval-box-title">Estimasi ${fm[0]}</div>
@@ -1133,6 +1260,79 @@ function buildEvalSection(){
       <div class="eval-box-title">Performa Indikator</div>
       <p>Terbaik: <strong class="mape-good">${best?best.label:'—'}</strong><br><span style="font-size:11px;color:var(--muted)">${best?best.accuracy.mape+'% MAPE':''}</span></p>
       <p style="margin-top:8px">Perlu perhatian: <strong class="${worst?mapeClass(worst.accuracy.mape):''}">${worst?worst.label:'—'}</strong><br><span style="font-size:11px;color:var(--muted)">${worst?worst.accuracy.mape+'% MAPE':''}</span></p>
+    </div>
+  `;
+}
+
+// ── SAFETY STOCK (TEORI PERSEDIAAN) ─────────────────────────────────────────
+// Safety Stock = Z × σ × √LT
+// Z  = nilai service level (tabel distribusi normal)
+// σ  = standar deviasi permintaan bulanan (data aktual)
+// LT = lead time, dalam satuan bulan
+let SS_Z = 1.645;   // default service level 95%
+let SS_LT = 1;      // default lead time 1 bulan
+
+function stdevPop(arr){
+  const v = arr.filter(x=>x!=null);
+  if(v.length<2) return 0;
+  const mean = v.reduce((a,b)=>a+b,0)/v.length;
+  const variance = v.reduce((s,x)=>s+(x-mean)**2,0)/v.length;
+  return Math.sqrt(variance);
+}
+
+function switchSSZ(z,btn){
+  SS_Z=z;
+  document.getElementById('ssZTabs').querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  buildSafetyStockSection();
+}
+function switchSSLT(lt,btn){
+  SS_LT=lt;
+  document.getElementById('ssLTTabs').querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  buildSafetyStockSection();
+}
+
+function buildSafetyStockSection(){
+  const g = DATA.groups.permintaan_rs;
+  let html='';
+  let totalSS=0, totalTarget=0;
+  g.series.forEach((s,si)=>{
+    const fc = g.forecast[si];
+    const mean = s.data.reduce((a,b)=>a+(b||0),0)/s.data.length;
+    const sd = stdevPop(s.data);
+    const ss = Math.round(SS_Z * sd * Math.sqrt(SS_LT));
+    const estNext = fc.future[0];
+    const target = estNext + ss;
+    totalSS += ss; totalTarget += target;
+    html += `<tr>
+      <td><span style="display:inline-block;width:7px;height:7px;border-radius:2px;background:${s.color};margin-right:7px;vertical-align:middle"></span>${s.label}</td>
+      <td class="num">${fmt(mean)}</td>
+      <td class="num">${fmt(sd)}</td>
+      <td class="num"><strong style="color:var(--blue)">${fmt(ss)}</strong></td>
+      <td class="num">${fmt(estNext)}</td>
+      <td class="num"><strong style="color:var(--red)">${fmt(target)}</strong></td>
+    </tr>`;
+  });
+  document.getElementById('ssTableBody').innerHTML = html;
+
+  const sl = SS_Z===1.282?'90%':SS_Z===2.326?'99%':'95%';
+  const totalForecast = totalTarget - totalSS;
+  document.getElementById('ssSummary').innerHTML = `
+    <div class="eval-box">
+      <div class="eval-box-title">Forecast ${DATA.futureMonths[0]}</div>
+      <span class="eval-highlight" style="color:var(--amber)">${fmt(totalForecast)} kantong</span>
+      <p>Estimasi kebutuhan dari hasil forecasting MA-${MA_WINDOW}</p>
+    </div>
+    <div class="eval-box">
+      <div class="eval-box-title">Safety Stock</div>
+      <span class="eval-highlight" style="color:var(--blue)">${fmt(totalSS)} kantong</span>
+      <p>Buffer pada service level ${sl}, lead time ${SS_LT} bulan</p>
+    </div>
+    <div class="eval-box">
+      <div class="eval-box-title">Target Stok = Forecast + Safety Stock</div>
+      <span class="eval-highlight" style="color:var(--red)">${fmt(totalTarget)} kantong</span>
+      <p>Rekomendasi jumlah stok yang harus disiapkan PMI</p>
     </div>
   `;
 }
@@ -1169,21 +1369,37 @@ function switchModel(w,btn){
     9:'Moving Average 9 bulan — prediksi 9 bulan ke depan, sangat halus cocok untuk data yang stabil',
   };
   document.getElementById('modelDesc').textContent=descs[w]||'';
-  document.getElementById('fcSectionTitle').textContent=`Tren Donor 2025 & Estimasi ${w} Bulan ke Depan (MA-${w})`;
-  document.getElementById('footerMethod').textContent=`Metode: Moving Average (MA-${w}) · Evaluasi: MAPE, MAE, RMSE · Lewis (1982) · Hyndman & Athanasopoulos (2021)`;
+  document.getElementById('fcSectionTitle').textContent=`Tren Donor 2023–2025 & Estimasi ${w} Bulan ke Depan (MA-${w})`;
+  document.getElementById('footerMethod').textContent=`Metode: Single Moving Average (MA-${w}) · Evaluasi: MFE, MAE, RMSE, MAPE (Hyndman & Athanasopoulos, 2021) · Lewis (1982)`;
   FC_MONTH_IDX=0;
   renderAll();
 }
 
-// ── LEGEND ────────────────────────────────────────────────────────────────
-function buildLegend(cid,series,hiddenState,onChange){
+// ── LEGEND (mode isolasi) ───────────────────────────────────────────────
+function buildLegend(cid,series,chartId,onChange){
   const el=document.getElementById(cid);
-  el.innerHTML=series.map((s,i)=>`<span class="legend-item" onclick="toggleLegend(${i},'${cid}',this)" data-idx="${i}"><span class="legend-dot" style="background:${s.color}"></span>${s.label}</span>`).join('');
-  el._hidden=hiddenState;el._onChange=onChange;
+  el.innerHTML=series.map((s,i)=>`<span class="legend-item" onclick="toggleLegend(${i},'${cid}','${chartId}',this)" data-idx="${i}"><span class="legend-dot" style="background:${s.color}"></span>${s.label}</span>`).join('');
+  el._onChange=onChange;
+  applyIsolateOpacity(cid,chartId);
 }
-function toggleLegend(idx,cid,el){
-  const c=document.getElementById(cid);c._hidden[idx]=!c._hidden[idx];
-  el.style.opacity=c._hidden[idx]?'0.35':'1';if(c._onChange)c._onChange();
+function applyIsolateOpacity(cid,chartId){
+  const el=document.getElementById(cid);
+  const sel=isolatedSeries[chartId];
+  const active=sel&&sel.size>0;
+  el.querySelectorAll('.legend-item').forEach(item=>{
+    const idx=+item.dataset.idx;
+    const isSel=active&&sel.has(idx);
+    item.style.opacity=(!active||isSel)?'1':'0.35';
+    item.style.fontWeight=isSel?'700':'600';
+  });
+}
+function toggleLegend(idx,cid,chartId,el){
+  if(!isolatedSeries[chartId]) isolatedSeries[chartId]=new Set();
+  const sel=isolatedSeries[chartId];
+  sel.has(idx) ? sel.delete(idx) : sel.add(idx);
+  applyIsolateOpacity(cid,chartId);
+  const c=document.getElementById(cid);
+  if(c._onChange) c._onChange();
 }
 function setActiveTab(cid,btn){
   document.getElementById(cid).querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
@@ -1216,6 +1432,7 @@ function renderAll(){
     if(el) el.style.display=(k===activeReqMode)?'':'none';
   });
   buildEvalSection();
+  buildSafetyStockSection();
   const activeTable=document.querySelector('#tblTabs .tab.active');
   const tblMap={'Gender':'donor_gender','Golongan Darah':'donor_goldar','Usia':'donor_usia','Permintaan RS':'permintaan_rs'};
   buildTable(tblMap[activeTable?.textContent?.trim()]||'donor_gender');
@@ -1224,7 +1441,7 @@ function renderAll(){
 // ── INIT ──────────────────────────────────────────────────────────────────
 (function init(){
   document.getElementById('lastUpdate').textContent = fmtDt(new Date());
-  document.getElementById('statusMsg').textContent = 'Data 2025 berhasil dimuat';
+  document.getElementById('statusMsg').textContent = 'Data 2023–2025 berhasil dimuat';
   renderAll();
   document.getElementById('loadingOverlay').style.display='none';
 })();

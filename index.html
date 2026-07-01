@@ -23,7 +23,7 @@
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 a{color:var(--red);text-decoration:none}
-.wrap{max-width:1100px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+.wrap{max-width:1320px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
 
 /* HEADER */
 .site-header{margin-bottom:2rem}
@@ -126,7 +126,7 @@ a{color:var(--red);text-decoration:none}
 
 /* ── EVALUASI ── */
 .eval-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;box-shadow:var(--shadow)}
-.eval-header{margin-bottom:1rem}
+.eval-header{margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap}
 .eval-title{font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:.25rem}
 .eval-desc{font-size:11.5px;color:var(--muted);line-height:1.65}
 .eval-desc strong{color:var(--text);font-style:normal}
@@ -153,6 +153,16 @@ a{color:var(--red);text-decoration:none}
 .eval-box-title{font-size:10px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem}
 .eval-box p{font-size:12px;line-height:1.65;margin-top:3px}
 .eval-highlight{font-family:'DM Serif Display',serif;font-size:1.4rem;line-height:1.1;display:block;margin-bottom:3px}
+
+/* WINDOW COMPARISON (perbandingan MA-3/6/9) */
+.wincmp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-bottom:1.1rem}
+.wincmp-cell{background:var(--bg);border:1.5px solid var(--border2);border-radius:var(--radius-sm);padding:.75rem .9rem;text-align:center;transition:all .15s}
+.wincmp-cell.wincmp-best{background:var(--green-light);border-color:var(--green2)}
+.wincmp-cell.wincmp-active{outline:1.5px solid var(--blue2);outline-offset:1px}
+.wincmp-lbl{font-size:10px;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+.wincmp-val{font-family:'DM Serif Display',serif;font-size:1.4rem;line-height:1.1}
+.wincmp-cell.wincmp-best .wincmp-val{color:var(--green)}
+.wincmp-sub{font-size:9.5px;color:var(--muted2);margin-top:2px}
 
 /* TABLE */
 .tbl-wrap{overflow-x:auto;position:relative}
@@ -205,6 +215,54 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
 .rek-cell-val{font-family:'DM Serif Display',serif;font-size:1.6rem;line-height:1.05;margin-bottom:2px}
 .rek-cell-lbl{font-size:11px;color:var(--muted);font-weight:500}
 .rek-cell-sub{font-size:10.5px;color:var(--muted2);margin-top:2px}
+/* TEORI BOX (collapsible) */
+.teori-box{background:var(--surface2);border:1.5px solid var(--border2);color:var(--text);border-radius:var(--radius);padding:1.4rem 1.75rem;margin-bottom:1.5rem;position:relative;overflow:hidden}
+.teori-box::after{content:'SMA';position:absolute;right:-10px;top:-18px;font-family:'DM Serif Display',serif;font-size:6rem;font-weight:900;color:rgba(80,50,20,0.05);pointer-events:none;line-height:1}
+.teori-header{display:flex;align-items:center;justify-content:space-between;gap:1rem;cursor:pointer;user-select:none}
+.teori-header h3{font-family:'DM Serif Display',serif;font-size:1rem;margin:0;color:var(--red);flex:1}
+.teori-toggle-btn{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--muted);background:var(--surface);border:1.5px solid var(--border2);border-radius:99px;padding:4px 12px;cursor:pointer;user-select:none;transition:all .2s;white-space:nowrap;flex-shrink:0}
+.teori-toggle-btn:hover{background:var(--surface3);color:var(--text)}
+.teori-toggle-btn .arrow{display:inline-block;transition:transform .25s;font-size:10px}
+.teori-toggle-btn.open .arrow{transform:rotate(180deg)}
+.teori-body{overflow:hidden;transition:max-height .35s ease,opacity .25s;max-height:0;opacity:0}
+.teori-body.open{max-height:500px;opacity:1}
+.teori-formula{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-family:monospace;font-size:1.05rem;font-weight:700;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.65rem 1rem;margin:.75rem 0;letter-spacing:.03em;color:var(--red)}
+.teori-formula .sym{color:var(--muted2);margin:0 .15rem}
+.teori-vars{display:flex;flex-wrap:wrap;gap:.5rem .75rem;font-size:11.5px;color:var(--muted)}
+.teori-vars span strong{color:var(--text)}
+.teori-ref{font-size:10.5px;color:var(--muted2);margin-top:.65rem;font-style:italic}
+
+/* RASIO HERO */
+.rasio-hero{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1.35rem;margin-bottom:1.5rem;box-shadow:var(--shadow);display:flex;gap:1rem;align-items:flex-start;flex-wrap:wrap}
+.rasio-hero-left{flex:1;min-width:200px}
+.rasio-hero-title{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.35rem}
+.rasio-hero-main{display:flex;align-items:baseline;gap:.4rem;margin-bottom:.2rem}
+.rasio-val{font-family:'DM Serif Display',serif;font-size:2.4rem;line-height:1}
+.rasio-unit{font-size:14px;color:var(--muted);font-weight:600}
+.rasio-desc{font-size:12px;color:var(--muted);line-height:1.6;max-width:380px}
+.rasio-track{flex:1;min-width:220px;display:flex;flex-direction:column;gap:.3rem;justify-content:center}
+.rasio-bar-wrap{height:10px;background:var(--surface3);border-radius:99px;overflow:hidden;position:relative}
+.rasio-bar-fill{height:100%;border-radius:99px;transition:width .8s ease}
+.rasio-bulan-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px;margin-top:.75rem}
+.rasio-bulan-card{background:var(--surface2);border-radius:7px;padding:.6rem .8rem}
+.rasio-bulan-lbl{font-size:10px;color:var(--muted2);font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.rasio-bulan-val{font-size:1.15rem;font-weight:700;margin-top:2px}
+.rasio-bulan-sub{font-size:10px;color:var(--muted2)}
+
+/* SAFETY STOCK FORMULA BOX */
+.ss-formula-box{background:var(--surface2);border:1.5px solid var(--border2);color:var(--text);border-radius:var(--radius);padding:1.4rem 1.75rem;margin-bottom:1rem;position:relative;overflow:hidden}
+.ss-formula-box::after{content:'SS';position:absolute;right:-10px;top:-18px;font-family:'DM Serif Display',serif;font-size:6rem;font-weight:900;color:rgba(80,50,20,0.05);pointer-events:none;line-height:1}
+.ss-formula-box h4{font-family:'DM Serif Display',serif;font-size:1rem;color:var(--red);margin-bottom:.75rem;font-weight:400}
+.ss-formula{font-family:monospace;font-size:1.05rem;color:var(--red);background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.65rem 1rem;margin-bottom:.65rem;font-weight:700;display:flex;align-items:center;gap:.35rem;flex-wrap:wrap;letter-spacing:.03em}
+.ss-formula .sym{color:var(--muted2);margin:0 .1rem}
+.ss-vars{display:flex;flex-wrap:wrap;gap:.5rem .75rem;font-size:11.5px;color:var(--muted)}
+.ss-vars span strong{color:var(--text)}
+.ss-ref{font-size:10.5px;color:var(--muted2);margin-top:.65rem;font-style:italic}
+
+/* COLLAPSIBLE NOTE BOX */
+.note-toggle{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--blue);cursor:pointer;text-decoration:underline;text-underline-offset:2px;user-select:none}
+.note-toggle:hover{color:var(--text)}
+
 /* LOADING */
 #loadingOverlay{position:fixed;inset:0;background:rgba(247,244,239,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;gap:12px}
 #loadingOverlay p{font-size:13px;color:var(--muted)}
@@ -229,7 +287,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       </div>
     </div>
     <div class="header-meta">
-      <span class="badge badge-data"> Data 2023–2025 · Jan–Des</span>
+      <span class="badge badge-data"> Data 2020–2025 · Jan–Des</span>
       <span class="badge badge-source">PMI Kota Malang</span>
     </div>
   </div>
@@ -239,21 +297,44 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     <span>Sumber: <a href="https://docs.google.com/spreadsheets/d/1E3Fmd8Acw15Yt7dlHBWRgeqta27Mk1thbe2bsKCAKbc/edit?gid=0#gid=0" target="_blank">Data PMI Kota Malang (Satu Data Kota Malang) ↗</a></span>
   </div>
 
+  <!-- ══ TEORI SMA (collapsible) ══ -->
+  <div class="teori-box">
+    <div class="teori-header" onclick="toggleTeori()">
+      <h3>Landasan Teori: Simple Moving Average (SMA)</h3>
+      <span class="teori-toggle-btn" id="teoriToggleBtn"><span class="arrow">▼</span> Tampilkan Teori</span>
+    </div>
+    <div class="teori-body" id="teoriBody">
+      <div class="teori-formula">
+        F<sub style="font-size:.75em">t+1</sub>
+        <span class="sym">=</span>
+        (1/n)
+        <span class="sym">×</span>
+        Σ A<sub style="font-size:.75em">t−i+1</sub>
+        <span class="sym">=</span>
+        (A<sub style="font-size:.75em">t</sub> + A<sub style="font-size:.75em">t−1</sub> + … + A<sub style="font-size:.75em">t−n+1</sub>) / n
+      </div>
+      <div class="teori-vars">
+        <span><strong>F<sub>t+1</sub></strong> = Nilai ramalan periode berikutnya</span>
+        <span><strong>n</strong> = Panjang jendela MA (3, 6, atau 9 periode)</span>
+        <span><strong>A<sub>t</sub></strong> = Nilai aktual periode ke-t</span>
+        <span><strong>Σ</strong> = Jumlah n nilai aktual terakhir</span>
+      </div>
+      <p class="teori-ref">Makridakis, Wheelwright &amp; Hyndman (1998). <em>Forecasting: Methods and Applications</em>, 3rd ed. Wiley. · Lewis (1982): MAPE &lt;10% = Highly Accurate, 10–20% = Good, 20–50% = Reasonable, &gt;50% = Inaccurate.</p>
+    </div>
+  </div>
+
 
   <!-- ══ ① GAMBARAN UMUM ══ -->
   <div class="section">
     <div class="section-hd">
       <div>
         <div class="section-label">① Gambaran Umum</div>
-        <div class="section-title">Ringkasan Data PMI Kota Malang 2023–2025</div>
-        <div class="section-sub">Statistik keseluruhan donor dan permintaan darah sepanjang Januari 2023–Desember 2025</div>
+        <div class="section-title">Ringkasan Data PMI Kota Malang 2020–2025</div>
+        <div class="section-sub">Statistik keseluruhan donor dan permintaan darah sepanjang Januari 2020–Desember 2025 (72 bulan)</div>
       </div>
     </div>
     <div class="kpi-grid" id="kpiGrid"></div>
-    <div id="rasioBar" style="margin-top:.65rem"></div>
   </div>
-
-  <hr class="section-divider">
 
   <!-- ══ ② KOMPOSISI DONOR ══ -->
   <div class="section">
@@ -261,7 +342,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       <div>
         <div class="section-label">② Profil Donor</div>
         <div class="section-title">Distribusi Golongan Darah, Kelompok Usia &amp; Jenis Kelamin</div>
-        <div class="section-sub">Siapa saja pendonor darah PMI Kota Malang? Proporsi total 2023–2025</div>
+        <div class="section-sub">Siapa saja pendonor darah PMI Kota Malang? Proporsi total 2020–2025</div>
       </div>
     </div>
     <div class="grid-3">
@@ -285,42 +366,161 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
 
   <hr class="section-divider">
 
-  <!-- ══ ③ TREN & PERBANDINGAN ══ -->
-  <!-- Model selector — berlaku untuk semua grafik prediksi di bawah -->
+  <!-- ══ ★ INSIGHT RASIO (fitur utama dari Forecasting) ══ -->
+  <div class="section">
+    <div class="section-hd">
+      <div>
+        <div class="section-label">★ Insight Rasio</div>
+        <div class="section-title">Rasio Ketersediaan Donor vs. Permintaan Darah</div>
+        <div class="section-sub">Indikator utama kecukupan persediaan — rasio &gt;100% berarti stok mencukupi, &lt;100% berarti terjadi defisit</div>
+      </div>
+    </div>
+    <div id="rasioHero"></div>
+    <div class="card" style="margin-top:.85rem">
+      <p class="card-title">Tren Rasio Donor vs. Permintaan per Bulan (2020–2025)</p>
+      <p class="card-sub">Garis merah = rasio bulanan (donor ÷ permintaan × 100%) · Garis putus-putus hijau = titik impas (100%) · Area di atas titik impas = surplus, di bawah = defisit</p>
+      <div class="legend" style="margin-bottom:.4rem">
+        <span class="lbl-toggle" id="lblToggle-rasio" onclick="toggleAllLabels('rasio')">👁 Tampilkan Angka</span>
+      </div>
+      <div class="chart-wrap" style="height:270px"><canvas id="rasioChart"></canvas></div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- Model selector — HANYA mengubah garis in-sample (fit historis) pada grafik di atas, TIDAK mengubah peramalan -->
   <div class="model-bar" style="margin-bottom:1.25rem">
-    <span class="model-bar-label">Jendela Moving Average:</span>
+    <span class="model-bar-label">Eksplor Jendela MA (fit historis):</span>
     <div class="model-tabs" id="modelTabs">
       <button class="model-tab active" onclick="switchModel(3,this)">MA-3</button>
       <button class="model-tab" onclick="switchModel(6,this)">MA-6</button>
       <button class="model-tab" onclick="switchModel(9,this)">MA-9</button>
     </div>
-    <span class="model-desc" id="modelDesc">Moving Average 3 bulan — prediksi 3 bulan ke depan berdasarkan rata-rata 3 bulan terakhir</span>
+    <span class="model-desc" id="modelDesc">MA-3: tiap titik fit memakai rata-rata 3 bulan data aktual sebelumnya (t-1, t-2, t-3). Tab ini hanya untuk eksplorasi garis fit historis di atas — peramalan Jan–Sept 2026 selalu memakai model TERBAIK (lihat bagian ④).</span>
   </div>
 
+  <div class="eval-note-box" style="background:var(--blue-light);border-left-color:var(--blue2);margin-top:-1rem;margin-bottom:1.5rem">
+    <strong>Cara pemilihan model peramalan:</strong> MA-3, MA-6, dan MA-9 dievaluasi pada <strong>Data Test out-of-sample</strong> (15 bulan terakhir, Okt 2024–Des 2025) menggunakan skema <em>One-Step-Ahead Forecasting</em> — window dengan rata-rata MAPE terkecil dipilih sebagai <strong id="bestModelInline">model terbaik</strong> dan dipakai SATU-SATUNYA untuk peramalan Jan–Sept 2026. <span class="note-toggle" onclick="toggleMANote()">Baca penjelasan selengkapnya ▾</span>
+    <div id="maNoteBody" style="display:none;margin-top:.5rem">
+      Total 72 bulan data historis (Jan 2020–Des 2025) dibagi dengan metode <em>Time-Series Split</em> rasio 80:20 — <strong>Data Train</strong>: 57 bulan pertama (Jan 2020–Sept 2024) sebagai basis riwayat/inisiasi parameter window N=3, N=6, N=9; <strong>Data Test</strong>: 15 bulan terakhir (Okt 2024–Des 2025) sebagai ruang validasi out-of-sample. MA pendek (3) lebih responsif terhadap perubahan bulanan tapi rawan noise; MA panjang (9) lebih stabil namun lambat menangkap perubahan tren — ini disebut <em>bias-variance trade-off</em>. Window dengan rata-rata MAPE terkecil pada Data Test dipilih sebagai model TERBAIK. Untuk peramalan jangka menengah (Jan–Sept 2026), nilai ramalan dihitung secara <em>multi-step-ahead</em> memakai rantai iterasi (rolling chain): setiap bulan baru dihitung dari rata-rata N bulan terakhir, di mana porsi data aktual 2025 berkurang satu per satu dan digantikan oleh nilai prediksi bulan sebelumnya — sehingga kurva melandai dinamis sebelum akhirnya flatline sempurna begitu seluruh N input sudah murni prediksi. Perbandingan ketiga window tersedia pada bagian ④ Evaluasi Model (Makridakis, Wheelwright &amp; Hyndman, 1998).
+    </div>
+  </div>
+
+
+  <!-- ══ ④ EVALUASI MODEL ══ -->
   <div class="section">
     <div class="section-hd">
       <div>
-        <div class="section-label">③ Tren &amp; Perbandingan</div>
-        <div class="section-title">Total Donor vs Total Permintaan Darah 2023–2025 &amp; Prediksi</div>
-        <div class="section-sub">Apakah donor mencukupi permintaan? Perbandingan tren aktual dan prediksi ke depan</div>
+        <div class="section-label">④ Evaluasi Model</div>
+        <div class="section-title">Evaluasi Akurasi Model Prediksi</div>
+        <div class="section-sub">Seberapa akurat prediksi yang dihasilkan? Dievaluasi pada Data Test out-of-sample (Okt 2024–Des 2025, 15 bulan) menggunakan skema One-Step-Ahead Forecasting — dasar pemilihan jendela MA sebelum forecasting ditampilkan</div>
+      </div>
+      <span class="fc-zone-badge"><span class="stripe"></span> Zona biru = prediksi</span>
+    </div>
+
+    <!-- Grafik evaluasi: Data Train vs Data Test, Aktual vs Prediksi One-Step-Ahead pada Data Test -->
+    <div class="card" style="margin-bottom:1rem">
+      <p class="card-title">Grafik Evaluasi: Data Train vs Data Test (Aktual vs Prediksi One-Step-Ahead)</p>
+      <div class="legend" style="margin-bottom:.6rem">
+        <span class="mape-badge" style="background:var(--surface2);color:var(--text)">📘 57 bulan pertama (Jan 2020–Sept 2024) = Data Train</span>
+        <span class="mape-badge" style="background:var(--amber-light);color:var(--amber)">🟡 15 bulan terakhir (Okt 2024–Des 2025) = Data Test</span>
+        <span class="mape-badge" style="background:var(--blue-light);color:var(--blue)">┄ Prediksi one-step <strong id="evalChartModelLbl">MA</strong> vs aktual</span>
+        <span class="lbl-toggle" id="lblToggle-evalChart" onclick="toggleAllLabels('evalChart')">👁 Tampilkan Angka</span>
+      </div>
+      <div class="chart-wrap" style="height:320px"><canvas id="evalChart"></canvas></div>
+      <div class="trend-metrics" id="evalChartMetrics"></div>
+    </div>
+
+    <!-- ══ Konsep Evaluasi (collapsible) ══ -->
+    <div class="teori-box" style="margin-bottom:1rem">
+      <div class="teori-header" onclick="toggleEvalKonsep()">
+        <h3>Konsep &amp; Metrik Evaluasi Model</h3>
+        <span class="teori-toggle-btn" id="evalKonsepToggleBtn"><span class="arrow">▼</span> Tampilkan Konsep</span>
+      </div>
+      <div class="teori-body" id="evalKonsepBody">
+        <div class="eval-desc" style="margin-bottom:.75rem">Akurasi model diukur menggunakan <strong>MAPE</strong> — semakin kecil nilainya, semakin baik prediksi model.
+          <div style="margin-top:.5rem;font-size:11.5px;color:var(--muted);line-height:1.65">
+            <strong>MAPE</strong> (Mean Absolute Percentage Error) = tingkat kesalahan prediksi dalam %. &nbsp;·&nbsp;
+            <strong title="Mean Absolute Error — selisih absolut rata-rata dalam satuan asli">MAE</strong> = rata-rata |error| dalam satuan asli (mudah dibaca). &nbsp;·&nbsp;
+            <strong title="Root Mean Square Error — lebih sensitif terhadap lonjakan data ekstrem">RMSE</strong> = sensitif terhadap lonjakan data ekstrem. &nbsp;·&nbsp;
+            <strong title="Mean Forecast Error — positif = model cenderung under-estimasi, negatif = over-estimasi">MFE</strong> = positif berarti model cenderung under-estimasi, negatif berarti over-estimasi.
+          </div>
+        </div>
+
+        <div class="mape-legend">
+          <span class="mape-badge" style="background:var(--green-light);color:var(--green)">MAPE &lt;10% — Sangat Akurat</span>
+          <span class="mape-badge" style="background:var(--amber-light);color:var(--amber)">10–20% — Baik</span>
+          <span class="mape-badge" style="background:#FFF8E1;color:#B8860B">20–50% — Cukup</span>
+          <span class="mape-badge" style="background:var(--red-light);color:var(--red)">&gt;50% — Tidak Akurat</span>
+          <span style="font-size:10px;color:var(--muted2);align-self:center">(Lewis, 1982)</span>
+        </div>
+
+        <div class="eval-note-box">
+          <strong>MAPE</strong> = tingkat kesalahan prediksi (%). Semakin kecil, semakin akurat. &nbsp;·&nbsp; MAE, RMSE, MFE tersedia di tabel untuk analisis lanjutan.
+        </div>
+
+        <div class="eval-note-box" style="background:var(--blue-light);border-left-color:var(--blue2)">
+          <strong>Perbandingan Window MA (dasar pemilihan model):</strong> rata-rata MAPE out-of-sample (Data Test, 15 bulan) seluruh 18 indikator untuk tiap window — window dengan nilai terkecil dipilih sebagai model terbaik secara empiris.
+        </div>
+      </div>
+    </div>
+
+    <div class="eval-card">
+      <div class="eval-header">
+        <div class="eval-title" id="evalModelTitle">Evaluasi Model MA-3</div>
+        <span class="teori-toggle-btn" id="evalResultToggleBtn" onclick="toggleEvalResult()" style="cursor:pointer"><span class="arrow">▼</span> Sembunyikan Hasil</span>
+      </div>
+
+      <div id="evalResultBody">
+        <div class="wincmp-grid" id="windowCompare"></div>
+
+        <div class="eval-tbl-wrap">
+          <table class="eval-tbl">
+            <thead><tr>
+              <th>Indikator</th>
+              <th>Kelompok</th>
+              <th class="num">MAPE (%)</th>
+              <th class="num">MFE</th>
+              <th class="num">MAE</th>
+              <th class="num">RMSE</th>
+              <th>Kategori</th>
+            </tr></thead>
+            <tbody id="evalTableBody"></tbody>
+          </table>
+        </div>
+
+        <div class="eval-summary" id="evalSummary"></div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ══ HASIL: TOTAL DONOR VS PERMINTAAN & PREDIKSI (setelah evaluasi) ══ -->
+  <div class="section">
+    <div class="section-hd">
+      <div>
+        <div class="section-label">Hasil Peramalan</div>
+        <div class="section-title">Total Donor vs Total Permintaan Darah 2020–2025 &amp; Prediksi</div>
+        <div class="section-sub">Apakah donor mencukupi permintaan? Perbandingan tren aktual dan prediksi ke depan menggunakan model terbaik hasil evaluasi di atas</div>
       </div>
       <span class="fc-zone-badge"><span class="stripe"></span> Zona biru = prediksi</span>
     </div>
     <div class="card">
       <div class="legend" id="dvpLegend"></div>
-      <div class="chart-wrap" style="height:280px"><canvas id="dvpChart"></canvas></div>
+      <div class="chart-wrap" style="height:320px"><canvas id="dvpChart"></canvas></div>
       <div class="trend-metrics" id="dvpMetrics"></div>
     </div>
   </div>
 
   <hr class="section-divider">
 
-  <!-- ══ ④ FORECASTING DONOR ══ -->
+  <!-- ══ ⑤ FORECASTING DONOR ══ -->
   <div class="section">
     <div class="section-hd">
       <div>
-        <div class="section-label">④ Forecasting Donor</div>
-        <div class="section-title" id="fcSectionTitle">Tren Donor 2023–2025 &amp; Estimasi 3 Bulan ke Depan (MA-3)</div>
+        <div class="section-label">⑤ Forecasting Donor</div>
+        <div class="section-title" id="fcSectionTitle">Tren Donor 2020–2025 &amp; Estimasi Jan–Sept 2026 (Flat, Model Terbaik)</div>
         <div class="section-sub">Prediksi jumlah pendonor per kategori — satuan: orang</div>
       </div>
       <span class="fc-zone-badge"><span class="stripe"></span> Zona biru = prediksi</span>
@@ -336,7 +536,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     </div>
     <div class="card" style="margin-bottom:1rem">
       <div class="legend" id="trenLegend"></div>
-      <div class="chart-wrap" style="height:260px"><canvas id="trenDonorChart"></canvas></div>
+      <div class="chart-wrap" style="height:300px"><canvas id="trenDonorChart"></canvas></div>
     </div>
 
     <div class="fc-month-bar">
@@ -362,12 +562,12 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
 
   <hr class="section-divider">
 
-  <!-- ══ ⑤ FORECASTING PERMINTAAN DARAH ══ -->
+  <!-- ══ ⑥ FORECASTING PERMINTAAN DARAH ══ -->
   <div class="section">
     <div class="section-hd">
       <div>
-        <div class="section-label">⑤ Forecasting Permintaan Darah</div>
-        <div class="section-title">Tren Permintaan Darah 2023–2025 &amp; Estimasi ke Depan</div>
+        <div class="section-label">⑥ Forecasting Permintaan Darah</div>
+        <div class="section-title">Tren Permintaan Darah 2020–2025 &amp; Estimasi ke Depan</div>
         <div class="section-sub">Berapa kantong darah yang dibutuhkan rumah sakit? — satuan: kantong (1 kantong ≈ 350–450 ml)</div>
       </div>
     </div>
@@ -382,7 +582,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     </div>
     <div class="card" style="margin-bottom:1rem">
       <div class="legend" id="reqLegend"></div>
-      <div class="chart-wrap" style="height:260px"><canvas id="reqChart"></canvas></div>
+      <div class="chart-wrap" style="height:300px"><canvas id="reqChart"></canvas></div>
     </div>
 
     <!-- Kartu prediksi permintaan — selector bulan sama, re-render terpisah -->
@@ -405,62 +605,6 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
 
   <hr class="section-divider">
 
-  <!-- ══ ⑥ EVALUASI MODEL ══ -->
-  <div class="section">
-    <div class="section-hd">
-      <div>
-        <div class="section-label">⑥ Evaluasi Model</div>
-        <div class="section-title">Evaluasi Akurasi Model Prediksi</div>
-        <div class="section-sub">Seberapa akurat prediksi yang dihasilkan? Perbandingan dengan data aktual 2023–2025</div>
-      </div>
-    </div>
-
-    <!-- Grafik total donor aktual vs prediksi -->
-    <div class="card" style="margin-bottom:1rem">
-      <p class="card-title">Total Donor: Aktual vs Prediksi</p>
-      <div class="legend" id="totalDonorLegend"></div>
-      <div class="chart-wrap" style="height:260px"><canvas id="totalDonorChart"></canvas></div>
-      <div class="trend-metrics" id="totalDonorMetrics"></div>
-    </div>
-
-    <div class="eval-card">
-      <div class="eval-header">
-        <div class="eval-title" id="evalModelTitle">Evaluasi Model MA-3</div>
-        <div class="eval-desc">Akurasi model diukur menggunakan <strong>MAPE</strong> — semakin kecil nilainya, semakin baik prediksi model. Detail metodologi tersedia pada <a href="#" style="color:var(--muted);text-decoration:underline;font-size:11px" onclick="return false">halaman dokumentasi</a>.</div>
-      </div>
-
-      <div class="mape-legend">
-        <span class="mape-badge" style="background:var(--green-light);color:var(--green)">MAPE &lt;10% — Sangat Akurat</span>
-        <span class="mape-badge" style="background:var(--amber-light);color:var(--amber)">10–20% — Baik</span>
-        <span class="mape-badge" style="background:#FFF8E1;color:#B8860B">20–50% — Cukup</span>
-        <span class="mape-badge" style="background:var(--red-light);color:var(--red)">&gt;50% — Tidak Akurat</span>
-      </div>
-
-      <div class="eval-note-box">
-        <strong>MAPE</strong> = tingkat kesalahan prediksi (%). Semakin kecil, semakin akurat. &nbsp;·&nbsp; <strong title="Mean Absolute Error — selisih absolut rata-rata dalam satuan asli">MAE</strong>, <strong title="Root Mean Square Error — lebih sensitif terhadap lonjakan data ekstrem">RMSE</strong>, <strong title="Mean Forecast Error — positif = model cenderung under-estimasi, negatif = over-estimasi">MFE</strong> tersedia di tabel untuk analisis lanjutan.
-      </div>
-
-      <div class="eval-tbl-wrap">
-        <table class="eval-tbl">
-          <thead><tr>
-            <th>Indikator</th>
-            <th>Kelompok</th>
-            <th class="num">MAPE (%)</th>
-            <th class="num">MFE</th>
-            <th class="num">MAE</th>
-            <th class="num">RMSE</th>
-            <th>Kategori</th>
-          </tr></thead>
-          <tbody id="evalTableBody"></tbody>
-        </table>
-      </div>
-
-      <div class="eval-summary" id="evalSummary"></div>
-    </div>
-  </div>
-
-  <hr class="section-divider">
-
   <!-- ══ ⑦ INSIGHT & REKOMENDASI PERSEDIAAN ══ -->
   <div class="section">
     <div class="section-hd">
@@ -475,10 +619,34 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     <div class="insight-grid" id="insightGrid" style="margin-bottom:1.25rem"></div>
 
     <!-- Rincian Safety Stock (atur parameter dulu) -->
+    <div class="ss-formula-box">
+      <h4>Formula Safety Stock (Hadley &amp; Whitin, 1963 dalam Silver et al., 1998)</h4>
+      <div class="ss-formula">
+        SS
+        <span class="sym">=</span>
+        Z
+        <span class="sym">×</span>
+        σ<sub style="font-size:.75em">d</sub>
+        <span class="sym">×</span>
+        √LT
+      </div>
+      <div class="ss-vars">
+        <span><strong>SS</strong> = Safety Stock (kantong darah)</span>
+        <span><strong>Z</strong> = Nilai distribusi normal untuk service level yang dipilih</span>
+        <span><strong>σ<sub>d</sub></strong> = Standar deviasi permintaan bulanan historis</span>
+        <span><strong>LT</strong> = Lead time pengadaan (bulan)</span>
+      </div>
+      <p class="ss-ref">Silver, E.A., Pyke, D.F., &amp; Peterson, R. (1998). <em>Inventory Management and Production Planning and Scheduling</em>, 3rd ed. Wiley. &nbsp;·&nbsp; Target Stok = Forecast (MA) + Safety Stock</p>
+    </div>
+
     <div class="eval-card">
       <div class="eval-header">
         <div class="eval-title">Rincian Safety Stock per Bagian RS</div>
-        <div class="eval-desc">Sesuaikan service level dan lead time sesuai kebijakan PMI untuk mendapatkan rekomendasi stok yang tepat.</div>
+        <div class="eval-desc">Sesuaikan service level dan lead time sesuai kebijakan PMI. Target stok = nilai prediksi + safety stock. <span class="note-toggle" onclick="toggleSSNote()">Baca dasar pemilihan service level ▾</span>
+          <div id="ssNoteBody" style="display:none;margin-top:.5rem;font-size:11px;color:var(--muted);line-height:1.65">
+            Service level menyatakan probabilitas stok mencukupi permintaan selama lead time. Untuk komoditas medis kritis seperti darah, literatur manajemen rantai pasok (Beliën &amp; Forcé, 2012, <em>European Journal of Operational Research</em>; Silver et al., 1998) merekomendasikan <strong>≥95%</strong> karena risiko kekurangan stok berdampak langsung pada keselamatan pasien. 90% dapat dipertimbangkan untuk permintaan stabil; 99% untuk golongan darah kritis atau bervariabilitas tinggi. Default: <strong>95% (Z=1,645)</strong>.
+          </div>
+        </div>
       </div>
 
       <div class="fc-month-bar" style="margin-bottom:.75rem">
@@ -517,7 +685,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       </div>
 
       <div class="eval-note-box" style="margin-top:1rem">
-        <strong>Target Stok = Forecast + Safety Stock.</strong> Safety stock dihitung berdasarkan standar deviasi permintaan historis dan service level yang dipilih — bukan estimasi kasar. Detail metodologi tersedia pada halaman dokumentasi.
+        <strong>Target Stok = Forecast + Safety Stock.</strong> Safety stock dihitung dari standar deviasi permintaan historis dan service level yang dipilih — bukan estimasi kasar. Semakin tinggi service level, semakin besar buffer yang diperlukan namun semakin kecil risiko stockout.
       </div>
     </div>
 
@@ -549,14 +717,23 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
 
   <footer>
     <span>Sumber: <a href="https://satudata.malangkota.go.id" target="_blank">Satu Data Kota Malang</a> · PMI Kota Malang</span>
-    <span id="footerMethod">Metode: Single Moving Average (MA-3) · Evaluasi: MAPE, MAE, RMSE, MFE</span>
+    <span id="footerMethod">Metode: Single Moving Average (model terbaik) · Peramalan Jan–Sept 2026: rantai iterasi (multi-step-ahead) · Makridakis et al. (1998) · Evaluasi: MAPE, MAE, RMSE, MFE · Safety Stock: SS = Z×σ×√LT (Silver et al., 1998)</span>
   </footer>
 </div>
 
 <script>
 // ── CONFIG ──────────────────────────────────────────────────────────────
-let MA_WINDOW = 3;
+let MA_WINDOW = 3;        // jendela MA yang sedang dieksplor user di chart in-sample (boleh diganti)
+let BEST_W = 3;            // nilai default sementara — akan DIHITUNG OTOMATIS via computeBestWindow() saat init() berdasarkan MAPE Data Test terkecil, SATU-SATUNYA yang dipakai utk PERAMALAN
+const FUTURE_STEPS = 9;    // horizon peramalan TETAP: Jan–Sept 2026 (9 bulan) — tidak mengikuti MA_WINDOW
 let FC_MONTH_IDX = 0; // index bulan yang dipilih untuk kartu prediksi
+
+// ── TRAIN-TEST SPLIT (Time-Series Split, rasio 80:20) ──────────────────
+// Total 72 bulan data historis (Jan 2020 - Des 2025).
+// Data Train : 57 bulan pertama (Jan 2020 - Sept 2024) -> indeks 0..56
+// Data Test  : 15 bulan terakhir (Okt 2024 - Des 2025)  -> indeks 57..71
+const TRAIN_SIZE = 57;
+const TEST_SIZE  = 15;
 
 // ── DATALABELS PLUGIN (angka tampil langsung di chart, bukan cuma saat hover) ──
 if (window.ChartDataLabels) Chart.register(window.ChartDataLabels);
@@ -571,6 +748,12 @@ Chart.defaults.set('plugins.datalabels', {
 
 // ── DATA ─────────────────────────────────────────────────────────────────
 const MONTHS = [
+  "2020 Jan","2020 Feb","2020 Mar","2020 Apr","2020 Mei","2020 Juni",
+  "2020 Juli","2020 Agust","2020 Sept","2020 Okt","2020 Nov","2020 Des",
+  "2021 Jan","2021 Feb","2021 Mar","2021 Apr","2021 Mei","2021 Juni",
+  "2021 Juli","2021 Agust","2021 Sept","2021 Okt","2021 Nov","2021 Des",
+  "2022 Jan","2022 Feb","2022 Mar","2022 Apr","2022 Mei","2022 Juni",
+  "2022 Juli","2022 Agust","2022 Sept","2022 Okt","2022 Nov","2022 Des",
   "2023 Jan","2023 Feb","2023 Mar","2023 Apr","2023 Mei","2023 Juni",
   "2023 Juli","2023 Agust","2023 Sept","2023 Okt","2023 Nov","2023 Des",
   "2024 Jan","2024 Feb","2024 Mar","2024 Apr","2024 Mei","2024 Juni",
@@ -579,24 +762,24 @@ const MONTHS = [
   "2025 Juli","2025 Agust","2025 Sept","2025 Okt","2025 Nov","2025 Des"
 ];
 const RAW = {
-  "1.01":[3114,2625,2655,2877,3082,3023,2995,3831,3288,3281,3309,2989,3543,3083,3726,2639,3362,3203,2853,3317,3552,3084,3385,3192,3061,3045,3677,2560,3000,2871,2513,3661,2632,2493,2644,2605],
-  "1.02":[1556,1354,1446,1731,1719,1785,1407,1622,1721,1658,1732,1561,1514,1506,2476,1071,1788,1589,1584,2055,1872,1806,1793,1533,1628,1554,2127,1756,2222,1945,1766,2632,2493,1809,1985,1755],
-  "2.01":[130,92,112,76,103,181,103,116,107,114,102,130,159,103,146,115,164,197,159,172,172,137,167,184,141,146,136,139,142,127,182,131,158,149,138,140],
-  "2.02":[288,255,304,307,301,248,269,205,244,218,259,278,297,276,275,296,254,227,299,263,221,229,285,241,180,168,164,183,205,214,241,240,215,158,162,170],
-  "2.03":[1281,1109,1192,1053,1240,1226,1266,1182,1202,1303,1176,1140,1385,1173,1346,1175,1399,1328,1268,1341,1171,1421,1187,1196,1199,1020,957,1042,1123,975,886,963,871,801,849,913],
-  "2.04":[99,107,146,72,79,86,79,74,83,71,66,110,53,88,162,110,92,97,104,108,94,83,76,128,153,91,69,87,42,117,92,66,78,57,76,51],
-  "2.05":[4774,4563,4533,6051,5881,5081,4942,5089,4998,5863,5038,4662,5458,5167,5260,5002,4918,4626,5419,4829,5173,5350,5152,5140,6861,5796,7688,6698,5988,6120,6289,5883,5957,5938,5913,6281],
-  "3.01":[445,152,76,155,221,116,201,223,126,221,254,234,153,148,118,163,126,154,213,152,126,134,102,189,114,126,199,161,129,144,82,72,111,118,146,136],
-  "3.02":[6127,5974,6211,7404,7383,6706,6458,6443,6508,7348,6387,6086,7199,6659,7071,6535,6701,6321,7036,6561,6705,7086,6765,6700,6900,5761,7558,6624,5901,6093,6299,5877,5924,5877,5843,6196],
-  "4.01":[1084,897,915,1041,1086,1064,962,1252,1102,1113,1095,1028,1110,1064,1406,852,1146,1092,1010,1229,1205,1124,1139,1053,1077,1028,1310,990,1234,1110,993,1415,1089,978,1024,977],
-  "4.02":[1462,1165,1298,1429,1473,1476,1440,1689,1600,1470,1625,1370,1640,1421,1876,1162,1513,1483,1371,1657,1675,1562,1582,1501,1433,1439,1774,1333,1601,1524,1276,1916,1457,1334,1449,1330],
-  "4.03":[1802,1629,1609,1818,1901,1906,1694,2092,1959,2010,1961,1814,1984,1790,2485,1444,2096,1903,1750,2107,2149,1868,2089,1858,1857,1804,2333,1705,2023,1852,1711,2438,1859,1673,1854,1751],
-  "4.04":[322,288,279,320,341,362,306,420,348,346,360,338,323,314,435,252,395,314,306,379,395,336,368,313,322,328,387,288,364,330,299,402,351,317,302,302],
-  "5.01":[46,8,18,7,45,12,11,30,52,26,17,31,41,37,17,6,13,21,10,18,24,24,17,29,12,39,10,26,25,30,28,63,28,42,38,15],
-  "5.02":[1142,846,881,665,1399,1018,699,1330,1236,1154,1219,796,1552,763,1254,642,1135,957,741,830,1158,1257,1067,675,618,1138,821,765,1127,930,636,1509,1050,787,903,702],
-  "5.03":[2010,1911,1848,2085,1967,2204,2162,2351,2199,2154,2205,2128,2010,2288,2723,1708,2320,2181,2184,2575,2527,2078,2390,2329,2388,1997,2684,2023,2390,2240,2103,2581,2089,1996,2176,2129],
-  "5.04":[1464,1207,1346,1828,1381,1569,1523,1735,1514,1603,1591,1588,1448,1498,2195,1346,1677,1625,1496,1944,1711,1522,1696,1683,1663,1420,2274,1499,1678,1647,1503,2009,1580,1472,1510,1511],
-  "5.05":[8,7,8,23,9,5,7,7,8,2,9,7,6,3,13,8,5,8,6,5,4,9,8,9,8,5,15,3,2,5,9,9,9,5,2,3],
+  "1.01":[2965, 2628, 2361, 3735, 2771, 2430, 2088, 2840, 2761, 2461, 2013, 2486, 2845, 2389, 2046, 2404, 2812, 1144, 1417, 2232, 2686, 2775, 2914, 2590, 2946, 2053, 2901, 3274, 2534, 3335, 2723, 3649, 3122, 3046, 2802, 2964, 3114, 2625, 2655, 2877, 3082, 3023, 2995, 3831, 3288, 3281, 3309, 2989, 3543, 3083, 3726, 2639, 3362, 3203, 2853, 3317, 3552, 3084, 3385, 3192, 3061, 3045, 3677, 2560, 3000, 2871, 2513, 3661, 2632, 2493, 2644, 2605],
+  "1.02":[1074, 1183, 980, 1098, 1148, 1052, 944, 1055, 1038, 1091, 838, 1071, 991, 1014, 869, 1098, 1160, 2058, 585, 1004, 1056, 1257, 1337, 1162, 1405, 1058, 1637, 1767, 1207, 1874, 1303, 1535, 1489, 1551, 1601, 1521, 1556, 1354, 1446, 1731, 1719, 1785, 1407, 1622, 1721, 1658, 1732, 1561, 1514, 1506, 2476, 1071, 1788, 1589, 1584, 2055, 1872, 1806, 1793, 1533, 1628, 1554, 2127, 1756, 2222, 1945, 1766, 2632, 2493, 1809, 1985, 1755],
+  "2.01":[129, 108, 79, 43, 101, 101, 118, 94, 117, 90, 84, 40, 87, 99, 129, 72, 53, 55, 49, 59, 77, 113, 131, 148, 109, 58, 93, 158, 64, 82, 106, 112, 123, 113, 99, 92, 130, 92, 112, 76, 103, 181, 103, 116, 107, 114, 102, 130, 159, 103, 146, 115, 164, 197, 159, 172, 172, 137, 167, 184, 141, 146, 136, 139, 142, 127, 182, 131, 158, 149, 138, 140],
+  "2.02":[256, 291, 273, 242, 320, 312, 270, 293, 256, 259, 221, 244, 234, 235, 277, 247, 306, 170, 197, 163, 196, 283, 248, 323, 208, 230, 239, 236, 256, 269, 282, 281, 293, 268, 296, 280, 288, 255, 304, 307, 301, 248, 269, 205, 244, 218, 259, 278, 297, 276, 275, 296, 254, 227, 299, 263, 221, 229, 285, 241, 180, 168, 164, 183, 205, 214, 241, 240, 215, 158, 162, 170],
+  "2.03":[1026, 1112, 1078, 936, 1227, 1433, 1076, 1091, 1116, 975, 340, 432, 789, 364, 950, 691, 433, 326, 213, 666, 774, 791, 859, 937, 854, 774, 790, 863, 888, 884, 1030, 903, 1064, 1259, 1260, 1156, 1281, 1109, 1192, 1053, 1240, 1226, 1266, 1182, 1202, 1303, 1176, 1140, 1385, 1173, 1346, 1175, 1399, 1328, 1268, 1341, 1171, 1421, 1187, 1196, 1199, 1020, 957, 1042, 1123, 975, 886, 963, 871, 801, 849, 913],
+  "2.04":[109, 95, 113, 100, 118, 90, 88, 136, 137, 229, 245, 296, 338, 277, 326, 223, 260, 250, 135, 185, 299, 320, 344, 364, 437, 276, 283, 306, 327, 312, 335, 290, 145, 177, 115, 113, 99, 107, 146, 72, 79, 86, 79, 74, 83, 71, 66, 110, 53, 88, 162, 110, 92, 97, 104, 108, 94, 83, 76, 128, 153, 91, 69, 87, 42, 117, 92, 66, 78, 57, 76, 51],
+  "2.05":[3833, 3580, 3535, 3908, 3487, 3661, 3729, 3640, 3727, 4057, 4036, 3890, 3616, 3771, 3931, 3855, 4380, 4165, 2617, 3177, 3651, 3777, 3816, 4225, 3932, 3448, 4654, 4801, 3888, 4478, 4403, 4592, 4536, 4598, 4808, 4490, 4774, 4563, 4533, 6051, 5881, 5081, 4942, 5089, 4998, 5863, 5038, 4662, 5458, 5167, 5260, 5002, 4918, 4626, 5419, 4829, 5173, 5350, 5152, 5140, 6861, 5796, 7688, 6698, 5988, 6120, 6289, 5883, 5957, 5938, 5913, 6281],
+  "3.01":[760, 528, 763, 918, 564, 667, 592, 770, 589, 517, 670, 592, 637, 546, 670, 725, 841, 917, 359, 573, 728, 733, 792, 734, 661, 626, 807, 720, 652, 624, 626, 743, 513, 440, 505, 349, 445, 152, 76, 155, 221, 116, 201, 223, 126, 221, 254, 234, 153, 148, 118, 163, 126, 154, 213, 152, 126, 134, 102, 189, 114, 126, 199, 161, 129, 144, 82, 72, 111, 118, 146, 136],
+  "3.02":[4593, 4658, 4315, 4311, 4689, 4930, 4689, 4484, 4764, 5093, 4256, 4310, 4427, 4200, 4943, 4363, 4591, 4049, 2852, 3677, 4269, 4551, 4606, 5263, 4879, 4160, 5252, 5644, 4771, 5401, 5530, 5435, 5648, 5975, 6073, 5782, 6127, 5974, 6211, 7404, 7383, 6706, 6458, 6443, 6508, 7348, 6387, 6086, 7199, 6659, 7071, 6535, 6701, 6321, 7036, 6561, 6705, 7086, 6765, 6700, 6900, 5761, 7558, 6624, 5901, 6093, 6299, 5877, 5924, 5877, 5843, 6196],
+  "4.01":[930, 834, 744, 1087, 868, 786, 677, 891, 846, 786, 629, 814, 866, 791, 614, 786, 875, 735, 430, 735, 830, 915, 948, 849, 987, 695, 1023, 1160, 857, 1151, 917, 1148, 1014, 1043, 1030, 1005, 1084, 897, 915, 1041, 1086, 1064, 962, 1252, 1102, 1113, 1095, 1028, 1110, 1064, 1406, 852, 1146, 1092, 1010, 1229, 1205, 1124, 1139, 1053, 1077, 1028, 1310, 990, 1234, 1110, 993, 1415, 1089, 978, 1024, 977],
+  "4.02":[1237, 1166, 1036, 1507, 1147, 1094, 926, 1208, 1101, 1128, 855, 1110, 1192, 1049, 932, 1090, 1236, 998, 573, 995, 1152, 1237, 1324, 1164, 1331, 978, 1386, 1524, 1143, 1600, 1256, 1603, 1428, 1361, 1329, 1340, 1462, 1165, 1298, 1429, 1473, 1476, 1440, 1689, 1600, 1470, 1625, 1370, 1640, 1421, 1876, 1162, 1513, 1483, 1371, 1657, 1675, 1562, 1582, 1501, 1433, 1439, 1774, 1333, 1601, 1524, 1276, 1916, 1457, 1334, 1449, 1330],
+  "4.03":[1567, 1531, 1299, 1898, 1610, 1342, 1176, 1497, 1562, 1383, 1165, 1390, 1470, 1325, 1154, 1371, 1576, 1208, 855, 1254, 1475, 1571, 1669, 1477, 1717, 1218, 1818, 1991, 1468, 2092, 1549, 2067, 1833, 1877, 1744, 1823, 1802, 1629, 1609, 1818, 1901, 1906, 1694, 2092, 1959, 2010, 1961, 1814, 1984, 1790, 2485, 1444, 2096, 1903, 1750, 2107, 2149, 1868, 2089, 1858, 1857, 1804, 2333, 1705, 2023, 1852, 1711, 2438, 1859, 1673, 1854, 1751],
+  "4.04":[305, 280, 262, 341, 294, 260, 253, 299, 290, 255, 202, 243, 308, 238, 215, 255, 285, 261, 144, 252, 285, 309, 310, 262, 316, 220, 311, 366, 273, 366, 304, 366, 336, 316, 300, 317, 322, 288, 279, 320, 341, 362, 306, 420, 348, 346, 360, 338, 323, 314, 435, 252, 395, 314, 306, 379, 395, 336, 368, 313, 322, 328, 387, 288, 364, 330, 299, 402, 351, 317, 302, 302],
+  "5.01":[34, 123, 17, 22, 19, 10, 10, 9, 11, 8, 7, 8, 7, 14, 9, 14, 19, 14, 12, 4, 20, 21, 37, 24, 34, 123, 17, 22, 19, 10, 10, 9, 11, 8, 7, 8, 46, 8, 18, 7, 45, 12, 11, 30, 52, 26, 17, 31, 41, 37, 17, 6, 13, 21, 10, 18, 24, 24, 17, 29, 12, 39, 10, 26, 25, 30, 28, 63, 28, 42, 38, 15],
+  "5.02":[956, 1178, 1046, 791, 629, 659, 599, 908, 974, 637, 639, 749, 752, 841, 570, 729, 869, 734, 365, 597, 980, 809, 864, 803, 956, 1178, 1046, 791, 629, 659, 599, 908, 974, 637, 639, 749, 1142, 846, 881, 665, 1399, 1018, 699, 1330, 1236, 1154, 1219, 796, 1552, 763, 1254, 642, 1135, 957, 741, 830, 1158, 1257, 1067, 675, 618, 1138, 821, 765, 1127, 930, 636, 1509, 1050, 787, 903, 702],
+  "5.03":[1872, 1540, 1418, 2470, 2000, 1688, 1403, 1764, 1714, 1726, 1326, 1721, 1897, 1503, 1342, 1611, 1829, 1499, 1065, 1538, 1668, 1955, 2076, 1761, 1872, 1540, 1418, 2470, 2000, 1688, 1403, 1764, 1714, 1726, 1326, 1721, 2010, 1911, 1848, 2085, 1967, 2204, 2162, 2351, 2199, 2154, 2205, 2128, 2010, 2288, 2723, 1708, 2320, 2181, 2184, 2575, 2527, 2078, 2390, 2329, 2388, 1997, 2684, 2023, 2390, 2240, 2103, 2581, 2089, 1996, 2176, 2129],
+  "5.04":[1159, 959, 851, 1541, 1266, 1118, 1009, 1203, 1086, 1178, 876, 1072, 1170, 1037, 988, 1144, 1241, 945, 556, 1090, 1059, 1242, 1264, 1156, 1159, 959, 851, 1541, 1266, 1118, 1009, 1203, 1086, 1178, 876, 1072, 1464, 1207, 1346, 1828, 1381, 1569, 1523, 1735, 1514, 1603, 1591, 1588, 1448, 1498, 2195, 1346, 1677, 1625, 1496, 1944, 1711, 1522, 1696, 1683, 1663, 1420, 2274, 1499, 1678, 1647, 1503, 2009, 1580, 1472, 1510, 1511],
+  "5.05":[18, 11, 9, 9, 5, 7, 11, 11, 14, 3, 3, 7, 10, 8, 6, 4, 14, 1, 4, 7, 15, 5, 10, 8, 18, 11, 9, 9, 5, 7, 11, 11, 14, 3, 3, 7, 8, 7, 8, 23, 9, 5, 7, 7, 8, 2, 9, 7, 6, 3, 13, 8, 5, 8, 6, 5, 4, 9, 8, 9, 8, 5, 15, 3, 2, 5, 9, 9, 9, 5, 2, 3],
 };
 const GROUPS = {
   donor_gender:{title:"Donor — Jenis Kelamin",unit:"orang",ids:["1.01","1.02"],labels:["Laki-laki","Perempuan"],colors:["#C0392B","#457FCA"]},
@@ -641,6 +824,39 @@ function maFuture(arr,w,steps){
   }
   return future;
 }
+// ── PERAMALAN MULTI-STEP-AHEAD — RANTAI ITERASI MA-N (Jan–Sept 2026) ──────
+// Sesuai kebutuhan: peramalan jangka menengah memakai rolling/iterative chain,
+// BUKAN flat/konstan. Setiap bulan baru dihitung dari rata-rata W bulan
+// TERAKHIR, di mana W bulan tsb berisi gabungan data AKTUAL (sisa tahun 2025)
+// dan nilai PREDIKSI bulan-bulan sebelumnya yang sudah dihitung (chain).
+// Contoh utk W=9: Prediksi Jan 26 pakai 9 data aktual terakhir (Apr–Des 2025);
+// Prediksi Feb 26 pakai 8 data aktual + 1 prediksi (Jan); dst — porsi aktual
+// berkurang satu per satu setiap maju 1 bulan, hingga flatline sempurna saat
+// seluruh W input sudah murni prediksi (mulai bulan ke-(W+1) horizon).
+function maFutureFlat(arr,w,steps){
+  const history=[...arr];
+  const future=[];
+  for(let i=0;i<steps;i++){
+    const win=history.slice(-w);
+    const v=win.reduce((a,b)=>a+b,0)/win.length;
+    future.push(Math.round(v));
+    history.push(v);
+  }
+  return future;
+}
+// One-Step-Ahead Forecasting di sepanjang Data Test (indeks TRAIN_SIZE..akhir).
+// Setiap titik prediksi memakai W bulan AKTUAL sebelumnya (data bergeser /
+// rolling actual window) — bukan hasil prediksi model sendiri — sehingga
+// hanya mengukur kemampuan model memprediksi 1 langkah ke depan pada data
+// out-of-sample (Okt 2024 - Des 2025), sesuai skema evaluasi out-of-sample.
+function oneStepAheadTestPreds(arr,w){
+  return arr.map((_,i)=>{
+    if(i<TRAIN_SIZE) return null; // hanya dievaluasi pada Data Test
+    if(i-w<0) return null;
+    const win=arr.slice(i-w,i);
+    return win.reduce((a,b)=>a+b,0)/win.length;
+  });
+}
 
 // ── ACCURACY ─────────────────────────────────────────────────────────────
 // Metrik akurasi standar forecasting (Hyndman & Athanasopoulos, 2021) — lebih lazim dipakai
@@ -666,9 +882,53 @@ function accuracy(actual,preds){
 function mapeClass(m){if(m==null)return'';if(m<10)return'mape-good';if(m<=20)return'mape-ok';if(m<=50)return'mape-fair';return'mape-bad';}
 function mapeLabel(m){if(m==null)return'—';if(m<10)return'Sangat Akurat';if(m<=20)return'Baik';if(m<=50)return'Cukup';return'Tidak Akurat';}
 
-// ── BUILD DATA PAYLOAD ─────────────────────────────────────────────────
+// ── PERBANDINGAN WINDOW MA (3 / 6 / 9) — dasar empiris pemilihan model ────
+// Menghitung rata-rata MAPE OUT-OF-SAMPLE (Data Test, Okt 2024-Des 2025)
+// seluruh indikator untuk tiap window, menggunakan skema One-Step-Ahead
+// Forecasting — independen dari MA_WINDOW yang sedang aktif di tampilan
+// (Makridakis et al., 1998).
+function computeAvgMapeForWindow(w){
+  const mapes=[];
+  for(const gdef of Object.values(GROUPS)){
+    for(const id of gdef.ids){
+      const arr=(RAW[id]||[]).map(v=>v==null?0:v);
+      if(!arr.length) continue;
+      const preds=oneStepAheadTestPreds(arr,w);
+      const acc=accuracy(arr,preds);
+      if(acc.mape!=null) mapes.push(acc.mape);
+    }
+  }
+  return mapes.length ? mapes.reduce((a,b)=>a+b,0)/mapes.length : null;
+}
+function buildWindowComparison(){
+  const el=document.getElementById('windowCompare');
+  if(!el) return;
+  const windows=[3,6,9];
+  const results=windows.map(w=>({w,avg:computeAvgMapeForWindow(w)}));
+  const valid=results.filter(r=>r.avg!=null);
+  const bestW=valid.length? valid.reduce((a,b)=>a.avg<b.avg?a:b).w : null;
+  el.innerHTML=results.map(r=>{
+    const isBest=r.w===bestW, isActive=r.w===MA_WINDOW;
+    return `<div class="wincmp-cell${isBest?' wincmp-best':''}${isActive?' wincmp-active':''}">
+      <div class="wincmp-lbl">MA-${r.w}${isBest?' · TERBAIK':''}${isActive?' · aktif':''}</div>
+      <div class="wincmp-val">${r.avg!=null?r.avg.toFixed(1)+'%':'—'}</div>
+      <div class="wincmp-sub">rata-rata MAPE</div>
+    </div>`;
+  }).join('');
+}
+
+// ── PEMILIHAN MODEL TERBAIK (otomatis, dasar peramalan) ────────────────
+// Window MA dengan rata-rata MAPE out-of-sample (Data Test) TERKECIL di antara
+// MA-3 / MA-6 / MA-9 dipilih sebagai SATU-SATUNYA model yang dipakai untuk
+// peramalan Jan–Sept 2026 (BEST_W). Tidak bisa diganti manual oleh user.
+function computeBestWindow(){
+  const windows=[3,6,9];
+  const results=windows.map(w=>({w,avg:computeAvgMapeForWindow(w)})).filter(r=>r.avg!=null);
+  if(!results.length) return 3;
+  return results.reduce((a,b)=>a.avg<b.avg?a:b).w;
+}
 function buildData(){
-  const fm = nextMonthLabels(MA_WINDOW);
+  const fm = nextMonthLabels(FUTURE_STEPS); // selalu 9 bulan: Jan–Sept 2026
   const groups = {};
   for(const [gkey,gdef] of Object.entries(GROUPS)){
     const series = gdef.ids.map((id,idx)=>({
@@ -677,9 +937,11 @@ function buildData(){
     }));
     const forecast = series.map(s=>{
       const arr = s.data.map(v=>v==null?0:v);
-      const preds = maInSample(arr, MA_WINDOW);
-      const future = maFuture(arr, MA_WINDOW, MA_WINDOW);
-      const acc = accuracy(arr, preds);
+      const preds = maInSample(arr, MA_WINDOW); // garis in-sample untuk visualisasi chart (eksplorasi MA-3/6/9)
+      const testPreds = oneStepAheadTestPreds(arr, MA_WINDOW); // evaluasi out-of-sample (Data Test)
+      // Peramalan Jan–Sept 2026 memakai rantai iterasi (multi-step-ahead), jendela model TERBAIK (BEST_W) — bukan MA_WINDOW yang sedang dieksplor
+      const future = maFutureFlat(arr, BEST_W, FUTURE_STEPS);
+      const acc = accuracy(arr, testPreds); // MAPE/MAE/RMSE/MFE dihitung dari Data Test saja
       return {label:s.label, color:s.color, preds, future, accuracy:acc};
     });
     groups[gkey] = {...gdef, series, forecast};
@@ -701,6 +963,22 @@ function fzPlugin(n){
     ctx.moveTo(xS,top);ctx.lineTo(xS,bottom);ctx.stroke();ctx.setLineDash([]);
     ctx.font='600 10px DM Sans,sans-serif';ctx.fillStyle='rgba(69,127,202,0.6)';
     ctx.fillText('PREDIKSI',xS+6,top+14);ctx.restore();
+  }};
+}
+// Shading area DATA TEST (out-of-sample) untuk grafik evaluasi train/test
+function tsZonePlugin(n){
+  return{id:'tz',beforeDraw(chart){
+    const{ctx,chartArea:{top,bottom},scales:{x}}=chart;
+    if(!x||n>=chart.data.labels.length)return;
+    const xS=x.getPixelForValue(n-0.5);
+    ctx.save();
+    const g=ctx.createLinearGradient(xS,0,chart.chartArea.right,0);
+    g.addColorStop(0,'rgba(196,125,17,0.10)');g.addColorStop(1,'rgba(196,125,17,0.03)');
+    ctx.fillStyle=g;ctx.fillRect(xS,top,chart.chartArea.right-xS,bottom-top);
+    ctx.beginPath();ctx.strokeStyle='rgba(196,125,17,0.40)';ctx.lineWidth=1.5;ctx.setLineDash([5,4]);
+    ctx.moveTo(xS,top);ctx.lineTo(xS,bottom);ctx.stroke();ctx.setLineDash([]);
+    ctx.font='600 10px DM Sans,sans-serif';ctx.fillStyle='rgba(196,125,17,0.75)';
+    ctx.fillText('DATA TEST',xS+6,top+14);ctx.restore();
   }};
 }
 
@@ -728,20 +1006,20 @@ function buildKPI(){
     <div class="kpi">
       <div class="kpi-icon">❤️</div>
       <div class="kpi-val" style="color:var(--red)">${fmt(totalDonor)}</div>
-      <div class="kpi-lbl">Total Donor 2023–2025</div>
-      <div class="kpi-sub">orang · Jan 2023–Des 2025</div>
+      <div class="kpi-lbl">Total Donor 2020–2025</div>
+      <div class="kpi-sub">orang · Jan 2020–Des 2025</div>
     </div>
     <div class="kpi">
       <div class="kpi-icon">🩸</div>
       <div class="kpi-val" style="color:var(--blue)">${fmt(totalPerm)}</div>
-      <div class="kpi-lbl">Total Permintaan Darah 2023–2025</div>
-      <div class="kpi-sub">kantong · Jan 2023–Des 2025</div>
+      <div class="kpi-lbl">Total Permintaan Darah 2020–2025</div>
+      <div class="kpi-sub">kantong · Jan 2020–Des 2025</div>
     </div>
     <div class="kpi">
       <div class="kpi-icon">📅</div>
       <div class="kpi-val" style="color:var(--green)">${fmt(avgDonor)}</div>
       <div class="kpi-lbl">Rata-rata Donor/Bulan</div>
-      <div class="kpi-sub">orang/bulan · 2023–2025</div>
+      <div class="kpi-sub">orang/bulan · 2020–2025</div>
     </div>
     <div class="kpi kpi-fc-carousel" id="kpiFcCard" style="cursor:pointer;user-select:none;position:relative;overflow:hidden" onclick="kpiCarouselStep(1)" title="Klik untuk bulan berikutnya">
       <div style="position:absolute;top:7px;right:10px;display:flex;gap:4px;align-items:center" id="kpiFcDots"></div>
@@ -773,7 +1051,7 @@ function updateKpiFcCard(){
     valEl.textContent = fmt(estDonor);
     valEl.style.opacity='1';
     lblEl.textContent = `Estimasi Donor ${m}`;
-    subEl.textContent = `orang · prediksi MA-${MA_WINDOW}`;
+    subEl.textContent = `orang · prediksi rantai iterasi MA-${BEST_W} (terbaik)`;
     // dots
     dotEl.innerHTML = fm.map((_,i)=>`<span style="width:6px;height:6px;border-radius:50%;background:${i===idx?'var(--amber)':'var(--border2)'};display:inline-block;transition:background .2s"></span>`).join('');
   },120);
@@ -848,7 +1126,7 @@ function setTrenMode(key,btn){
 }
 function renderTrenDonorChart(gkey){
   killChart('trenDonor');
-  const g=DATA.groups[gkey], n=MONTHS.length, fm=DATA.futureMonths, steps=MA_WINDOW;
+  const g=DATA.groups[gkey], n=MONTHS.length, fm=DATA.futureMonths, steps=FUTURE_STEPS;
   const allLabels=[...MONTHS,...fm];
   buildLegend('trenLegend',g.series,'trenDonor',()=>{
     const c=charts['trenDonor'];if(!c)return;
@@ -877,7 +1155,7 @@ function renderTrenDonorChart(gkey){
       datalabels:{display:(ctx)=>shouldShowLabel('trenDonor',Math.floor(ctx.datasetIndex/2))},
       tooltip:{mode:'index',intersect:false,callbacks:{label:c=>{const v=c.raw;if(v==null)return null;const isP=c.dataset.label?.includes('(prediksi)');const name=isP?c.dataset.label.replace(' (prediksi)',''):c.dataset.label;return isP?` ${name}: ${fmt(v)} ⟶ est.`:` ${name}: ${fmt(v)}`;}}}
     },scales:{
-      x:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11}}},
+      x:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10}, maxTicksLimit:14, maxRotation:0, minRotation:0, autoSkip:true}},
       y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11},callback:v=>v>=1000?(v/1000).toFixed(1)+'rb':v}}
     }},plugins:[fzPlugin(n)]
   });
@@ -887,7 +1165,7 @@ function renderTrenDonorChart(gkey){
 function renderReqChart(mode){
   killChart('req');
   const gkey=mode==='rs'?'permintaan_rs':'permintaan_jenis';
-  const g=DATA.groups[gkey], n=MONTHS.length, fm=DATA.futureMonths, steps=MA_WINDOW;
+  const g=DATA.groups[gkey], n=MONTHS.length, fm=DATA.futureMonths, steps=FUTURE_STEPS;
   const allLabels=[...MONTHS,...fm];
   buildLegend('reqLegend',g.series,'req',()=>{
     const c=charts['req'];if(!c)return;
@@ -917,7 +1195,7 @@ function renderReqChart(mode){
       datalabels:{display:(ctx)=>shouldShowLabel('req',Math.floor(ctx.datasetIndex/2)),color:'#fff',font:{size:9,weight:'700'}},
       tooltip:{mode:'index',intersect:false,callbacks:{label:c=>{const v=c.raw;if(v==null)return null;return ` ${c.dataset.label}: ${fmt(v)} kantong`;}}}
     },scales:{
-      x:{stacked:true,grid:{display:false},ticks:{font:{size:11}}},
+      x:{stacked:true,grid:{display:false},ticks:{font:{size:10}, maxTicksLimit:14, maxRotation:0, minRotation:0, autoSkip:true}},
       y:{stacked:true,grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11},callback:v=>v>=1000?(v/1000).toFixed(1)+'rb':v}}
     }},plugins:[fzPlugin(n)]
   });
@@ -939,24 +1217,29 @@ function renderDonorVsPermintaanChart(){
   killChart('dvp');
   const gDonor = DATA.groups.donor_gender;
   const gPerm  = DATA.groups.permintaan_rs;
-  const n = MONTHS.length, fm = DATA.futureMonths, steps = MA_WINDOW;
+  const n = MONTHS.length, fm = DATA.futureMonths, steps = FUTURE_STEPS;
   const allLabels = [...MONTHS, ...fm];
 
   // Total donor & permintaan per bulan (aktual)
   const totalDonor = MONTHS.map((_,i) => gDonor.series.reduce((s,sr)=>s+(sr.data[i]||0),0));
   const totalPerm  = MONTHS.map((_,i) => gPerm.series.reduce((s,sr)=>s+(sr.data[i]||0),0));
 
-  // Prediksi in-sample
+  // Prediksi in-sample (mengikuti MA_WINDOW yang sedang dieksplor, untuk visualisasi garis fit historis abu-abu di chart saja)
   const predsD = maInSample(totalDonor, MA_WINDOW);
   const predsP = maInSample(totalPerm, MA_WINDOW);
 
-  // Prediksi ke depan
-  const futureD = maFuture(totalDonor, MA_WINDOW, steps);
-  const futureP = maFuture(totalPerm,  MA_WINDOW, steps);
+  // Prediksi ke depan Jan–Sept 2026 — rantai iterasi (multi-step-ahead), pakai jendela model TERBAIK (BEST_W)
+  const futureD = maFutureFlat(totalDonor, BEST_W, steps);
+  const futureP = maFutureFlat(totalPerm,  BEST_W, steps);
 
-  // Akurasi
-  const accD = accuracy(totalDonor, predsD);
-  const accP = accuracy(totalPerm,  predsP);
+  // Akurasi yang DITAMPILKAN (badge MAPE) WAJIB konsisten dengan model yang dipakai
+  // untuk prediksi (BEST_W), dan dihitung dari Data Test out-of-sample (bukan in-sample
+  // MA_WINDOW tab eksplorasi) — supaya badge MAPE benar-benar mencerminkan performa
+  // model terbaik yang dipakai untuk angka prediksi di bawahnya.
+  const testPredsD = oneStepAheadTestPreds(totalDonor, BEST_W);
+  const testPredsP = oneStepAheadTestPreds(totalPerm, BEST_W);
+  const accD = accuracy(totalDonor, testPredsD);
+  const accP = accuracy(totalPerm,  testPredsP);
 
   // Dataset arrays (pad dengan null untuk bulan prediksi)
   const donorActual  = [...totalDonor, ...Array(steps).fill(null)];
@@ -1005,7 +1288,7 @@ function renderDonorVsPermintaanChart(){
         borderDash:[5,4], tension:0.4, pointRadius:0, pointHoverRadius:4,
         borderWidth:1.5, order:3, yAxisID:'yD'},
       // Donor prediksi ke depan
-      {type:'line', label:`Donor Prediksi (MA-${MA_WINDOW})`, data:donorFc, hidden:dsHidden(1),
+      {type:'line', label:`Donor Prediksi Iteratif (MA-${BEST_W} Terbaik)`, data:donorFc, hidden:dsHidden(1),
         borderColor:'#C0392B', backgroundColor:'rgba(192,57,43,0.05)', fill:true,
         borderDash:[6,3], tension:0.3, pointRadius:6, pointHoverRadius:9,
         pointBackgroundColor:'#C0392B', pointBorderColor:'#fff', pointBorderWidth:2,
@@ -1021,7 +1304,7 @@ function renderDonorVsPermintaanChart(){
         borderDash:[5,4], tension:0.4, pointRadius:0, pointHoverRadius:4,
         borderWidth:1.5, order:3, yAxisID:'yP'},
       // Permintaan prediksi ke depan
-      {type:'line', label:`Permintaan Prediksi (MA-${MA_WINDOW})`, data:permFc, hidden:dsHidden(3),
+      {type:'line', label:`Permintaan Prediksi Iteratif (MA-${BEST_W} Terbaik)`, data:permFc, hidden:dsHidden(3),
         borderColor:'#1F5FA6', backgroundColor:'rgba(31,95,166,0.04)', fill:true,
         borderDash:[6,3], tension:0.3, pointRadius:6, pointHoverRadius:9,
         pointBackgroundColor:'#1F5FA6', pointBorderColor:'#fff', pointBorderWidth:2,
@@ -1046,7 +1329,7 @@ function renderDonorVsPermintaanChart(){
         }
       },
       scales:{
-        x:{grid:{color:'rgba(0,0,0,0.04)'}, ticks:{font:{size:11}}},
+        x:{grid:{color:'rgba(0,0,0,0.04)'}, ticks:{font:{size:10}, maxTicksLimit:14, maxRotation:0, minRotation:0, autoSkip:true}},
         yD:{
           position:'left', grid:{color:'rgba(192,57,43,0.08)'},
           title:{display:true, text:'Donor (orang)', color:'#C0392B', font:{size:11,weight:'600'}},
@@ -1066,12 +1349,12 @@ function renderDonorVsPermintaanChart(){
   const mcD = mapeClass(accD.mape), mcP = mapeClass(accP.mape);
   document.getElementById('dvpMetrics').innerHTML = `
     <span class="tmetric" style="border-left:3px solid #C0392B;padding-left:8px">
-      <span style="font-size:10px;color:var(--muted)">Donor</span>
+      <span style="font-size:10px;color:var(--muted)">Donor (MA-${BEST_W} terbaik · Data Test)</span>
       <span class="${mcD}" style="font-weight:700;margin-left:5px">${accD.mape!=null?accD.mape+'%':'—'}</span> <span style="color:var(--muted)">MAPE</span>
       · <strong>${mapeLabel(accD.mape)}</strong>
     </span>
     <span class="tmetric" style="border-left:3px solid #1F5FA6;padding-left:8px">
-      <span style="font-size:10px;color:var(--muted)">Permintaan</span>
+      <span style="font-size:10px;color:var(--muted)">Permintaan (MA-${BEST_W} terbaik · Data Test)</span>
       <span class="${mcP}" style="font-weight:700;margin-left:5px">${accP.mape!=null?accP.mape+'%':'—'}</span> <span style="color:var(--muted)">MAPE</span>
       · <strong>${mapeLabel(accP.mape)}</strong>
     </span>
@@ -1084,64 +1367,6 @@ function renderDonorVsPermintaanChart(){
   `;
 }
 
-// ── TOTAL DONOR CHART ─────────────────────────────────────────────────────
-function renderTotalDonorChart(){
-  killChart('totalDonor');
-  const g=DATA.groups.donor_gender, n=MONTHS.length, fm=DATA.futureMonths, steps=MA_WINDOW;
-  const total=MONTHS.map((_,i)=>g.series.reduce((s,sr)=>s+(sr.data[i]||0),0));
-  const preds=maInSample(total,MA_WINDOW);
-  const future=maFuture(total,MA_WINDOW,steps);
-  const acc=accuracy(total,preds);
-  const allLabels=[...MONTHS,...fm];
-  const actualData=[...total,...Array(steps).fill(null)];
-  const inSampleData=[...preds,...Array(steps).fill(null)];
-  const connData=Array(allLabels.length).fill(null);
-  connData[n-1]=total[n-1];connData[n]=future[0];
-  const fcData=Array(allLabels.length).fill(null);
-  future.forEach((v,i)=>{fcData[n+i]=v;});
-  const tdLegendMap = [0,1,3]; // Aktual, In-sample MA, Prediksi ke depan
-  buildLegend('totalDonorLegend',null,'totalDonor',()=>{
-    const c=charts['totalDonor'];if(!c)return;
-    const sel=isolatedSeries['totalDonor'];
-    const active=sel&&sel.size>0;
-    tdLegendMap.forEach((dsIdx,li)=>{ c.data.datasets[dsIdx].hidden=(active&&!sel.has(li)); });
-    c.update();
-  },{showToggle:true,manualLabels:[
-    {color:'#C0392B',label:'Aktual'},
-    {color:'#457FCA',label:'In-sample MA',dashed:true},
-    {color:'#1A7A4A',label:'Prediksi ke depan'}
-  ]});
-  const selTd=isolatedSeries['totalDonor']; const activeTd=selTd&&selTd.size>0;
-  const tdHidden=(li)=>activeTd&&!selTd.has(li);
-  charts['totalDonor']=new Chart(document.getElementById('totalDonorChart').getContext('2d'),{
-    data:{labels:allLabels,datasets:[
-      {type:'line',label:'Aktual',data:actualData,hidden:tdHidden(0),borderColor:'#C0392B',backgroundColor:'rgba(192,57,43,0.07)',fill:true,tension:0.4,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:'#C0392B',borderWidth:2.5,order:1},
-      {type:'line',label:`In-sample MA(${MA_WINDOW})`,data:inSampleData,hidden:tdHidden(1),borderColor:'rgba(69,127,202,0.65)',backgroundColor:'transparent',borderDash:[5,4],tension:0.4,pointRadius:2,pointHoverRadius:5,pointBackgroundColor:'#457FCA',borderWidth:1.5,order:2},
-      {type:'line',label:'_conn',data:connData,borderColor:'rgba(26,122,74,0.4)',backgroundColor:'transparent',borderDash:[3,3],tension:0,pointRadius:0,borderWidth:1.5,order:3},
-      {type:'line',label:`Prediksi ${steps} Bulan ke Depan`,data:fcData,hidden:tdHidden(2),borderColor:'#1A7A4A',backgroundColor:'rgba(26,122,74,0.09)',fill:true,tension:0.3,pointRadius:7,pointHoverRadius:9,pointBackgroundColor:'#1A7A4A',pointBorderColor:'#fff',pointBorderWidth:2,borderWidth:2.5,order:0}
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{
-      legend:{display:false},
-      datalabels:{display:(ctx)=>{const rev={0:0,1:1,3:2}; const li=rev[ctx.datasetIndex]; if(li==null) return false; return shouldShowLabel('totalDonor',li);},
-        color:(ctx)=>ctx.dataset.borderColor, font:{size:9,weight:'700'},
-        formatter:(v)=>{const val=typeof v==='object'?v?.y:v; return val==null?'':fmt(val);}},
-      tooltip:{mode:'index',intersect:false,filter:i=>i.dataset.label!=='_conn',callbacks:{label:c=>{if(c.dataset.label==='_conn')return null;const v=typeof c.raw==='object'?c.raw?.y:c.raw;if(v==null)return null;return ` ${c.dataset.label}: ${fmt(v)}`;}}}
-    },scales:{
-      x:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11}}},
-      y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11},callback:v=>v>=1000?(v/1000).toFixed(1)+'rb':v}}
-    }},plugins:[fzPlugin(n)]
-  });
-  const mc=mapeClass(acc.mape);
-  document.getElementById('totalDonorMetrics').innerHTML=`
-    <span class="tmetric"><span class="${mc}" style="font-weight:700">${acc.mape!=null?acc.mape+'%':'—'}</span> <span style="color:var(--muted)">MAPE</span></span>
-    <span class="tmetric"><span style="font-weight:700">${fmt(acc.mae)}</span> <span style="color:var(--muted)">MAE</span></span>
-    <span class="tmetric"><span style="font-weight:700">${fmt(acc.rmse)}</span> <span style="color:var(--muted)">RMSE</span></span>
-    <span class="tmetric" style="background:var(--green-light)">
-      ${future.map((v,i)=>`<span style="font-weight:700;color:var(--green)">${fmt(v)}</span> <span style="color:var(--muted);font-size:10px">${fm[i]}</span>`).join(' → ')}
-    </span>
-    <span class="tmetric"><strong>${mapeLabel(acc.mape)}</strong></span>
-  `;
-}
 
 // ── FORECAST MONTH TABS ───────────────────────────────────────────────────
 function buildFcMonthTabs(){
@@ -1153,13 +1378,13 @@ function buildFcMonthTabs(){
     const descId = i===0 ? 'fcMonthDesc' : 'fcMonthDesc2';
     const container = document.getElementById(id);
     if(!container) return;
-    // Buat tab sesuai jumlah bulan prediksi MA_WINDOW (3, 6, atau 9 tab)
+    // Tab tetap 9 bulan: Jan–Sept 2026
     container.innerHTML = fm.map((m, j) =>
       `<button class="model-tab${j===FC_MONTH_IDX?' active':''}" onclick="switchFcMonth(${j},this,'${id}')">${m}</button>`
     ).join('');
     const descEl = document.getElementById(descId);
     if(descEl) descEl.textContent =
-      `Menampilkan estimasi untuk ${fm[FC_MONTH_IDX]} berdasarkan MA-${MA_WINDOW}`;
+      `Menampilkan estimasi rantai iterasi untuk ${fm[FC_MONTH_IDX]} — model terbaik MA-${BEST_W}`;
   });
 }
 
@@ -1179,7 +1404,7 @@ function switchFcMonth(idx, btn, tabsId){
     const descId = i===0 ? 'fcMonthDesc' : 'fcMonthDesc2';
     const descEl = document.getElementById(descId);
     if(descEl) descEl.textContent =
-      `Menampilkan estimasi untuk ${DATA.futureMonths[idx]} berdasarkan MA-${MA_WINDOW}`;
+      `Menampilkan estimasi rantai iterasi untuk ${DATA.futureMonths[idx]} — model terbaik MA-${BEST_W}`;
   });
   buildForecastDonorCards();
   buildForecastGoldarCards();
@@ -1256,7 +1481,7 @@ function _fcCardHtml(fc, val, selectedMonth, unit, mc, acc){
     </div>
     <div class="fc-main-val" style="color:${fc.color}">${fmt(val)}</div>
     <div class="fc-main-meta">${unit} · ${selectedMonth}</div>
-    <div class="fc-mape-row">MA(${MA_WINDOW}): <strong class="${mc}">${mapeLabel(acc.mape)}</strong> — MAPE ${acc.mape!=null?acc.mape+'%':'—'}</div>
+    <div class="fc-mape-row">MA-${BEST_W} (terbaik): <strong class="${mc}">${mapeLabel(acc.mape)}</strong> — MAPE ${acc.mape!=null?acc.mape+'%':'—'}</div>
     <div class="fc-acc-row">
       <div class="fc-acc-cell"><div class="fc-acc-v ${mc}">${acc.mape!=null?acc.mape+'%':'—'}</div><div class="fc-acc-k">MAPE</div></div>
       <div class="fc-acc-cell"><div class="fc-acc-v">${acc.mae!=null?fmt(acc.mae):'—'}</div><div class="fc-acc-k">MAE</div></div>
@@ -1267,7 +1492,8 @@ function _fcCardHtml(fc, val, selectedMonth, unit, mc, acc){
 
 // ── EVALUASI TABLE ────────────────────────────────────────────────────────
 function buildEvalSection(){
-  document.getElementById('evalModelTitle').textContent=`Evaluasi Model MA-${MA_WINDOW}`;
+  document.getElementById('evalModelTitle').textContent=`Evaluasi Model MA-3 / MA-6 / MA-9 — Terbaik: MA-${BEST_W}`;
+  buildWindowComparison();
   const showGroups={donor_gender:'Donor Gender',donor_goldar:'Donor Goldar',donor_usia:'Donor Usia',permintaan_rs:'Permintaan RS',permintaan_jenis:'Permintaan Jenis'};
   let html='';
   for(const[gk,gLabel] of Object.entries(showGroups)){
@@ -1303,9 +1529,9 @@ function buildEvalSection(){
     ? ` ${highErrCount} indikator dengan data kecil masih kurang akurat — lihat kolom "Perlu perhatian".`
     : '';
   const reko=avgMape==null?'Data tidak cukup.'
-    :avgMape<10?`Model MA-${MA_WINDOW} menunjukkan akurasi yang sangat baik (MAPE ${avgMape.toFixed(1)}%). Untuk mendukung perencanaan persediaan darah, sistem menghitung kebutuhan cadangan (safety stock) sehingga diperoleh target stok yang direkomendasikan.${caveat}`
-    :avgMape<=20?`Model MA-${MA_WINDOW} menunjukkan akurasi yang baik (MAPE ${avgMape.toFixed(1)}%). Untuk mendukung perencanaan persediaan darah, sistem menghitung kebutuhan cadangan (safety stock) sehingga diperoleh target stok yang direkomendasikan.${caveat}`
-    :`Model MA-${MA_WINDOW}: MAPE rata-rata ${avgMape.toFixed(1)}% (${mapeLabel(avgMape)}).${caveat} Hasil forecasting tetap digabung dengan safety stock untuk menentukan target stok yang direkomendasikan.`;
+    :avgMape<10?`Model MA-${BEST_W} (terbaik secara empiris) menunjukkan akurasi yang sangat baik (MAPE ${avgMape.toFixed(1)}%). Model ini dipakai untuk peramalan rantai iterasi Jan–Sept 2026, lalu digabung dengan safety stock untuk target stok yang direkomendasikan.${caveat}`
+    :avgMape<=20?`Model MA-${BEST_W} (terbaik secara empiris) menunjukkan akurasi yang baik (MAPE ${avgMape.toFixed(1)}%). Model ini dipakai untuk peramalan rantai iterasi Jan–Sept 2026, lalu digabung dengan safety stock untuk target stok yang direkomendasikan.${caveat}`
+    :`Model MA-${BEST_W} (terbaik secara empiris): MAPE rata-rata ${avgMape.toFixed(1)}% (${mapeLabel(avgMape)}).${caveat} Hasil forecasting rantai iterasi tetap digabung dengan safety stock untuk menentukan target stok yang direkomendasikan.`;
   document.getElementById('evalSummary').innerHTML=`
     <div class="eval-box">
       <div class="eval-box-title">Estimasi ${fm[0]}</div>
@@ -1325,6 +1551,87 @@ function buildEvalSection(){
       <p style="margin-top:8px">Perlu perhatian: <strong class="${worst?mapeClass(worst.accuracy.mape):''}">${worst?worst.label:'—'}</strong><br><span style="font-size:11px;color:var(--muted)">${worst?worst.accuracy.mape+'% MAPE':''}</span></p>
     </div>
   `;
+}
+
+// ── GRAFIK EVALUASI: DATA TRAIN VS DATA TEST (tanpa peramalan 2026) ────────
+// Murni membandingkan AKTUAL vs PREDIKSI ONE-STEP-AHEAD pada Data Test
+// (Okt 2024–Des 2025), pakai model terbaik (BEST_W) — TIDAK melibatkan
+// peramalan Jan–Sept 2026 sama sekali, sesuai kebutuhan: evaluasi cukup
+// terhadap data yang ada (Train & Test), bukan data prediksi ke depan.
+function renderEvalChart(){
+  killChart('evalChart');
+  const lblEl = document.getElementById('evalChartModelLbl');
+  // Pakai MA_WINDOW (tab MA-3/6/9 yang sedang aktif) — bukan BEST_W konstan —
+  // supaya MAPE Donor & Permintaan Data Test IKUT BERUBAH tiap ganti tab.
+  // Tandai juga kalau window ini yang TERBAIK (BEST_W).
+  const isBest = MA_WINDOW === BEST_W;
+  if(lblEl) lblEl.textContent = `MA-${MA_WINDOW}${isBest ? ' (terbaik)' : ''}`;
+
+  const g = DATA.groups;
+  const gDonor = g.donor_gender, gPerm = g.permintaan_rs;
+  const totalDonor = MONTHS.map((_,i)=>gDonor.series.reduce((s,sr)=>s+(sr.data[i]||0),0));
+  const totalPerm  = MONTHS.map((_,i)=>gPerm.series.reduce((s,sr)=>s+(sr.data[i]||0),0));
+
+  // Prediksi one-step-ahead HANYA pada Data Test (null di luar rentang Data Test)
+  const testPredsD = oneStepAheadTestPreds(totalDonor, MA_WINDOW);
+  const testPredsP = oneStepAheadTestPreds(totalPerm, MA_WINDOW);
+  const accD = accuracy(totalDonor, testPredsD);
+  const accP = accuracy(totalPerm, testPredsP);
+
+  const el = document.getElementById('evalChart');
+  if(!el) return;
+  charts['evalChart'] = new Chart(el.getContext('2d'), {
+    data:{labels: MONTHS, datasets:[
+      {type:'line', label:'Donor Aktual', data:totalDonor,
+        borderColor:'#C0392B', backgroundColor:'rgba(192,57,43,0.07)', fill:true,
+        tension:0.35, pointRadius:2, pointHoverRadius:6, pointBackgroundColor:'#C0392B',
+        borderWidth:2, order:2, yAxisID:'yD'},
+      {type:'line', label:`Donor Prediksi One-Step (MA-${MA_WINDOW}, Data Test)`, data:testPredsD,
+        borderColor:'#C0392B', backgroundColor:'transparent',
+        borderDash:[5,3], tension:0.35, pointRadius:3.5, pointHoverRadius:7,
+        pointBackgroundColor:'#fff', pointBorderColor:'#C0392B', pointBorderWidth:2,
+        borderWidth:2, order:1, yAxisID:'yD'},
+      {type:'line', label:'Permintaan Aktual', data:totalPerm,
+        borderColor:'#1F5FA6', backgroundColor:'rgba(31,95,166,0.06)', fill:true,
+        tension:0.35, pointRadius:2, pointHoverRadius:6, pointBackgroundColor:'#1F5FA6',
+        borderWidth:2, order:2, yAxisID:'yP'},
+      {type:'line', label:`Permintaan Prediksi One-Step (MA-${MA_WINDOW}, Data Test)`, data:testPredsP,
+        borderColor:'#1F5FA6', backgroundColor:'transparent',
+        borderDash:[5,3], tension:0.35, pointRadius:3.5, pointHoverRadius:7,
+        pointBackgroundColor:'#fff', pointBorderColor:'#1F5FA6', pointBorderWidth:2,
+        borderWidth:2, order:1, yAxisID:'yP'},
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:true, position:'top', labels:{font:{size:10.5},boxWidth:9,boxHeight:9,padding:10}},
+        tooltip:{mode:'index', intersect:false, callbacks:{label:c=>{
+          if(c.raw==null) return null;
+          return ` ${c.dataset.label}: ${fmt(c.raw)}`;
+        }}},
+        datalabels:{display:(ctx)=>shouldShowLabel('evalChart', ctx.datasetIndex),
+          color:(ctx)=>ctx.dataset.borderColor, font:{size:8,weight:'700'},
+          formatter:(v)=>v==null?'':fmt(v)}
+      },
+      scales:{
+        x:{grid:{color:'rgba(0,0,0,0.03)'}, ticks:{font:{size:10}, maxTicksLimit:16, maxRotation:0, minRotation:0, autoSkip:true}},
+        yD:{position:'left', grid:{color:'rgba(0,0,0,0.04)'}, ticks:{font:{size:10}},
+          title:{display:true, text:'Donor (orang)', font:{size:10,weight:'600'}, color:'var(--muted)'}},
+        yP:{position:'right', grid:{display:false}, ticks:{font:{size:10}},
+          title:{display:true, text:'Permintaan (kantong)', font:{size:10,weight:'600'}, color:'var(--muted)'}}
+      }
+    },
+    plugins:[tsZonePlugin(TRAIN_SIZE)]
+  });
+
+  const metricsEl=document.getElementById('evalChartMetrics');
+  if(metricsEl){
+    metricsEl.innerHTML = `
+      <div class="tmetric">MAPE Donor (Data Test, MA-${MA_WINDOW}): <strong class="${mapeClass(accD.mape)}">${accD.mape!=null?accD.mape+'%':'—'}</strong></div>
+      <div class="tmetric">MAPE Permintaan (Data Test, MA-${MA_WINDOW}): <strong class="${mapeClass(accP.mape)}">${accP.mape!=null?accP.mape+'%':'—'}</strong></div>
+      <div class="tmetric">Data Train: 57 bulan · Data Test: 15 bulan</div>
+    `;
+  }
 }
 
 // ── SAFETY STOCK (TEORI PERSEDIAAN) ─────────────────────────────────────────
@@ -1378,7 +1685,7 @@ function buildSafetyStockSection(){
     tabsEl.innerHTML = fm.map((m,j)=>`<button class="model-tab${j===SS_MONTH_IDX?' active':''}" onclick="switchSSMonth(${j},this)">${m}</button>`).join('');
   }
   const descEl = document.getElementById('ssMonthDesc');
-  if(descEl) descEl.textContent = `Menampilkan safety stock & target stok untuk ${fm[SS_MONTH_IDX]} (MA-${MA_WINDOW})`;
+  if(descEl) descEl.textContent = `Menampilkan safety stock & target stok untuk ${fm[SS_MONTH_IDX]} — ramalan rantai iterasi model terbaik MA-${BEST_W}`;
   const thEst = document.getElementById('ssThEst');
   if(thEst) thEst.textContent = `Estimasi ${fm[SS_MONTH_IDX]}`;
 
@@ -1445,7 +1752,7 @@ function buildRasioBar(){
   el.innerHTML = `
     <div style="background:${kurang?'var(--red-light)':'var(--green-light)'};border:1px solid ${kurang?'var(--red)':'var(--green)'};border-radius:var(--radius-sm);padding:.6rem 1rem;display:flex;align-items:center;gap:.6rem;font-size:12.5px">
       <span style="font-size:1.1rem">${kurang?'📉':'📊'}</span>
-      <span><strong>Rasio Donor terhadap Permintaan: ${rasio}%</strong> — ${kurang?'Kebutuhan darah lebih tinggi dari jumlah donor yang tercatat sepanjang 2023–2025.':'Jumlah donor mencukupi total permintaan darah 2023–2025.'}</span>
+      <span><strong>Rasio Donor terhadap Permintaan: ${rasio}%</strong> — ${kurang?'Kebutuhan darah lebih tinggi dari jumlah donor yang tercatat sepanjang 2020–2025.':'Jumlah donor mencukupi total permintaan darah 2020–2025.'}</span>
     </div>`;
 }
 
@@ -1471,7 +1778,7 @@ function buildRekHero(){
   el.innerHTML = `
     <div class="rek-hero">
       <div class="rek-hero-title">Rekomendasi Persediaan Darah</div>
-      <div class="rek-hero-sub">Berdasarkan forecasting MA-${MA_WINDOW} + safety stock (service level ${sl}) untuk ${fm[safeIdx]}</div>
+      <div class="rek-hero-sub">Berdasarkan forecasting rantai iterasi MA-${BEST_W} (model terbaik) + safety stock (service level ${sl}) untuk ${fm[safeIdx]}</div>
       <div class="rek-row">
         <div class="rek-cell" style="border-top:3px solid var(--amber)">
           <div class="rek-cell-icon">📦</div>
@@ -1567,18 +1874,16 @@ function switchModel(w,btn){
   document.querySelectorAll('#modelTabs .model-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   const descs={
-    3:'Moving Average 3 bulan — prediksi 3 bulan ke depan berdasarkan rata-rata 3 bulan terakhir',
-    6:'Moving Average 6 bulan — prediksi 6 bulan ke depan, lebih halus tapi lebih lambat merespons tren baru',
-    9:'Moving Average 9 bulan — prediksi 9 bulan ke depan, sangat halus cocok untuk data yang stabil',
+    3:'MA-3: tiap prediksi memakai rata-rata 3 bulan data aktual sebelumnya (t-1, t-2, t-3) — prediksi 3 bulan ke depan. Responsif terhadap perubahan jangka pendek, cocok untuk data dengan fluktuasi tinggi.',
+    6:'MA-6: tiap prediksi memakai rata-rata 6 bulan data aktual sebelumnya (t-1 s.d. t-6) — prediksi 6 bulan ke depan. Lebih halus dan stabil, mengurangi noise namun lebih lambat merespons perubahan tren.',
+    9:'MA-9: tiap prediksi memakai rata-rata 9 bulan data aktual sebelumnya (t-1 s.d. t-9) — prediksi 9 bulan ke depan. Sangat halus, cocok untuk data stabil — berisiko tertinggal jika terjadi perubahan tren mendadak.',
   };
   document.getElementById('modelDesc').textContent=descs[w]||'';
-  document.getElementById('fcSectionTitle').textContent=`Tren Donor 2023–2025 & Estimasi ${w} Bulan ke Depan (MA-${w})`;
-  document.getElementById('footerMethod').textContent=`Metode: Single Moving Average (MA-${w}) · Evaluasi: MAPE, MAE, RMSE, MFE`;
+  document.getElementById('fcSectionTitle').textContent=`Tren Donor 2020–2025 & Estimasi ${w} Bulan ke Depan (MA-${w})`;
+  document.getElementById('footerMethod').textContent=`Metode: Single Moving Average (model terbaik) · Peramalan Jan–Sept 2026: rantai iterasi (multi-step-ahead) · Makridakis et al. (1998) · Evaluasi: MAPE, MAE, RMSE, MFE · Safety Stock: SS = Z×σ×√LT (Silver et al., 1998)`;
   FC_MONTH_IDX=0;
   renderAll();
 }
-
-// ── LEGEND (mode isolasi) + TOGGLE ANGKA ───────────────────────────────
 // showToggle: true = tampilkan tombol 👁 "Tampilkan Angka" di legend bar
 // manualLabels: array [{color,label}] untuk override legend manual (dvp/totalDonor)
 const manualLabelOn = {};
@@ -1648,14 +1953,151 @@ function shouldShowLabel(chartId, legendIdx){
   return false;
 }
 
+// ── TOGGLE TEORI BOX ───────────────────────────────────────────────────
+function toggleTeori(){
+  const body = document.getElementById('teoriBody');
+  const btn  = document.getElementById('teoriToggleBtn');
+  const open = body.classList.toggle('open');
+  btn.classList.toggle('open', open);
+  btn.innerHTML = `<span class="arrow">▼</span> ${open ? 'Sembunyikan Teori' : 'Tampilkan Teori'}`;
+}
+function toggleEvalKonsep(){
+  const body = document.getElementById('evalKonsepBody');
+  const btn  = document.getElementById('evalKonsepToggleBtn');
+  const open = body.classList.toggle('open');
+  btn.classList.toggle('open', open);
+  btn.innerHTML = `<span class="arrow">▼</span> ${open ? 'Sembunyikan Konsep' : 'Tampilkan Konsep'}`;
+}
+function toggleMANote(){
+  const el = document.getElementById('maNoteBody');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+function toggleEvalNote(){
+  const el = document.getElementById('evalNoteBody');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+function toggleEvalResult(){
+  const body = document.getElementById('evalResultBody');
+  const btn  = document.getElementById('evalResultToggleBtn');
+  const hidden = body.style.display === 'none';
+  body.style.display = hidden ? '' : 'none';
+  btn.innerHTML = `<span class="arrow">▼</span> ${hidden ? 'Sembunyikan Hasil' : 'Tampilkan Hasil'}`;
+}
+function toggleSSNote(){
+  const el = document.getElementById('ssNoteBody');
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+
+// ── RASIO HERO + CHART ────────────────────────────────────────────────────
+function buildRasioSection(){
+  const g = DATA.groups;
+  const totalDonor = g.donor_gender.series.reduce((s,sr)=>s+sr.data.reduce((a,b)=>a+(b||0),0),0);
+  const totalPerm  = g.permintaan_rs.series.reduce((s,sr)=>s+sr.data.reduce((a,b)=>a+(b||0),0),0);
+  const rasio      = totalPerm > 0 ? (totalDonor/totalPerm*100).toFixed(1) : '0.0';
+  const isDefisit  = parseFloat(rasio) < 100;
+  const color      = isDefisit ? 'var(--red)' : 'var(--green)';
+
+  const rasioPerBulan = MONTHS.map((_,i)=>{
+    const d = g.donor_gender.series.reduce((s,sr)=>s+(sr.data[i]||0),0);
+    const p = g.permintaan_rs.series.reduce((s,sr)=>s+(sr.data[i]||0),0);
+    return p > 0 ? +(d/p*100).toFixed(1) : null;
+  });
+  const avgRasio    = rasioPerBulan.filter(v=>v!=null).reduce((a,b)=>a+b,0)/rasioPerBulan.filter(v=>v!=null).length;
+  const minRasio    = Math.min(...rasioPerBulan.filter(v=>v!=null));
+  const maxRasio    = Math.max(...rasioPerBulan.filter(v=>v!=null));
+  const minIdx      = rasioPerBulan.indexOf(minRasio);
+  const maxIdx      = rasioPerBulan.indexOf(maxRasio);
+
+  const heroEl = document.getElementById('rasioHero');
+  if(heroEl){
+    heroEl.innerHTML = `
+    <div class="rasio-hero">
+      <div class="rasio-hero-left">
+        <div class="rasio-hero-title">Rasio Donor terhadap Permintaan (Total 2020–2025)</div>
+        <div class="rasio-hero-main">
+          <span class="rasio-val" style="color:${color}">${rasio}%</span>
+          <span class="rasio-unit">${isDefisit ? '← Defisit' : '← Surplus'}</span>
+        </div>
+        <div class="rasio-desc">
+          ${isDefisit
+            ? `Total permintaan darah (<strong>${fmt(totalPerm)} kantong</strong>) melebihi jumlah donor (<strong>${fmt(totalDonor)} orang</strong>) — PMI perlu strategi peningkatan donor dan pengelolaan stok yang lebih ketat.`
+            : `Jumlah donor (<strong>${fmt(totalDonor)} orang</strong>) secara total mencukupi permintaan (<strong>${fmt(totalPerm)} kantong</strong>) — namun perlu diwaspadai fluktuasi bulanan.`}
+        </div>
+      </div>
+      <div class="rasio-track">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px">
+          <span>0%</span><span>100% <em style="font-size:9.5px">(titik impas)</em></span><span>${Math.max(maxRasio,120).toFixed(0)}%</span>
+        </div>
+        <div class="rasio-bar-wrap">
+          <div class="rasio-bar-fill" style="width:${Math.min(parseFloat(rasio)/Math.max(maxRasio,120)*100,100).toFixed(1)}%;background:${color}"></div>
+        </div>
+        <div class="rasio-bulan-grid">
+          <div class="rasio-bulan-card">
+            <div class="rasio-bulan-lbl">Rata-rata Bulanan</div>
+            <div class="rasio-bulan-val" style="color:${color}">${avgRasio.toFixed(1)}%</div>
+            <div class="rasio-bulan-sub">dari 72 bulan</div>
+          </div>
+          <div class="rasio-bulan-card">
+            <div class="rasio-bulan-lbl">Rasio Terendah</div>
+            <div class="rasio-bulan-val" style="color:var(--red)">${minRasio}%</div>
+            <div class="rasio-bulan-sub">${MONTHS[minIdx]||'—'}</div>
+          </div>
+          <div class="rasio-bulan-card">
+            <div class="rasio-bulan-lbl">Rasio Tertinggi</div>
+            <div class="rasio-bulan-val" style="color:var(--green)">${maxRasio}%</div>
+            <div class="rasio-bulan-sub">${MONTHS[maxIdx]||'—'}</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // Rasio Chart
+  killChart('rasio');
+  const rasioChartEl = document.getElementById('rasioChart');
+  if(!rasioChartEl) return;
+  charts['rasio'] = new Chart(rasioChartEl.getContext('2d'), {
+    data:{labels:MONTHS, datasets:[
+      {type:'line', label:'Batas Impas (100%)', data:Array(MONTHS.length).fill(100),
+        borderColor:'rgba(14,107,69,0.35)', borderWidth:1.5, borderDash:[4,4],
+        pointRadius:0, fill:false, order:3},
+      {type:'line', label:'Rasio Donor/Permintaan (%)', data:rasioPerBulan,
+        borderColor:'#C0392B', backgroundColor:'rgba(192,57,43,0.07)', fill:true,
+        tension:0.4, pointRadius:3, pointHoverRadius:7, pointBackgroundColor:'#C0392B',
+        borderWidth:2.5, order:1},
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:true, position:'top', labels:{font:{size:11},boxWidth:9,boxHeight:9,padding:12}},
+        tooltip:{mode:'index', intersect:false, callbacks:{label:c=>{
+          if(c.raw==null) return null;
+          return ` ${c.dataset.label}: ${typeof c.raw==='number'?c.raw.toFixed(1)+'%':c.raw}`;
+        }}},
+        datalabels:{display:(ctx)=>ctx.datasetIndex===1 && shouldShowLabel('rasio', ctx.datasetIndex),
+          color:'#C0392B', font:{size:9,weight:'700'},
+          formatter:(v)=>typeof v==='number'?v.toFixed(1)+'%':''}
+      },
+      scales:{
+        x:{grid:{color:'rgba(0,0,0,0.03)'}, ticks:{font:{size:10}, maxTicksLimit:16, maxRotation:0, minRotation:0, autoSkip:true}},
+        y:{
+          grid:{color:'rgba(0,0,0,0.04)'},
+          ticks:{font:{size:11}, callback:v=>v+'%'},
+          title:{display:true, text:'Rasio (%)', font:{size:11,weight:'600'}, color:'var(--muted)'}
+        }
+      }
+    }
+  });
+}
+
 // ── RENDER ALL ────────────────────────────────────────────────────────────
 function renderAll(){
   DATA = buildData();
   buildKPI();
+  buildRasioSection();
   renderDonorVsPermintaanChart();
   renderTrenDonorChart(trenDonorMode);
   renderPies();
-  renderTotalDonorChart();
   buildFcMonthTabs();
   buildForecastDonorCards();
   buildForecastGoldarCards();
@@ -1674,8 +2116,8 @@ function renderAll(){
     if(el) el.style.display=(k===activeReqMode)?'':'none';
   });
   buildEvalSection();
+  renderEvalChart();
   buildSafetyStockSection();
-  buildRasioBar();
   buildRekHero();
   buildInsights();
   const activeTable=document.querySelector('#tblTabs .tab.active');
@@ -1686,7 +2128,9 @@ function renderAll(){
 // ── INIT ──────────────────────────────────────────────────────────────────
 (function init(){
   document.getElementById('lastUpdate').textContent = fmtDt(new Date());
-  document.getElementById('statusMsg').textContent = 'Data 2023–2025 berhasil dimuat';
+  document.getElementById('statusMsg').textContent = 'Data 2020–2025 (72 bulan) berhasil dimuat';
+  // Tentukan model terbaik secara OTOMATIS dari rata-rata MAPE Data Test (bukan hardcode)
+  BEST_W = computeBestWindow();
   renderAll();
   document.getElementById('loadingOverlay').style.display='none';
 })();

@@ -23,12 +23,55 @@
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
 a{color:var(--red);text-decoration:none}
-.wrap{max-width:1320px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+.wrap{max-width:1180px;margin:0 auto;padding:2.25rem 2.25rem 4rem}
+
+/* ── APP SHELL / SIDEBAR NAVIGATION ── */
+.app-shell{display:flex;align-items:flex-start;min-height:100vh}
+.sidebar{width:258px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--surface2);border-right:1px solid var(--border);padding:1.6rem 1.15rem 1.4rem;display:flex;flex-direction:column;scrollbar-width:thin}
+.sidebar-brand{display:flex;align-items:center;gap:.6rem;padding:0 .35rem;margin-bottom:1.5rem}
+.sidebar-mark{width:34px;height:34px;border-radius:9px;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:14px;flex-shrink:0;letter-spacing:-.02em}
+.sidebar-brand-text{line-height:1.25}
+.sidebar-brand-text strong{display:block;font-family:'DM Serif Display',serif;font-size:14.5px}
+.sidebar-brand-text span{display:block;font-size:10.5px;color:var(--muted)}
+.sidebar-nav{position:relative;flex:1}
+.sidebar-nav::before{content:'';position:absolute;left:16px;top:22px;bottom:22px;width:1px;background:var(--border2)}
+.nav-item{position:relative;display:flex;align-items:flex-start;gap:.7rem;padding:.55rem .45rem;border-radius:9px;cursor:pointer;user-select:none;background:none;border:none;width:100%;text-align:left;font-family:inherit;transition:background .15s}
+.nav-item:hover{background:var(--surface)}
+.nav-item.active{background:var(--surface);box-shadow:inset 3px 0 0 var(--red)}
+.nav-item:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.nav-num{position:relative;z-index:1;flex-shrink:0;width:33px;height:33px;border-radius:50%;background:var(--surface);border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:13px;color:var(--muted);transition:all .18s}
+.nav-item.active .nav-num{background:var(--red);border-color:var(--red);color:#fff}
+.nav-label{padding-top:5px;display:flex;flex-direction:column;gap:2px}
+.nav-title{display:block;font-size:12.5px;font-weight:700;color:var(--text);line-height:1.3}
+.nav-item.active .nav-title{color:var(--red)}
+.nav-desc{display:block;font-size:10.5px;color:var(--muted2);line-height:1.4;max-width:170px}
+.sidebar-foot{padding:.9rem .5rem 0;border-top:1px solid var(--border);margin-top:.75rem}
+.sidebar-progress-track{height:3px;background:var(--border2);border-radius:99px;overflow:hidden;margin-bottom:.5rem}
+.sidebar-progress-fill{height:100%;background:var(--red);border-radius:99px;transition:width .25s ease}
+.sidebar-foot-txt{font-size:10.5px;color:var(--muted2);display:flex;justify-content:space-between}
+.main-content{flex:1;min-width:0}
+
+.page{display:none}
+.page.active{display:block;animation:pagefade .25s ease}
+@keyframes pagefade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:980px){
+  .app-shell{flex-direction:column}
+  .sidebar{position:relative;width:100%;height:auto;border-right:none;border-bottom:1px solid var(--border);padding:1rem}
+  .sidebar-nav::before{display:none}
+  .sidebar-nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+  .nav-item{flex-direction:column;align-items:center;text-align:center;width:auto;min-width:78px;gap:.3rem;padding:.5rem .4rem}
+  .nav-desc{display:none}
+  .nav-label{padding-top:0}
+  .nav-title{font-size:10.5px}
+  .sidebar-foot{display:none}
+  .wrap{padding:1.75rem 1.1rem 3rem}
+}
 
 /* HEADER */
-.site-header{margin-bottom:2rem}
-.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:.75rem}
-.header-text h1{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,3.5vw,2.4rem);line-height:1.15;margin-bottom:.35rem}
+.site-header{margin-bottom:1.5rem;padding-left:.9rem;border-left:3px solid var(--red)}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:.6rem}
+.header-text h1{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,3.2vw,2.15rem);line-height:1.15;margin-bottom:.35rem}
 .header-text h1 span{color:var(--red)}
 .header-text p{font-size:13px;color:var(--muted);max-width:520px;line-height:1.65}
 .header-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
@@ -276,7 +319,58 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
 
 <div id="loadingOverlay"><div class="loader"></div><p>Memuat data...</p></div>
 
-<div class="wrap">
+<div class="app-shell">
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-mark">PMI</div>
+      <div class="sidebar-brand-text">
+        <strong>Donor &amp; Permintaan</strong>
+        <span>PMI Kota Malang · 2020–2025</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav">
+      <button class="nav-item active" data-page="ringkasan" onclick="goPage('ringkasan')">
+        <span class="nav-num">1</span>
+        <span class="nav-label"><span class="nav-title">Gambaran Umum</span><span class="nav-desc">Landasan teori &amp; ringkasan data</span></span>
+      </button>
+      <button class="nav-item" data-page="profil" onclick="goPage('profil')">
+        <span class="nav-num">2</span>
+        <span class="nav-label"><span class="nav-title">Profil Donor</span><span class="nav-desc">Golongan darah, usia, jenis kelamin</span></span>
+      </button>
+      <button class="nav-item" data-page="rasio" onclick="goPage('rasio')">
+        <span class="nav-num">3</span>
+        <span class="nav-label"><span class="nav-title">Insight Rasio</span><span class="nav-desc">Donor vs. permintaan darah</span></span>
+      </button>
+      <button class="nav-item" data-page="evaluasi" onclick="goPage('evaluasi')">
+        <span class="nav-num">4</span>
+        <span class="nav-label"><span class="nav-title">Evaluasi Model</span><span class="nav-desc">Pemilihan &amp; akurasi jendela MA</span></span>
+      </button>
+      <button class="nav-item" data-page="fc-donor" onclick="goPage('fc-donor')">
+        <span class="nav-num">5</span>
+        <span class="nav-label"><span class="nav-title">Forecasting Donor</span><span class="nav-desc">Estimasi jumlah pendonor</span></span>
+      </button>
+      <button class="nav-item" data-page="fc-req" onclick="goPage('fc-req')">
+        <span class="nav-num">6</span>
+        <span class="nav-label"><span class="nav-title">Forecasting Permintaan</span><span class="nav-desc">Estimasi kebutuhan darah RS</span></span>
+      </button>
+      <button class="nav-item" data-page="rekomendasi" onclick="goPage('rekomendasi')">
+        <span class="nav-num">7</span>
+        <span class="nav-label"><span class="nav-title">Rekomendasi Stok</span><span class="nav-desc">Safety stock &amp; target persediaan</span></span>
+      </button>
+      <button class="nav-item" data-page="tabel" onclick="goPage('tabel')">
+        <span class="nav-num">8</span>
+        <span class="nav-label"><span class="nav-title">Data Lengkap</span><span class="nav-desc">Tabel angka &amp; hasil prediksi</span></span>
+      </button>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="sidebar-progress-track"><div class="sidebar-progress-fill" id="sidebarProgress" style="width:12.5%"></div></div>
+      <div class="sidebar-foot-txt"><span id="sidebarPageIdx">Halaman 1 dari 8</span><span>PKL Diskominfo</span></div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+  <div class="wrap">
 
   <!-- HEADER -->
   <div class="site-header">
@@ -294,8 +388,10 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
 
   <div class="update-bar">
     <span>Terakhir dimuat: <strong id="lastUpdate">—</strong> &nbsp;|&nbsp; <span id="statusMsg" class="status-ok">Siap</span></span>
-    <span>Sumber: <a href="https://docs.google.com/spreadsheets/d/1E3Fmd8Acw15Yt7dlHBWRgeqta27Mk1thbe2bsKCAKbc/edit?gid=0#gid=0" target="_blank">Data PMI Kota Malang (Satu Data Kota Malang) ↗</a></span>
+    <span>Sumber: <a href="https://docs.google.com/spreadsheets/d/1E3Fmd8Acw15Yt7dlHBWRgeqta27Mk1thbe2bsKCAKbc/edit?gid=0#gid=0" target="_blank">Data PMI Kota Malang (Satu Data Kota Malang) ↗</a> · <a href="https://malangkota.bps.go.id/id/statistics-table?subject=522&sortBy=date%2Ctitle&sortOrder=desc%2Casc&global-keyword=donor" target="_blank">BPS Kota Malang ↗</a></span>
   </div>
+
+  <section class="page active" id="page-ringkasan">
 
   <!-- ══ TEORI SMA (collapsible) ══ -->
   <div class="teori-box">
@@ -336,6 +432,10 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     <div class="kpi-grid" id="kpiGrid"></div>
   </div>
 
+  </section>
+
+  <section class="page" id="page-profil">
+
   <!-- ══ ② KOMPOSISI DONOR ══ -->
   <div class="section">
     <div class="section-hd">
@@ -364,7 +464,9 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     </div>
   </div>
 
-  <hr class="section-divider">
+  </section>
+
+  <section class="page" id="page-rasio">
 
   <!-- ══ ★ INSIGHT RASIO (fitur utama dari Forecasting) ══ -->
   <div class="section">
@@ -372,7 +474,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       <div>
         <div class="section-label">★ Insight Rasio</div>
         <div class="section-title">Rasio Ketersediaan Donor vs. Permintaan Darah</div>
-        <div class="section-sub">Indikator utama kecukupan persediaan — rasio &gt;100% berarti stok mencukupi, &lt;100% berarti terjadi defisit</div>
+        <div class="section-sub">Rasio di atas 100% menunjukkan jumlah donor lebih besar dibandingkan permintaan darah pada periode tersebut; rasio di bawah 100% menunjukkan donor lebih kecil daripada permintaan. Rasio ini menggambarkan keseimbangan antara pasokan donor dan permintaan, bukan jumlah stok aktual yang tersedia (stok juga dipengaruhi darah kedaluwarsa/rusak, hasil screening, dan sisa stok bulan sebelumnya)</div>
       </div>
     </div>
     <div id="rasioHero"></div>
@@ -386,7 +488,9 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     </div>
   </div>
 
-  <hr class="section-divider">
+  </section>
+
+  <section class="page" id="page-evaluasi">
 
   <!-- Model selector — HANYA mengubah garis in-sample (fit historis) pada grafik di atas, TIDAK mengubah peramalan -->
   <div class="model-bar" style="margin-bottom:1.25rem">
@@ -396,13 +500,13 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       <button class="model-tab" onclick="switchModel(6,this)">MA-6</button>
       <button class="model-tab" onclick="switchModel(9,this)">MA-9</button>
     </div>
-    <span class="model-desc" id="modelDesc">MA-3: tiap titik fit memakai rata-rata 3 bulan data aktual sebelumnya (t-1, t-2, t-3). Tab ini hanya untuk eksplorasi garis fit historis di atas — peramalan Jan–Sept 2026 selalu memakai model TERBAIK (lihat bagian ④).</span>
+    <span class="model-desc" id="modelDesc">MA-3 menghasilkan prediksi suatu periode berdasarkan rata-rata tiga periode aktual sebelumnya (t-1, t-2, t-3). Semakin kecil ukuran jendela, model semakin responsif terhadap perubahan data namun lebih sensitif terhadap fluktuasi. Tab ini hanya untuk eksplorasi garis fit historis di atas — peramalan Jan–Sept 2026 selalu memakai model TERBAIK (lihat bagian ④).</span>
   </div>
 
   <div class="eval-note-box" style="background:var(--blue-light);border-left-color:var(--blue2);margin-top:-1rem;margin-bottom:1.5rem">
-    <strong>Cara pemilihan model peramalan:</strong> MA-3, MA-6, dan MA-9 dievaluasi pada <strong>Data Test out-of-sample</strong> (15 bulan terakhir, Okt 2024–Des 2025) menggunakan skema <em>One-Step-Ahead Forecasting</em> — window dengan rata-rata MAPE terkecil dipilih sebagai <strong id="bestModelInline">model terbaik</strong> dan dipakai SATU-SATUNYA untuk peramalan Jan–Sept 2026. <span class="note-toggle" onclick="toggleMANote()">Baca penjelasan selengkapnya ▾</span>
+    <strong>Cara pemilihan model peramalan:</strong> MA-3, MA-6, dan MA-9 dievaluasi pada <strong>Data Test out-of-sample</strong> (15 bulan terakhir, Okt 2024–Des 2025) menggunakan skema <em>One-Step-Ahead Forecasting</em>, yaitu setiap nilai prediksi dihitung menggunakan data historis yang tersedia hingga periode sebelumnya lalu dibandingkan dengan data aktual pada periode berikutnya — window dengan rata-rata MAPE terkecil pada data pengujian dipilih sebagai <strong id="bestModelInline">model terbaik</strong> dan dipakai SATU-SATUNYA untuk peramalan Jan–Sept 2026. <span class="note-toggle" onclick="toggleMANote()">Baca penjelasan selengkapnya ▾</span>
     <div id="maNoteBody" style="display:none;margin-top:.5rem">
-      Total 72 bulan data historis (Jan 2020–Des 2025) dibagi dengan metode <em>Time-Series Split</em> rasio 80:20 — <strong>Data Train</strong>: 57 bulan pertama (Jan 2020–Sept 2024) sebagai basis riwayat/inisiasi parameter window N=3, N=6, N=9; <strong>Data Test</strong>: 15 bulan terakhir (Okt 2024–Des 2025) sebagai ruang validasi out-of-sample. MA pendek (3) lebih responsif terhadap perubahan bulanan tapi rawan noise; MA panjang (9) lebih stabil namun lambat menangkap perubahan tren — ini disebut <em>bias-variance trade-off</em>. Window dengan rata-rata MAPE terkecil pada Data Test dipilih sebagai model TERBAIK. Untuk peramalan jangka menengah (Jan–Sept 2026), nilai ramalan dihitung secara <em>multi-step-ahead</em> memakai rantai iterasi (rolling chain): setiap bulan baru dihitung dari rata-rata N bulan terakhir, di mana porsi data aktual 2025 berkurang satu per satu dan digantikan oleh nilai prediksi bulan sebelumnya — sehingga kurva melandai dinamis sebelum akhirnya flatline sempurna begitu seluruh N input sudah murni prediksi. Perbandingan ketiga window tersedia pada bagian ④ Evaluasi Model (Makridakis, Wheelwright &amp; Hyndman, 1998).
+      Total 72 bulan data historis (Jan 2020–Des 2025) dibagi dengan metode <em>Time-Series Split</em> rasio 80:20 — <strong>Data Train</strong>: 57 bulan pertama (Jan 2020–Sept 2024) sebagai basis riwayat/inisiasi parameter window N=3, N=6, N=9; <strong>Data Test</strong>: 15 bulan terakhir (Okt 2024–Des 2025) sebagai ruang validasi out-of-sample. Pemilihan ukuran window merupakan kompromi antara kemampuan model mengikuti perubahan data (<em>responsiveness</em>) dan kemampuan menghaluskan fluktuasi acak (<em>smoothing</em>): MA pendek (3) lebih cepat mengikuti perubahan bulanan namun lebih sensitif terhadap fluktuasi, sedangkan MA panjang (9) menghasilkan kurva yang lebih halus namun lebih lambat menangkap perubahan tren. Window dengan rata-rata MAPE terkecil pada Data Test dipilih sebagai model TERBAIK. Untuk peramalan jangka menengah (Jan–Sept 2026), nilai ramalan dihitung secara <em>recursive (iterative) multi-step-ahead forecasting</em>: nilai hasil prediksi pada suatu periode digunakan kembali sebagai input untuk menghasilkan prediksi periode berikutnya ketika data aktual sudah tidak tersedia — sehingga porsi data aktual 2025 berkurang satu per satu dan digantikan oleh nilai prediksi bulan sebelumnya, kurva melandai dinamis sebelum akhirnya flatline sempurna begitu seluruh N input sudah murni prediksi. Perbandingan ketiga window tersedia pada bagian ④ Evaluasi Model (Makridakis, Wheelwright &amp; Hyndman, 1998).
     </div>
   </div>
 
@@ -440,7 +544,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       <div class="teori-body" id="evalKonsepBody">
         <div class="eval-desc" style="margin-bottom:.75rem">Akurasi model diukur menggunakan <strong>MAPE</strong> — semakin kecil nilainya, semakin baik prediksi model.
           <div style="margin-top:.5rem;font-size:11.5px;color:var(--muted);line-height:1.65">
-            <strong>MAPE</strong> (Mean Absolute Percentage Error) = tingkat kesalahan prediksi dalam %. &nbsp;·&nbsp;
+            <strong>MAPE</strong> (Mean Absolute Percentage Error) = rata-rata persentase kesalahan absolut antara nilai aktual dan nilai hasil prediksi; semakin kecil nilainya, semakin tinggi tingkat akurasi model. &nbsp;·&nbsp;
             <strong title="Mean Absolute Error — selisih absolut rata-rata dalam satuan asli">MAE</strong> = rata-rata |error| dalam satuan asli (mudah dibaca). &nbsp;·&nbsp;
             <strong title="Root Mean Square Error — lebih sensitif terhadap lonjakan data ekstrem">RMSE</strong> = sensitif terhadap lonjakan data ekstrem. &nbsp;·&nbsp;
             <strong title="Mean Forecast Error — positif = model cenderung under-estimasi, negatif = over-estimasi">MFE</strong> = positif berarti model cenderung under-estimasi, negatif berarti over-estimasi.
@@ -454,13 +558,14 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
           <span class="mape-badge" style="background:var(--red-light);color:var(--red)">&gt;50% — Tidak Akurat</span>
           <span style="font-size:10px;color:var(--muted2);align-self:center">(Lewis, 1982)</span>
         </div>
+        <div style="font-size:10.5px;color:var(--muted2);margin-top:-.5rem;margin-bottom:.75rem;line-height:1.5">Klasifikasi ini digunakan sebagai pedoman interpretasi akurasi model dan tidak selalu berlaku pada seluruh karakteristik data deret waktu.</div>
 
         <div class="eval-note-box">
-          <strong>MAPE</strong> = tingkat kesalahan prediksi (%). Semakin kecil, semakin akurat. &nbsp;·&nbsp; MAE, RMSE, MFE tersedia di tabel untuk analisis lanjutan.
+          <strong>MAPE</strong> = rata-rata persentase kesalahan absolut antara nilai aktual dan nilai hasil prediksi. Semakin kecil, semakin akurat. &nbsp;·&nbsp; MAE, RMSE, MFE tersedia di tabel untuk analisis lanjutan.
         </div>
 
         <div class="eval-note-box" style="background:var(--blue-light);border-left-color:var(--blue2)">
-          <strong>Perbandingan Window MA (dasar pemilihan model):</strong> rata-rata MAPE out-of-sample (Data Test, 15 bulan) seluruh 18 indikator untuk tiap window — window dengan nilai terkecil dipilih sebagai model terbaik secara empiris.
+          <strong>Perbandingan Window MA (dasar pemilihan model):</strong> rata-rata MAPE out-of-sample (Data Test, 15 bulan) seluruh 18 indikator untuk tiap window. Model terbaik dipilih berdasarkan nilai rata-rata MAPE terkecil pada data pengujian (out-of-sample), karena menunjukkan tingkat kesalahan prediksi paling rendah dibandingkan model lainnya.
         </div>
       </div>
     </div>
@@ -502,7 +607,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       <div>
         <div class="section-label">Hasil Peramalan</div>
         <div class="section-title">Total Donor vs Total Permintaan Darah 2020–2025 &amp; Prediksi</div>
-        <div class="section-sub">Apakah donor mencukupi permintaan? Perbandingan tren aktual dan prediksi ke depan menggunakan model terbaik hasil evaluasi di atas</div>
+        <div class="section-sub">Apakah pasokan donor cenderung memenuhi kebutuhan permintaan? Perbandingan tren aktual dan prediksi ke depan menggunakan model terbaik hasil evaluasi di atas</div>
       </div>
       <span class="fc-zone-badge"><span class="stripe"></span> Zona biru = prediksi</span>
     </div>
@@ -513,7 +618,9 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     </div>
   </div>
 
-  <hr class="section-divider">
+  </section>
+
+  <section class="page" id="page-fc-donor">
 
   <!-- ══ ⑤ FORECASTING DONOR ══ -->
   <div class="section">
@@ -521,7 +628,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       <div>
         <div class="section-label">⑤ Forecasting Donor</div>
         <div class="section-title" id="fcSectionTitle">Tren Donor 2020–2025 &amp; Estimasi Jan–Sept 2026 (Flat, Model Terbaik)</div>
-        <div class="section-sub">Prediksi jumlah pendonor per kategori — satuan: orang</div>
+        <div class="section-sub">Estimasi jumlah pendonor per kategori — satuan: orang</div>
       </div>
       <span class="fc-zone-badge"><span class="stripe"></span> Zona biru = prediksi</span>
     </div>
@@ -560,7 +667,9 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     </div>
   </div>
 
-  <hr class="section-divider">
+  </section>
+
+  <section class="page" id="page-fc-req">
 
   <!-- ══ ⑥ FORECASTING PERMINTAAN DARAH ══ -->
   <div class="section">
@@ -603,7 +712,9 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     </div>
   </div>
 
-  <hr class="section-divider">
+  </section>
+
+  <section class="page" id="page-rekomendasi">
 
   <!-- ══ ⑦ INSIGHT & REKOMENDASI PERSEDIAAN ══ -->
   <div class="section">
@@ -633,16 +744,16 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       <div class="ss-vars">
         <span><strong>SS</strong> = Safety Stock (kantong darah)</span>
         <span><strong>Z</strong> = Nilai distribusi normal untuk service level yang dipilih</span>
-        <span><strong>σ<sub>d</sub></strong> = Standar deviasi permintaan bulanan historis</span>
+        <span><strong>σ<sub>d</sub></strong> = Standar deviasi permintaan selama satu periode</span>
         <span><strong>LT</strong> = Lead time pengadaan (bulan)</span>
       </div>
-      <p class="ss-ref">Silver, E.A., Pyke, D.F., &amp; Peterson, R. (1998). <em>Inventory Management and Production Planning and Scheduling</em>, 3rd ed. Wiley. &nbsp;·&nbsp; Target Stok = Forecast (MA) + Safety Stock</p>
+      <p class="ss-ref">Silver, E.A., Pyke, D.F., &amp; Peterson, R. (1998). <em>Inventory Management and Production Planning and Scheduling</em>, 3rd ed. Wiley. &nbsp;·&nbsp; Target persediaan operasional = kebutuhan hasil peramalan + safety stock</p>
     </div>
 
     <div class="eval-card">
       <div class="eval-header">
         <div class="eval-title">Rincian Safety Stock per Bagian RS</div>
-        <div class="eval-desc">Sesuaikan service level dan lead time sesuai kebijakan PMI. Target stok = nilai prediksi + safety stock. <span class="note-toggle" onclick="toggleSSNote()">Baca dasar pemilihan service level ▾</span>
+        <div class="eval-desc">Sesuaikan service level dan lead time sesuai kebijakan PMI. Target persediaan operasional dihitung sebagai jumlah kebutuhan hasil peramalan ditambah safety stock sebagai buffer untuk mengantisipasi ketidakpastian permintaan selama lead time. <span class="note-toggle" onclick="toggleSSNote()">Baca dasar pemilihan service level ▾</span>
           <div id="ssNoteBody" style="display:none;margin-top:.5rem;font-size:11px;color:var(--muted);line-height:1.65">
             Service level menyatakan probabilitas stok mencukupi permintaan selama lead time. Untuk komoditas medis kritis seperti darah, literatur manajemen rantai pasok (Beliën &amp; Forcé, 2012, <em>European Journal of Operational Research</em>; Silver et al., 1998) merekomendasikan <strong>≥95%</strong> karena risiko kekurangan stok berdampak langsung pada keselamatan pasien. 90% dapat dipertimbangkan untuk permintaan stabil; 99% untuk golongan darah kritis atau bervariabilitas tinggi. Default: <strong>95% (Z=1,645)</strong>.
           </div>
@@ -685,7 +796,7 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
       </div>
 
       <div class="eval-note-box" style="margin-top:1rem">
-        <strong>Target Stok = Forecast + Safety Stock.</strong> Safety stock dihitung dari standar deviasi permintaan historis dan service level yang dipilih — bukan estimasi kasar. Semakin tinggi service level, semakin besar buffer yang diperlukan namun semakin kecil risiko stockout.
+        <strong>Target persediaan operasional = kebutuhan hasil peramalan + safety stock.</strong> Safety stock dihitung dari standar deviasi permintaan historis dan service level yang dipilih sebagai buffer untuk mengantisipasi ketidakpastian permintaan selama lead time — bukan estimasi kasar. Semakin tinggi service level, semakin besar buffer yang diperlukan namun semakin kecil risiko stockout.
       </div>
     </div>
 
@@ -693,7 +804,9 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     <div id="rekHero" style="margin-top:1rem"></div>
   </div>
 
-  <hr class="section-divider">
+  </section>
+
+  <section class="page" id="page-tabel">
 
   <!-- ══ ⑧ TABEL DATA LENGKAP ══ -->
   <div class="section">
@@ -715,10 +828,13 @@ footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);fon
     </div>
   </div>
 
+  </section>
+
   <footer>
-    <span>Sumber: <a href="https://satudata.malangkota.go.id" target="_blank">Satu Data Kota Malang</a> · PMI Kota Malang</span>
-    <span id="footerMethod">Metode: Single Moving Average (model terbaik) · Peramalan Jan–Sept 2026: rantai iterasi (multi-step-ahead) · Makridakis et al. (1998) · Evaluasi: MAPE, MAE, RMSE, MFE · Safety Stock: SS = Z×σ×√LT (Silver et al., 1998)</span>
+    <span>Sumber: <a href="https://satudata.malangkota.go.id" target="_blank">Satu Data Kota Malang</a> · <a href="https://malangkota.bps.go.id/id/statistics-table?subject=522&sortBy=date%2Ctitle&sortOrder=desc%2Casc&global-keyword=donor" target="_blank">BPS Kota Malang</a> · PMI Kota Malang</span>
   </footer>
+  </div>
+  </main>
 </div>
 
 <script>
@@ -1155,8 +1271,10 @@ function renderTrenDonorChart(gkey){
       datalabels:{display:(ctx)=>shouldShowLabel('trenDonor',Math.floor(ctx.datasetIndex/2))},
       tooltip:{mode:'index',intersect:false,callbacks:{label:c=>{const v=c.raw;if(v==null)return null;const isP=c.dataset.label?.includes('(prediksi)');const name=isP?c.dataset.label.replace(' (prediksi)',''):c.dataset.label;return isP?` ${name}: ${fmt(v)} ⟶ est.`:` ${name}: ${fmt(v)}`;}}}
     },scales:{
-      x:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10}, maxTicksLimit:14, maxRotation:0, minRotation:0, autoSkip:true}},
-      y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11},callback:v=>v>=1000?(v/1000).toFixed(1)+'rb':v}}
+      x:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10}, maxTicksLimit:14, maxRotation:0, minRotation:0, autoSkip:true},
+        title:{display:true, text:'Bulan', font:{size:11,weight:'600'}, color:'var(--muted)'}},
+      y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11},callback:v=>v>=1000?(v/1000).toFixed(1)+'rb':v},
+        title:{display:true, text:`Jumlah Donor (${g.unit||'orang'})`, font:{size:11,weight:'600'}, color:'var(--muted)'}}
     }},plugins:[fzPlugin(n)]
   });
 }
@@ -1195,8 +1313,10 @@ function renderReqChart(mode){
       datalabels:{display:(ctx)=>shouldShowLabel('req',Math.floor(ctx.datasetIndex/2)),color:'#fff',font:{size:9,weight:'700'}},
       tooltip:{mode:'index',intersect:false,callbacks:{label:c=>{const v=c.raw;if(v==null)return null;return ` ${c.dataset.label}: ${fmt(v)} kantong`;}}}
     },scales:{
-      x:{stacked:true,grid:{display:false},ticks:{font:{size:10}, maxTicksLimit:14, maxRotation:0, minRotation:0, autoSkip:true}},
-      y:{stacked:true,grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11},callback:v=>v>=1000?(v/1000).toFixed(1)+'rb':v}}
+      x:{stacked:true,grid:{display:false},ticks:{font:{size:10}, maxTicksLimit:14, maxRotation:0, minRotation:0, autoSkip:true},
+        title:{display:true, text:'Bulan', font:{size:11,weight:'600'}, color:'var(--muted)'}},
+      y:{stacked:true,grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11},callback:v=>v>=1000?(v/1000).toFixed(1)+'rb':v},
+        title:{display:true, text:`Jumlah Permintaan (${g.unit||'kantong'})`, font:{size:11,weight:'600'}, color:'var(--muted)'}}
     }},plugins:[fzPlugin(n)]
   });
 }
@@ -1329,7 +1449,8 @@ function renderDonorVsPermintaanChart(){
         }
       },
       scales:{
-        x:{grid:{color:'rgba(0,0,0,0.04)'}, ticks:{font:{size:10}, maxTicksLimit:14, maxRotation:0, minRotation:0, autoSkip:true}},
+        x:{grid:{color:'rgba(0,0,0,0.04)'}, ticks:{font:{size:10}, maxTicksLimit:14, maxRotation:0, minRotation:0, autoSkip:true},
+          title:{display:true, text:'Bulan', font:{size:11,weight:'600'}, color:'var(--muted)'}},
         yD:{
           position:'left', grid:{color:'rgba(192,57,43,0.08)'},
           title:{display:true, text:'Donor (orang)', color:'#C0392B', font:{size:11,weight:'600'}},
@@ -1529,9 +1650,9 @@ function buildEvalSection(){
     ? ` ${highErrCount} indikator dengan data kecil masih kurang akurat — lihat kolom "Perlu perhatian".`
     : '';
   const reko=avgMape==null?'Data tidak cukup.'
-    :avgMape<10?`Model MA-${BEST_W} (terbaik secara empiris) menunjukkan akurasi yang sangat baik (MAPE ${avgMape.toFixed(1)}%). Model ini dipakai untuk peramalan rantai iterasi Jan–Sept 2026, lalu digabung dengan safety stock untuk target stok yang direkomendasikan.${caveat}`
-    :avgMape<=20?`Model MA-${BEST_W} (terbaik secara empiris) menunjukkan akurasi yang baik (MAPE ${avgMape.toFixed(1)}%). Model ini dipakai untuk peramalan rantai iterasi Jan–Sept 2026, lalu digabung dengan safety stock untuk target stok yang direkomendasikan.${caveat}`
-    :`Model MA-${BEST_W} (terbaik secara empiris): MAPE rata-rata ${avgMape.toFixed(1)}% (${mapeLabel(avgMape)}).${caveat} Hasil forecasting rantai iterasi tetap digabung dengan safety stock untuk menentukan target stok yang direkomendasikan.`;
+    :avgMape<10?`Model MA-${BEST_W} (terbaik secara empiris) menunjukkan akurasi yang sangat baik (MAPE ${avgMape.toFixed(1)}%). Model ini dipakai untuk peramalan recursive multi-step-ahead Jan–Sept 2026; target persediaan direkomendasikan sebagai hasil estimasi kebutuhan berdasarkan forecasting yang ditambah safety stock untuk mengantisipasi ketidakpastian permintaan selama lead time.${caveat}`
+    :avgMape<=20?`Model MA-${BEST_W} (terbaik secara empiris) menunjukkan akurasi yang baik (MAPE ${avgMape.toFixed(1)}%). Model ini dipakai untuk peramalan recursive multi-step-ahead Jan–Sept 2026; target persediaan direkomendasikan sebagai hasil estimasi kebutuhan berdasarkan forecasting yang ditambah safety stock untuk mengantisipasi ketidakpastian permintaan selama lead time.${caveat}`
+    :`Model MA-${BEST_W} (terbaik secara empiris): MAPE rata-rata ${avgMape.toFixed(1)}% (${mapeLabel(avgMape)}).${caveat} Target persediaan tetap direkomendasikan sebagai hasil estimasi kebutuhan berdasarkan forecasting recursive multi-step-ahead yang ditambah safety stock untuk mengantisipasi ketidakpastian permintaan selama lead time.`;
   document.getElementById('evalSummary').innerHTML=`
     <div class="eval-box">
       <div class="eval-box-title">Estimasi ${fm[0]}</div>
@@ -1614,7 +1735,8 @@ function renderEvalChart(){
           formatter:(v)=>v==null?'':fmt(v)}
       },
       scales:{
-        x:{grid:{color:'rgba(0,0,0,0.03)'}, ticks:{font:{size:10}, maxTicksLimit:16, maxRotation:0, minRotation:0, autoSkip:true}},
+        x:{grid:{color:'rgba(0,0,0,0.03)'}, ticks:{font:{size:10}, maxTicksLimit:16, maxRotation:0, minRotation:0, autoSkip:true},
+          title:{display:true, text:'Bulan', font:{size:10,weight:'600'}, color:'var(--muted)'}},
         yD:{position:'left', grid:{color:'rgba(0,0,0,0.04)'}, ticks:{font:{size:10}},
           title:{display:true, text:'Donor (orang)', font:{size:10,weight:'600'}, color:'var(--muted)'}},
         yP:{position:'right', grid:{display:false}, ticks:{font:{size:10}},
@@ -1637,7 +1759,7 @@ function renderEvalChart(){
 // ── SAFETY STOCK (TEORI PERSEDIAAN) ─────────────────────────────────────────
 // Safety Stock = Z × σ × √LT
 // Z  = nilai service level (tabel distribusi normal)
-// σ  = standar deviasi permintaan bulanan (data aktual)
+// σ  = standar deviasi permintaan selama satu periode (data aktual)
 // LT = lead time, dalam satuan bulan
 let SS_Z = 1.645;   // default service level 95%
 let SS_LT = 1;      // default lead time 1 bulan
@@ -1752,7 +1874,7 @@ function buildRasioBar(){
   el.innerHTML = `
     <div style="background:${kurang?'var(--red-light)':'var(--green-light)'};border:1px solid ${kurang?'var(--red)':'var(--green)'};border-radius:var(--radius-sm);padding:.6rem 1rem;display:flex;align-items:center;gap:.6rem;font-size:12.5px">
       <span style="font-size:1.1rem">${kurang?'📉':'📊'}</span>
-      <span><strong>Rasio Donor terhadap Permintaan: ${rasio}%</strong> — ${kurang?'Kebutuhan darah lebih tinggi dari jumlah donor yang tercatat sepanjang 2020–2025.':'Jumlah donor mencukupi total permintaan darah 2020–2025.'}</span>
+      <span><strong>Rasio Donor terhadap Permintaan: ${rasio}%</strong> — ${kurang?'Jumlah donor secara agregat lebih kecil daripada jumlah permintaan sepanjang 2020–2025, menunjukkan kecenderungan pasokan donor belum memenuhi kebutuhan.':'Jumlah donor secara agregat lebih besar daripada jumlah permintaan sepanjang 2020–2025, menunjukkan kecenderungan pasokan donor mampu memenuhi kebutuhan — namun tidak secara langsung mencerminkan ketersediaan stok darah aktual karena dipengaruhi proses pengolahan, kelayakan darah, masa simpan, dan persediaan periode sebelumnya.'}</span>
     </div>`;
 }
 
@@ -1874,13 +1996,12 @@ function switchModel(w,btn){
   document.querySelectorAll('#modelTabs .model-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   const descs={
-    3:'MA-3: tiap prediksi memakai rata-rata 3 bulan data aktual sebelumnya (t-1, t-2, t-3) — prediksi 3 bulan ke depan. Responsif terhadap perubahan jangka pendek, cocok untuk data dengan fluktuasi tinggi.',
-    6:'MA-6: tiap prediksi memakai rata-rata 6 bulan data aktual sebelumnya (t-1 s.d. t-6) — prediksi 6 bulan ke depan. Lebih halus dan stabil, mengurangi noise namun lebih lambat merespons perubahan tren.',
-    9:'MA-9: tiap prediksi memakai rata-rata 9 bulan data aktual sebelumnya (t-1 s.d. t-9) — prediksi 9 bulan ke depan. Sangat halus, cocok untuk data stabil — berisiko tertinggal jika terjadi perubahan tren mendadak.',
+    3:'MA-3 menggunakan rata-rata tiga periode aktual sebelumnya (t-1, t-2, t-3) sebagai dasar perhitungan setiap nilai prediksi. Angka 3 menunjukkan ukuran window (bukan jumlah periode yang dapat diprediksi) — window kecil membuat model lebih responsif terhadap perubahan jangka pendek, cocok untuk data dengan fluktuasi tinggi.',
+    6:'MA-6 menggunakan rata-rata enam periode aktual sebelumnya (t-1 s.d. t-6) sebagai dasar perhitungan setiap nilai prediksi. Angka 6 menunjukkan ukuran window (bukan jumlah periode yang dapat diprediksi) — lebih halus dan stabil, mengurangi sensitivitas terhadap fluktuasi namun lebih lambat merespons perubahan tren.',
+    9:'MA-9 menggunakan rata-rata sembilan periode aktual sebelumnya (t-1 s.d. t-9) sebagai dasar perhitungan setiap nilai prediksi. Angka 9 menunjukkan ukuran window (bukan jumlah periode yang dapat diprediksi) — sangat halus, cocok untuk data stabil, namun berisiko tertinggal jika terjadi perubahan tren mendadak.',
   };
   document.getElementById('modelDesc').textContent=descs[w]||'';
   document.getElementById('fcSectionTitle').textContent=`Tren Donor 2020–2025 & Estimasi ${w} Bulan ke Depan (MA-${w})`;
-  document.getElementById('footerMethod').textContent=`Metode: Single Moving Average (model terbaik) · Peramalan Jan–Sept 2026: rantai iterasi (multi-step-ahead) · Makridakis et al. (1998) · Evaluasi: MAPE, MAE, RMSE, MFE · Safety Stock: SS = Z×σ×√LT (Silver et al., 1998)`;
   FC_MONTH_IDX=0;
   renderAll();
 }
@@ -2021,7 +2142,7 @@ function buildRasioSection(){
         <div class="rasio-desc">
           ${isDefisit
             ? `Total permintaan darah (<strong>${fmt(totalPerm)} kantong</strong>) melebihi jumlah donor (<strong>${fmt(totalDonor)} orang</strong>) — PMI perlu strategi peningkatan donor dan pengelolaan stok yang lebih ketat.`
-            : `Jumlah donor (<strong>${fmt(totalDonor)} orang</strong>) secara total mencukupi permintaan (<strong>${fmt(totalPerm)} kantong</strong>) — namun perlu diwaspadai fluktuasi bulanan.`}
+            : `Jumlah donor (<strong>${fmt(totalDonor)} orang</strong>) secara agregat lebih besar daripada jumlah permintaan (<strong>${fmt(totalPerm)} kantong</strong>), menunjukkan kecenderungan pasokan donor mampu memenuhi kebutuhan. Namun kondisi ini tidak secara langsung mencerminkan ketersediaan stok darah aktual karena dipengaruhi oleh proses pengolahan, kelayakan darah, masa simpan, dan persediaan periode sebelumnya — fluktuasi bulanan tetap perlu diwaspadai.`}
         </div>
       </div>
       <div class="rasio-track">
@@ -2079,7 +2200,8 @@ function buildRasioSection(){
           formatter:(v)=>typeof v==='number'?v.toFixed(1)+'%':''}
       },
       scales:{
-        x:{grid:{color:'rgba(0,0,0,0.03)'}, ticks:{font:{size:10}, maxTicksLimit:16, maxRotation:0, minRotation:0, autoSkip:true}},
+        x:{grid:{color:'rgba(0,0,0,0.03)'}, ticks:{font:{size:10}, maxTicksLimit:16, maxRotation:0, minRotation:0, autoSkip:true},
+          title:{display:true, text:'Bulan', font:{size:11,weight:'600'}, color:'var(--muted)'}},
         y:{
           grid:{color:'rgba(0,0,0,0.04)'},
           ticks:{font:{size:11}, callback:v=>v+'%'},
@@ -2123,6 +2245,29 @@ function renderAll(){
   const activeTable=document.querySelector('#tblTabs .tab.active');
   const tblMap={'Gender':'donor_gender','Golongan Darah':'donor_goldar','Usia':'donor_usia','Permintaan RS':'permintaan_rs'};
   buildTable(tblMap[activeTable?.textContent?.trim()]||'donor_gender');
+}
+
+// ── NAVIGASI HALAMAN (sidebar) ──────────────────────────────────────────
+const PAGE_ORDER = ['ringkasan','profil','rasio','evaluasi','fc-donor','fc-req','rekomendasi','tabel'];
+function goPage(id){
+  if(PAGE_ORDER.indexOf(id)===-1) return;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const target = document.getElementById('page-'+id);
+  if(target) target.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.page===id));
+  const idx = PAGE_ORDER.indexOf(id)+1;
+  const total = PAGE_ORDER.length;
+  const idxEl = document.getElementById('sidebarPageIdx');
+  if(idxEl) idxEl.textContent = `Halaman ${idx} dari ${total}`;
+  const progEl = document.getElementById('sidebarProgress');
+  if(progEl) progEl.style.width = (idx/total*100).toFixed(1)+'%';
+  window.scrollTo({top:0,behavior:'instant'});
+  // Chart.js perlu di-resize karena canvas sempat berada dalam kondisi display:none
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      Object.values(charts).forEach(c=>{ if(c && typeof c.resize==='function'){ c.resize(); c.update('none'); } });
+    });
+  });
 }
 
 // ── INIT ──────────────────────────────────────────────────────────────────
